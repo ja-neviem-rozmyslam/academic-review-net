@@ -1,0 +1,64 @@
+name: Angular CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  lint:
+    name: Ng Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.18.0]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: arn-frontend/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('arn-frontend/package-lock.json') }}
+      - run: npm install
+        working-directory: arn-frontend
+      - name: Run Lint
+        run: npm run lint
+        working-directory: arn-frontend
+
+  build:
+    name: Ng Build
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        node-version: [20.18.0]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: arn-frontend/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('arn-frontend/package-lock.json') }}
+      - run: npm install
+        working-directory: arn-frontend
+      - name: Run Build
+        run: npm run build --if-present
+        working-directory: arn-frontend
