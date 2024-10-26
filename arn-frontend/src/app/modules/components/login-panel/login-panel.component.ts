@@ -27,7 +27,10 @@ export class LoginPanelComponent implements OnInit {
         this.email = '';
         return;
       }
-      this.rememberMe ? localStorage.setItem(this.storageIdentifier, this.email) : localStorage.removeItem(this.storageIdentifier);
+      if (this.rememberMe)
+        localStorage.setItem(this.storageIdentifier, this.email);
+      else
+        localStorage.removeItem(this.storageIdentifier);
     }
   }
 
@@ -37,8 +40,10 @@ export class LoginPanelComponent implements OnInit {
   }
 
   openRegistrationPage() {
+    console.log();
   }
 
   passwordResetClicked() {
+    console.log();
   }
 }
