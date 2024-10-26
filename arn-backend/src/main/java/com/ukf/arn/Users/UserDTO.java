@@ -3,20 +3,17 @@ package com.ukf.arn.Users;
 import com.ukf.arn.Universities.University;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserDTO {
 
     private Long id;
-
     private String name;
-
     private String surname;
-
     private String email;
-
     private LocalDateTime registrationDate;
-
     private University university;
+    private List<String> roles;
 
     public UserDTO() {
     }
@@ -76,5 +73,13 @@ public class UserDTO {
 
     public void setUniversity(University university) {
         this.university = university;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

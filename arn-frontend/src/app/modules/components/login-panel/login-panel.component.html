@@ -11,16 +11,16 @@
                         <input type="email" name="email" id="email"
                                class="input-base"
                                placeholder="student@univerzita.sk"
-                               [(ngModel)]="email"
-                               [ngClass]="{'invalid': !email && submitted}" required>
+                               [(ngModel)]="loginInfo.username"
+                               [ngClass]="{'invalid': !loginInfo.username && submitted}" required>
                     </div>
                     <div>
                         <label for="password" class="label">Heslo</label>
                         <input type="password" name="password" id="password"
                                placeholder="••••••••"
                                class="input-base"
-                               [(ngModel)]="password"
-                               [ngClass]="{'invalid': !password && submitted}" required>
+                               [(ngModel)]="loginInfo.password"
+                               [ngClass]="{'invalid': !loginInfo.password && submitted}" required>
                     </div>
                     <div class="flex items-center h-0.5">
                         <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>

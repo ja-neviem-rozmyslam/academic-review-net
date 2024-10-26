@@ -1,9 +1,12 @@
 package com.ukf.arn.Users;
 
+import com.ukf.arn.Roles.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,6 +31,7 @@ public class UserService {
         }
 
         UserDTO loggedInUser = new UserDTO(userOpt.getId(), userOpt.getName(), userOpt.getSurname(), userOpt.getEmail(), userOpt.getRegistrationDate(), userOpt.getUniversity());
+        loggedInUser.setRoles(userOpt.getRoles().stream().map(Role::getRoleIdent).collect(Collectors.toList()));
 
         return ResponseEntity.ok().body(loggedInUser);
     }

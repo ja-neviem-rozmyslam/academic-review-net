@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {Login} from './enitites/Login';
+import {Store} from '@ngrx/store';
+import {loginStart} from './store/auth.actions';
 
 @Component({
   selector: 'app-login-panel',
@@ -6,31 +9,34 @@ import {Component, OnInit} from '@angular/core';
   styleUrl: './login-panel.component.less'
 })
 export class LoginPanelComponent implements OnInit {
+  loginInfo: Login = new Login('', '');
   private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
-  email: string;
-  password: string;
   rememberMe: boolean = false;
   submitted: boolean = false;
   errorMessage: string;
 
+  constructor(private store: Store) {
+  }
+
   ngOnInit() {
     const savedEmail = localStorage.getItem(this.storageIdentifier);
-    this.email = savedEmail || '';
+    this.loginInfo.username = savedEmail || '';
     this.rememberMe = !!savedEmail;
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.email && this.password) {
-      if (!this.isValidEmail(this.email)) {
+    if (this.loginInfo.username && this.loginInfo.password) {
+      if (!this.isValidEmail(this.loginInfo.username)) {
         this.errorMessage = 'Neplatný formát emailu';
-        this.email = '';
+        this.loginInfo.username = '';
         return;
       }
       if (this.rememberMe)
-        localStorage.setItem(this.storageIdentifier, this.email);
+        localStorage.setItem(this.storageIdentifier, this.loginInfo.username);
       else
         localStorage.removeItem(this.storageIdentifier);
+      this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));
     }
   }
 

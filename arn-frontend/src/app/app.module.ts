@@ -9,6 +9,11 @@ import {
 } from './modules/administration-panel/administration-panel/administration-panel.component';
 import {SidemenuComponent} from './modules/components/sidemenu/sidemenu.component';
 import {FormsModule} from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import {appReducer} from './modules/store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './modules/components/login-panel/store/auth-effects';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,9 +25,12 @@ import {FormsModule} from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    StoreModule.forRoot(appReducer, {}),
+    EffectsModule.forRoot([AuthEffects])
   ],
-  providers: [],
+  providers: [AuthEffects],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
