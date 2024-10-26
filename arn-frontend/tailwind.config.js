@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    "./src/**/*.{html,ts}",
+    "./src/**/*.{html,ts,less}",
     "./node_modules/flowbite/**/*.js"
   ],
   theme: {
