@@ -1,10 +1,13 @@
 package com.ukf.arn.Users;
 
+import com.ukf.arn.Roles.Role;
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -31,17 +34,15 @@ public class User implements Serializable {
     @JoinColumn(name = "universities_id")
     private University university;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_ident")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
-    }
-
-    public User(String name, String surname, String email, String password, LocalDateTime registrationDate, University university) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.registrationDate = registrationDate;
-        this.university = university;
     }
 
 
@@ -99,5 +100,13 @@ public class User implements Serializable {
 
     public void setUniversity(University university) {
         this.university = university;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
