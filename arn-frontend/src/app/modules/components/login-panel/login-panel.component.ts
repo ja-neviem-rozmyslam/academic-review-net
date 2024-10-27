@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
 import {loginStart} from './store/auth.actions';
@@ -12,7 +12,7 @@ import {DialogService} from '../dialog-service/dialog.service';
   templateUrl: './login-panel.component.html',
   styleUrl: './login-panel.component.less'
 })
-export class LoginPanelComponent implements OnInit {
+export class LoginPanelComponent implements OnInit, OnDestroy {
   private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
   private errorSubscription: Subscription;
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
