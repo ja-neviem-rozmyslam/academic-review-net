@@ -5,6 +5,7 @@ import {loginStart} from './store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from './store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
+import {DialogService} from '../dialog-service/dialog.service';
 
 @Component({
   selector: 'app-login-panel',
@@ -20,7 +21,7 @@ export class LoginPanelComponent implements OnInit {
   submitted: boolean = false;
   errorMessage: string;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private dialogService: DialogService) {
   }
 
   ngOnInit() {
@@ -39,7 +40,8 @@ export class LoginPanelComponent implements OnInit {
       if (error && typeof error.error === 'string') {
         this.errorMessage = error.error;
       } else if (error) {
-        this.errorMessage = error.message;
+        console.error(error);
+        this.dialogService.openErrorDialog(error.message);
       }
     });
   }
@@ -71,5 +73,9 @@ export class LoginPanelComponent implements OnInit {
 
   passwordResetClicked() {
     console.log();
+  }
+
+  ngOnDestroy() {
+    this.errorSubscription.unsubscribe();
   }
 }
