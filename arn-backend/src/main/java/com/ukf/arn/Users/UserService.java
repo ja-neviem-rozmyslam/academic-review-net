@@ -24,10 +24,10 @@ public class UserService {
         User userOpt = userRepository.findByEmail(email).orElse(null);
 
         if (userOpt == null) {
-            return ResponseEntity.badRequest().body("User not found");
+            return ResponseEntity.badRequest().body("Používateľ s takýmto emailom neexistuje");
         }
         if (!passwordEncoder.matches(password, userOpt.getPassword())) {
-            return ResponseEntity.badRequest().body("Credentials do not match");
+            return ResponseEntity.badRequest().body("Nesprávne prihlasovacie údaje");
         }
 
         UserDTO loggedInUser = new UserDTO(userOpt.getId(), userOpt.getName(), userOpt.getSurname(), userOpt.getEmail(), userOpt.getRegistrationDate(), userOpt.getUniversity());

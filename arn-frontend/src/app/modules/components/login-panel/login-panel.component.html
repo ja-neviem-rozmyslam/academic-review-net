@@ -11,8 +11,8 @@
                         <input type="email" name="email" id="email"
                                class="input-base"
                                placeholder="student@univerzita.sk"
-                               [(ngModel)]="loginInfo.username"
-                               [ngClass]="{'invalid': !loginInfo.username && submitted}" required>
+                               [(ngModel)]="loginInfo.email"
+                               [ngClass]="{'invalid': !loginInfo.email && submitted}" required>
                     </div>
                     <div>
                         <label for="password" class="label">Heslo</label>
@@ -36,9 +36,13 @@
                         </div>
                         <a class="text-sm font-medium text-gray-600 hover:underline cursor-pointer" (click)="passwordResetClicked()">Zabudnuté heslo?</a>
                     </div>
-                    <button type="submit" class="button-base">Sign in</button>
+                  <div>
+                    <app-arn-button [buttonText]="'Prihlásiť sa'"
+                                    [additionalClasses]="'w-full'"
+                                    (buttonClick)="onSubmit()"></app-arn-button>
+                  </div>
                     <p class="text-small">
-                        Don’t have an account yet? <a class="font-medium hover:underline cursor-pointer" (click)="openRegistrationPage()">Vytvoriť účet</a>
+                        Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" (click)="openRegistrationPage()">Vytvoriť účet</a>
                     </p>
                 </form>
             </div>

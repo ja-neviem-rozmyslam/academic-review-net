@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {apiUrl} from '../../../constants';
 import {Observable} from 'rxjs';
 import {Login} from '../enitites/Login';
@@ -13,11 +13,9 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(loginInfo: Login): Observable<any> {
-    const body = new URLSearchParams();
-    body.set('email', loginInfo.username);
-    body.set('password', loginInfo.password);
+    const params = new HttpParams({ fromObject: { ...loginInfo } });
 
-    return this.http.post(`${apiUrl}${this.endPoints}/login`, body.toString(), {
+    return this.http.post(`${apiUrl}${this.endPoints}/login`, params.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
   }

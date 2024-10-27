@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
 import {loginStart} from './store/auth.actions';
+import {Observable, Subscription} from 'rxjs';
+import {selectError} from './store/auth.selector';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-login-panel',
@@ -9,8 +12,10 @@ import {loginStart} from './store/auth.actions';
   styleUrl: './login-panel.component.less'
 })
 export class LoginPanelComponent implements OnInit {
-  loginInfo: Login = new Login('', '');
   private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
+  private errorSubscription: Subscription;
+  error$: Observable<HttpErrorResponse> = this.store.select(selectError);
+  loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
   submitted: boolean = false;
   errorMessage: string;
@@ -19,21 +24,36 @@ export class LoginPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initErrorHandling();
+    this.loadSavedEmail();
+  }
+
+  private loadSavedEmail() {
     const savedEmail = localStorage.getItem(this.storageIdentifier);
-    this.loginInfo.username = savedEmail || '';
+    this.loginInfo.email = savedEmail || '';
     this.rememberMe = !!savedEmail;
+  }
+
+  private initErrorHandling() {
+    this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
+      if (error && typeof error.error === 'string') {
+        this.errorMessage = error.error;
+      } else if (error) {
+        this.errorMessage = error.message;
+      }
+    });
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.loginInfo.username && this.loginInfo.password) {
-      if (!this.isValidEmail(this.loginInfo.username)) {
+    if (this.loginInfo.email && this.loginInfo.password) {
+      if (!this.isValidEmail(this.loginInfo.email)) {
         this.errorMessage = 'Neplatný formát emailu';
-        this.loginInfo.username = '';
+        this.loginInfo.email = '';
         return;
       }
       if (this.rememberMe)
-        localStorage.setItem(this.storageIdentifier, this.loginInfo.username);
+        localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
         localStorage.removeItem(this.storageIdentifier);
       this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));

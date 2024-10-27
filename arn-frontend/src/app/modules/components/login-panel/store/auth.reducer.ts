@@ -16,6 +16,7 @@ const authReducer = createReducer(
   on(
     AuthActions.loginFailure, (state, {error}): AuthState => ({
       ...state,
+      error: error
     }))
 );
 
