@@ -13,7 +13,6 @@ export class DialogComponent {
     title: '',
     content: '',
     dialogType: INFO,
-    acceptCallback: () => {},
     buttonText: {
       confirm: 'Potvrdiť',
       cancel: 'Zrušiť'
@@ -27,7 +26,9 @@ export class DialogComponent {
   }
 
   onAccept() {
-    this.dialogOptions.acceptCallback();
+    if (this.dialogOptions.acceptCallback) {
+      this.dialogOptions.acceptCallback();
+    }
     this.onClose();
   }
 

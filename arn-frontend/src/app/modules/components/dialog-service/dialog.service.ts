@@ -19,6 +19,7 @@ export class DialogService {
       .resolveComponentFactory(DialogComponent)
       .create(this.injector);
 
+
     componentRef.instance.dialogOptions = dialogOptions;
     this.appRef.attachView(componentRef.hostView);
 
