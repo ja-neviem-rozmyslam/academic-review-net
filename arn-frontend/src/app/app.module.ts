@@ -18,6 +18,7 @@ import {
   DialogComponent
 } from './modules/components/dialog-service/dialog-component/dialog.component';
 import { ArnButtonComponent } from './modules/components/arn-button/arn-button.component';
+import {DialogService} from './modules/components/dialog-service/dialog.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { ArnButtonComponent } from './modules/components/arn-button/arn-button.c
     StoreModule.forRoot(appReducer, {}),
     EffectsModule.forRoot([AuthEffects])
   ],
-  providers: [provideHttpClient(), AuthEffects],
+  providers: [provideHttpClient(), AuthEffects, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

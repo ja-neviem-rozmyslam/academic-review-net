@@ -1,35 +1,70 @@
-// arn-frontend/src/app/modules/components/dialog-service/dialog.service.ts
 import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
-import {Modal} from 'flowbite';
+import {DialogOptions, ERROR} from './entities/DialogOptions';
 import {DialogComponent} from './dialog-component/dialog.component';
+import {Modal} from 'flowbite';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ModalService {
-  private modal: Modal | null = null;
-
+export class DialogService {
   constructor(
-    private injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver, //TODO: ViewContainerRef
     private appRef: ApplicationRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private injector: Injector
   ) {
   }
 
-  openModal() {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
-    const componentRef = componentFactory.create(this.injector);
+  private dialogInitialization(dialogOptions: DialogOptions) {
+    const componentRef = this.componentFactoryResolver
+      .resolveComponentFactory(DialogComponent)
+      .create(this.injector);
+
+    componentRef.instance.dialogOptions = dialogOptions;
     this.appRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as any).rootNodes[0] as HTMLElement;
+
+    const domElem = (componentRef.hostView as any).rootNodes[0];
     document.body.appendChild(domElem);
-    this.modal = new Modal(domElem);
-    this.modal.show();
+
+    const modal = new Modal(domElem, {
+      placement: 'center',
+      onHide: () => {
+        this.appRef.detachView(componentRef.hostView);
+        componentRef.destroy();
+      },
+    });
+    componentRef.instance.setModalInstance(modal);
   }
 
-  closeModal() {
-    if (this.modal) {
-      this.modal.hide();
-      this.modal = null;
-    }
+  openErrorDialog(errorMessage: string) {
+    this.dialogInitialization({
+      title: 'Chyba',
+      dialogType: ERROR,
+      content: errorMessage,
+    });
+  }
+
+  openWarningDialog(warningMessage: string) {
+    this.dialogInitialization({
+      title: 'Varovanie',
+      dialogType: 'warning',
+      content: warningMessage,
+    });
+  }
+
+  openInfoDialog(infoTitle: string, infoMessage: string) {
+    this.dialogInitialization({
+      title: infoTitle,
+      dialogType: 'info',
+      content: infoMessage,
+    });
+  }
+
+  openConfirmDialog(dialogTitle: string,confirmMessage: string, acceptCallback: () => void) {
+    this.dialogInitialization({
+      title: dialogTitle,
+      dialogType: 'confirm',
+      content: confirmMessage,
+      acceptCallback: acceptCallback,
+    });
   }
 }

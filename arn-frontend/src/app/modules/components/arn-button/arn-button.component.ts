@@ -8,7 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ArnButtonComponent {
   @Input({ required: true }) buttonText: string;
   @Input() negativeColor: boolean = false;
-  @Input() additionalClasses: string;
+  @Input() additionalClasses: string = '';
   @Output() buttonClick = new EventEmitter<void>();
 
 }

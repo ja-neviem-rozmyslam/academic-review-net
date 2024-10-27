@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {Modal} from 'flowbite';
-import {DialogOptions} from '../entities/DialogOptions';
+import {CONFIRM, DialogOptions, ERROR, INFO, WARNING} from '../entities/DialogOptions';
 
 @Component({
   selector: 'app-dialog-component',
@@ -8,23 +8,46 @@ import {DialogOptions} from '../entities/DialogOptions';
   styleUrl: './dialog.component.less'
 })
 export class DialogComponent {
+  @ViewChild('modal') modalElement!: ElementRef;
   @Input() dialogOptions: DialogOptions = {
     title: '',
     content: '',
+    dialogType: INFO,
+    acceptCallback: () => {},
     buttonText: {
       confirm: 'Potvrdiť',
       cancel: 'Zrušiť'
     }
   };
-  @ViewChild('modal') modalElement!: ElementRef;
+  modal: Modal;
 
-  closeButtonClick() {
-    const modal = new Modal(this.modalElement.nativeElement);
-    modal.hide();
+  setModalInstance(modal: Modal) {
+    this.modal = modal;
+    modal.show();
   }
 
-  acceptButtonClick() {
-    console.log('Terms accepted');
-    this.closeButtonClick();
+  onAccept() {
+    this.dialogOptions.acceptCallback();
+    this.onClose();
   }
+
+  onClose() {
+    this.modal.hide();
+  }
+
+  getDialogHeaderClass() {
+    switch (this.dialogOptions.dialogType) {
+      case ERROR:
+        return 'bg-lightRed';
+      case WARNING:
+        return 'bg-lightYellow';
+      case CONFIRM:
+      case INFO:
+        return 'bg-lightGreen';
+      default:
+        return '';
+    }
+  }
+
+  protected readonly CONFIRM = CONFIRM;
 }
