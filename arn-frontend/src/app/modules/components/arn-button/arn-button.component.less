@@ -1,0 +1,12 @@
+:host {
+  .button-base {
+    @apply focus:outline-none focus:ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center;
+    @apply transition duration-200 ease-in-out transform;
+    &.default-color {
+      @apply text-white bg-primary hover:bg-secondary;
+    }
+    &.negative-color {
+      @apply text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-secondary;
+    }
+  }
+}

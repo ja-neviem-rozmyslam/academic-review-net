@@ -4,6 +4,7 @@ import {of, switchMap} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import * as AuthAction from './auth.actions';
 import {LoginService} from '../service/login.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
@@ -17,28 +18,20 @@ export class AuthEffects {
       switchMap((action) =>
         this.loginService.login(action.loginInfo).pipe(
           map(user => AuthAction.loginSuccess({ user })),
-          catchError(error => of(AuthAction.loginFailure({ error })))
+          catchError((error: HttpErrorResponse) => {
+            console.log(error);
+            return of(AuthAction.loginFailure({ error }))
+          }
         )
       )
     )
-  );
+  ));
 
   loginSuccess$ = createEffect(() =>
       this.actions$.pipe(
         ofType(AuthAction.loginSuccess),
         map(() => {
           console.log('Login success'); //TODO: token
-        })
-      ),
-    {dispatch: false}
-  );
-
-
-  loginFailure$ = createEffect(() =>
-      this.actions$.pipe(
-        ofType(AuthAction.loginFailure),
-        map(() => {
-          console.log('Login failure');
         })
       ),
     {dispatch: false}
