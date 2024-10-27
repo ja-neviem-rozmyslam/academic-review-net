@@ -16,9 +16,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
+    public ResponseEntity<?> login(
+            @RequestParam String email,
+            @RequestParam String password) {
+
         return userService.login(email, password);
     }
 }
