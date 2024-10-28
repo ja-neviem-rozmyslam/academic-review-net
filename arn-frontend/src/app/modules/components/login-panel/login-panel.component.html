@@ -1,51 +1,51 @@
-<div class="bg-gray-100">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl dark:text-white">
-                    Prihláste sa do svojho účtu
-                </h1>
-                <form (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
-                    <div>
-                        <label for="email" class="label">Vás email</label>
-                        <input type="email" name="email" id="email"
-                               class="input-base"
-                               placeholder="student@univerzita.sk"
-                               [(ngModel)]="loginInfo.email"
-                               [ngClass]="{'invalid': !loginInfo.email && submitted}" required>
-                    </div>
-                    <div>
-                        <label for="password" class="label">Heslo</label>
-                        <input type="password" name="password" id="password"
-                               placeholder="••••••••"
-                               class="input-base"
-                               [(ngModel)]="loginInfo.password"
-                               [ngClass]="{'invalid': !loginInfo.password && submitted}" required>
-                    </div>
-                    <div class="flex items-center h-0.5">
-                        <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input id="remember" name="remeberMe" aria-describedby="remember" type="checkbox" class="checkbox-custom" [(ngModel)]="rememberMe">
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="remember" class="text-gray-500 dark:text-gray-300">Zapamätať si ma</label>
-                            </div>
-                        </div>
-                        <a class="text-sm font-medium text-gray-600 hover:underline cursor-pointer" (click)="passwordResetClicked()">Zabudnuté heslo?</a>
-                    </div>
-                  <div>
-                    <app-arn-button [buttonText]="'Prihlásiť sa'"
-                                    [additionalClasses]="'w-full'"
-                                    (buttonClick)="onSubmit()"></app-arn-button>
-                  </div>
-                    <p class="text-small">
-                        Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" (click)="openRegistrationPage()">Vytvoriť účet</a>
-                    </p>
-                </form>
-            </div>
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+  <div
+    class="w-full bg-white rounded-2xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+      <h1 class="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl dark:text-white">
+        Prihláste sa do svojho účtu
+      </h1>
+      <form (ngSubmit)="onSubmit()" class="space-y-6">
+        <div>
+          <input type="email" name="email" id="email"
+                 class="input-base"
+                 placeholder="email@student.sk"
+                 [(ngModel)]="loginInfo.email"
+                 [ngClass]="{'invalid': !loginInfo.email && submitted}" required>
         </div>
+        <div>
+          <input type="password" name="password" id="password"
+                 placeholder="Heslo"
+                 class="input-base"
+                 [(ngModel)]="loginInfo.password"
+                 [ngClass]="{'invalid': !loginInfo.password && submitted}" required>
+        </div>
+        <div class="flex items-center h-0.5">
+          <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input id="remember" name="remeberMe" aria-describedby="remember" type="checkbox" class="checkbox-custom"
+                     [(ngModel)]="rememberMe">
+            </div>
+            <div class="ml-3 text-sm">
+              <label for="remember" class="text-gray-500 dark:text-gray-300">Zapamätať si ma</label>
+            </div>
+          </div>
+          <a class="text-sm font-medium text-gray-600 hover:underline cursor-pointer"
+             [routerLink]="['/forgot-password']">Zabudnuté heslo?</a>
+        </div>
+        <div>
+          <app-arn-button [buttonText]="'Prihlásiť sa'"
+                          [additionalClasses]="'w-full'"
+                          (buttonClick)="onSubmit()"></app-arn-button>
+        </div>
+        <p class="text-small">
+          Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" [routerLink]="['/password-change']">Vytvoriť
+          účet</a>
+        </p>
+      </form>
     </div>
+  </div>
 </div>

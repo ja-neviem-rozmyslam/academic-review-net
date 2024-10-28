@@ -67,14 +67,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
     return emailPattern.test(email);
   }
 
-  openRegistrationPage() {
-    console.log();
-  }
-
-  passwordResetClicked() {
-    console.log();
-  }
-
   ngOnDestroy() {
     this.errorSubscription.unsubscribe();
   }
