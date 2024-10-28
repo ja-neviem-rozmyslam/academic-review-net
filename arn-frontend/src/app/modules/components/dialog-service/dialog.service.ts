@@ -60,12 +60,18 @@ export class DialogService {
     });
   }
 
-  openConfirmDialog(dialogTitle: string,confirmMessage: string, acceptCallback: () => void) {
-    this.dialogInitialization({
+  openConfirmDialog(dialogTitle: string, confirmMessage: string, acceptCallback: () => void, buttonText?: { confirm: string; cancel: string }) {
+    const dialogOptions: DialogOptions = {
       title: dialogTitle,
       dialogType: 'confirm',
       content: confirmMessage,
       acceptCallback: acceptCallback,
-    });
+    };
+
+    if (buttonText) {
+      dialogOptions.buttonText = buttonText;
+    }
+
+    this.dialogInitialization(dialogOptions);
   }
 }
