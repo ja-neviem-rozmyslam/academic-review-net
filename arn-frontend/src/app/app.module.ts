@@ -19,6 +19,10 @@ import {
 } from './modules/components/dialog-service/dialog-component/dialog.component';
 import { ArnButtonComponent } from './modules/components/arn-button/arn-button.component';
 import {DialogService} from './modules/components/dialog-service/dialog.service';
+import { PasswordChangeComponent } from './modules/components/password-change/password-change.component';
+import { ForgotPasswordComponent } from './modules/components/forgot-password/forgot-password.component';
+import {RouterModule} from '@angular/router';
+import {routes} from './app.routes';
 
 @NgModule({
   declarations: [
@@ -27,12 +31,15 @@ import {DialogService} from './modules/components/dialog-service/dialog.service'
     AdministrationPanelComponent,
     SidemenuComponent,
     DialogComponent,
-    ArnButtonComponent
+    ArnButtonComponent,
+    PasswordChangeComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    RouterModule.forRoot(routes),
     StoreModule.forRoot(appReducer, {}),
     EffectsModule.forRoot([AuthEffects])
   ],
