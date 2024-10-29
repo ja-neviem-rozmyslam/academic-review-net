@@ -5,20 +5,18 @@
       <h1 class="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Prihláste sa do svojho účtu
       </h1>
-      <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <form appFormValidation (ngSubmit)="onSubmit()" class="space-y-6">
         <div>
           <input type="email" name="email" id="email"
                  class="input-base"
                  placeholder="E-mail"
-                 [(ngModel)]="loginInfo.email"
-                 [ngClass]="{'invalid': !loginInfo.email && submitted}" required>
+                 [(ngModel)]="loginInfo.email" required>
         </div>
         <div>
           <input type="password" name="password" id="password"
                  placeholder="Heslo"
                  class="input-base"
-                 [(ngModel)]="loginInfo.password"
-                 [ngClass]="{'invalid': !loginInfo.password && submitted}" required>
+                 [(ngModel)]="loginInfo.password" required>
         </div>
         <div class="flex items-center h-0.5">
           <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
@@ -38,8 +36,8 @@
         </div>
         <div>
           <app-arn-button [buttonText]="'Prihlásiť sa'"
-                          [additionalClasses]="'w-full'"
-                          (buttonClick)="onSubmit()"></app-arn-button>
+                          [classes]="'w-full'"
+                          type="submit"></app-arn-button>
         </div>
         <p class="text-small">
           Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" [routerLink]="['/password-change']">Vytvoriť
