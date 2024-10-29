@@ -18,7 +18,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
-  submitted: boolean = false;
   errorMessage: string;
 
   constructor(private store: Store, private dialogService: DialogService) {
@@ -47,7 +46,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.submitted = true;
     if (this.loginInfo.email && this.loginInfo.password) {
       if (!this.isValidEmail(this.loginInfo.email)) {
         this.errorMessage = 'Neplatný formát emailu';

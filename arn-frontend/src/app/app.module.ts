@@ -23,6 +23,7 @@ import { PasswordChangeComponent } from './modules/components/password-change/pa
 import { ForgotPasswordComponent } from './modules/components/forgot-password/forgot-password.component';
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
+import {FormValidationDirective} from './modules/directives/FormValidationDirective';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {routes} from './app.routes';
     DialogComponent,
     ArnButtonComponent,
     PasswordChangeComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    FormValidationDirective
   ],
   imports: [
     BrowserModule,

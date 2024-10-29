@@ -22,8 +22,20 @@
 }
 
 .checkbox-custom {
-@apply w-4 h-4 border-gray-300 rounded-full focus:ring-0 cursor-pointer;
+@apply w-4 h-4 border-gray-300 rounded-full focus:ring-transparent cursor-pointer;
   &:checked {
   @apply bg-primary border-primary;
+  animation: checkmarkAnimation 0.3s ease-out;
+  }
+}
+
+@keyframes checkmarkAnimation {
+  0% {
+    background-size: 0;
+    opacity: 0;
+  }
+  100% {
+    background-size: 0.55em 0.55em;
+    opacity: 1;
   }
 }
