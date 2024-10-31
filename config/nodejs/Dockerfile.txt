@@ -1,0 +1,21 @@
+# Use Node.js 20.18.0 for the build stage
+FROM node:20.18.0-alpine as builder-stage
+
+WORKDIR /usr/src/arn-frontend
+RUN mkdir /usr/src/arn-frontend/node_modules
+RUN chmod -R 777 /usr/src/arn-frontend/node_modules
+
+# Copy and install dependencies
+COPY ./arn-frontend/package*.json ./
+RUN npm install
+
+# Use Node.js 20.18.0 for the runtime stage
+FROM node:20.18.0-alpine
+USER node
+
+WORKDIR /usr/src/arn-frontend
+COPY --chown=node:node --from=builder-stage /usr/src/frontend/node_modules ./node_modules
+RUN chmod -R 777 /usr/src/frontend/node_modules
+COPY ./frontend .
+
+CMD ["npm", "run", "dev"]
