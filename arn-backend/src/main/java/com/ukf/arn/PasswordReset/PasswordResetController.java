@@ -31,5 +31,12 @@ public class PasswordResetController {
         String token = body.get("token");
         return passwordResetService.verifyPasswordReset(token);
     }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        String password = body.get("password");
+        return passwordResetService.resetPassword(token, password);
+    }
 }
 

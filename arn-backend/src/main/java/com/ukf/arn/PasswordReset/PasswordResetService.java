@@ -4,6 +4,7 @@ import com.ukf.arn.Users.User;
 import com.ukf.arn.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,13 @@ public class PasswordResetService {
 
     private final PasswordResetRepository passwordResetRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PasswordResetService(PasswordResetRepository passwordResetRepository, UserRepository userRepository) {
+    public PasswordResetService(PasswordResetRepository passwordResetRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.passwordResetRepository = passwordResetRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ResponseEntity<?> requestPasswordReset(String email) {
@@ -56,5 +59,21 @@ public class PasswordResetService {
         }
 
         return ResponseEntity.ok().body("Token je platný");
+    }
+
+    public ResponseEntity<?> resetPassword(String token, String password) {
+        PasswordReset passwordResetOpt = passwordResetRepository.findByToken(token).orElse(null);
+
+        ResponseEntity<?> verifyResponse = verifyPasswordReset(token);
+        if (verifyResponse.getStatusCode().is4xxClientError()) {
+            return verifyResponse;
+        }
+
+        User user = passwordResetOpt.getUser();
+        user.setPassword(passwordEncoder.encode(password));
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok().body("Heslo bolo zmenené");
     }
 }
