@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {apiUrl} from '../../../constants';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Login} from '../enitites/Login';
 
@@ -8,15 +7,13 @@ import {Login} from '../enitites/Login';
   providedIn: 'root'
 })
 export class LoginService {
-  endPoints = "api/users"
+  USER_API_ENDPOINT = "api/users";
 
   constructor(private http: HttpClient) { }
 
   login(loginInfo: Login): Observable<any> {
-    const params = new HttpParams({ fromObject: { ...loginInfo } });
-
-    return this.http.post(`${apiUrl}${this.endPoints}/login`, params.toString(), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    return this.http.post(`${this.USER_API_ENDPOINT}/login`, loginInfo, {
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 }
