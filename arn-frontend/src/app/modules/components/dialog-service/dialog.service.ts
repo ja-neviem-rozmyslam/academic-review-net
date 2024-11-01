@@ -1,7 +1,7 @@
-import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
+import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Type} from '@angular/core';
 import {DialogOptions, ERROR} from './entities/DialogOptions';
 import {DialogComponent} from './dialog-component/dialog.component';
-import {Modal} from 'flowbite';
+import {Modal, ModalOptions} from 'flowbite';
 
 @Injectable({
   providedIn: 'root',
@@ -73,5 +73,29 @@ export class DialogService {
     }
 
     this.dialogInitialization(dialogOptions);
+  }
+
+  openCustomModal<T>(component: Type<T>, modalOptions: ModalOptions) {
+    const componentRef = this.componentFactoryResolver
+      .resolveComponentFactory(component)
+      .create(this.injector);
+
+    this.appRef.attachView(componentRef.hostView);
+
+    const domElem = (componentRef.hostView as any).rootNodes[0];
+    document.body.appendChild(domElem);
+
+    const originalOnHide = modalOptions.onHide;
+    modalOptions.onHide = () => {
+      this.appRef.detachView(componentRef.hostView);
+      componentRef.destroy();
+    };
+
+    const modal = new Modal(domElem, modalOptions);
+    if ((componentRef.instance as any).setModalInstance) {
+      (componentRef.instance as any).setModalInstance(modal);
+    }
+
+    modal.show();
   }
 }

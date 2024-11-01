@@ -24,6 +24,7 @@ import { ForgotPasswordComponent } from './modules/components/password-managemen
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {FormValidationDirective} from './modules/directives/FormValidationDirective';
+import { PasswordChangedDialogComponent } from './modules/components/password-management/password-changed-dialog/password-changed-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {FormValidationDirective} from './modules/directives/FormValidationDirect
     ArnButtonComponent,
     PasswordChangeComponent,
     ForgotPasswordComponent,
-    FormValidationDirective
+    FormValidationDirective,
+    PasswordChangedDialogComponent
   ],
   imports: [
     BrowserModule,

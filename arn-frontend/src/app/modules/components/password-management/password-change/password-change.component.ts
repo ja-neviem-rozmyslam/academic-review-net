@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {StatusMessages} from '../../../constants';
 import {DialogService} from '../../dialog-service/dialog.service';
+import {PasswordChangedDialogComponent} from '../password-changed-dialog/password-changed-dialog.component';
+import {ModalOptions} from 'flowbite';
 
 @Component({
   selector: 'app-password-change',
@@ -52,8 +54,11 @@ export class PasswordChangeComponent implements OnInit {
     if (this.password && this.secondPassword && this.checkPasswordMatch()) {
       this.passwordChangeService.passwordChange(this.passwordChangeToken, this.password).subscribe({
         next: () => {
-          //TODO: show message something like "Heslo bolo úspešne zmenené" + Budete premeraný na prihlasovaciu stránku za 20 sekúnd
-          this.router.navigate(['/login']);
+          const modalOptions: ModalOptions = {
+            placement: 'center',
+            backdrop: 'dynamic',
+          }
+          this.dialogService.openCustomModal(PasswordChangedDialogComponent, modalOptions);
         },
         error: (error: HttpErrorResponse) => this.handleError(error)
       });
