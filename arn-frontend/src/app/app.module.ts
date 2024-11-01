@@ -19,8 +19,8 @@ import {
 } from './modules/components/dialog-service/dialog-component/dialog.component';
 import { ArnButtonComponent } from './modules/components/arn-button/arn-button.component';
 import {DialogService} from './modules/components/dialog-service/dialog.service';
-import { PasswordChangeComponent } from './modules/components/password-change/password-change.component';
-import { ForgotPasswordComponent } from './modules/components/forgot-password/forgot-password.component';
+import { PasswordChangeComponent } from './modules/components/password-management/password-change/password-change.component';
+import { ForgotPasswordComponent } from './modules/components/password-management/forgot-password/forgot-password.component';
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {FormValidationDirective} from './modules/directives/FormValidationDirective';

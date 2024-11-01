@@ -2,10 +2,7 @@ package com.ukf.arn.PasswordReset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -21,21 +18,17 @@ public class PasswordResetController {
     }
 
     @PostMapping("/request")
-    public ResponseEntity<?> requestPasswordReset(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
+    public ResponseEntity<?> requestPasswordReset(@RequestParam String email) {
         return passwordResetService.requestPasswordReset(email);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyPasswordReset(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
+    public ResponseEntity<?> verifyPasswordReset(@RequestParam String token) {
         return passwordResetService.verifyPasswordReset(token);
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
-        String password = body.get("password");
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String password) {
         return passwordResetService.resetPassword(token, password);
     }
 }

@@ -3,6 +3,7 @@ package com.ukf.arn.PasswordReset;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,12 @@ public class PasswordResetService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private static final int RESET_REQUEST_LIMIT_SECONDS = 60;
+    private static final int TOKEN_EXPIRATION_MINUTES = 30;
+    private static final String TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS";
+    private static final String TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
+    private static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
+
     @Autowired
     public PasswordResetService(PasswordResetRepository passwordResetRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.passwordResetRepository = passwordResetRepository;
@@ -25,40 +32,40 @@ public class PasswordResetService {
     }
 
     public ResponseEntity<?> requestPasswordReset(String email) {
-        User userOpt = userRepository.findByEmail(email).orElse(null);
+        User userObj = userRepository.findByEmail(email).orElse(null);
 
-        if (userOpt == null) {
-            return ResponseEntity.badRequest().body("Používateľ s takýmto emailom neexistuje");
+        if (userObj == null) {
+            return ResponseEntity.ok().build();
         }
 
-        PasswordReset lastResetRequests = passwordResetRepository.findTopByUserOrderByCreatedAtDesc(userOpt);
+        PasswordReset lastResetRequests = passwordResetRepository.findTopByUserOrderByCreatedAtDesc(userObj);
 
-        if (lastResetRequests.getCreatedAt().plusSeconds(20).isAfter(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body("Požiadavka na reset hesla bola už odoslaná");
+        if (lastResetRequests != null && lastResetRequests.getCreatedAt().plusSeconds(RESET_REQUEST_LIMIT_SECONDS).isAfter(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(TOO_MANY_REQUESTS);
         }
 
         String token = UUID.randomUUID().toString();
-        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(30);
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(TOKEN_EXPIRATION_MINUTES);
 
-        passwordResetRepository.save(new PasswordReset(token, userOpt, expirationTime));
+        passwordResetRepository.save(new PasswordReset(token, userObj, expirationTime));
 
-        String link = "http://uerelka/reset-password?&token=" + token;
+        String link = "http://localhost:4200/password-change?&token=" + token;
 
-        return ResponseEntity.ok().body("Link na reset hesla: " + link);
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<?> verifyPasswordReset(String token) {
-        PasswordReset passwordResetOpt = passwordResetRepository.findByToken(token).orElse(null);
+        PasswordReset passwordResetObj = passwordResetRepository.findByToken(token).orElse(null);
 
-        if (passwordResetOpt == null) {
-            return ResponseEntity.badRequest().body("Neplatný token");
+        if (passwordResetObj == null) {
+            return ResponseEntity.badRequest().body(TOKEN_NOT_FOUND);
         }
 
-        if (passwordResetOpt.getExpirationTime().isBefore(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body("Token vypršal");
+        if (passwordResetObj.getExpirationTime().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(TOKEN_EXPIRED);
         }
 
-        return ResponseEntity.ok().body("Token je platný");
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<?> resetPassword(String token, String password) {
@@ -73,7 +80,8 @@ public class PasswordResetService {
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
+        passwordResetRepository.delete(passwordResetOpt);
 
-        return ResponseEntity.ok().body("Heslo bolo zmenené");
+        return ResponseEntity.ok().build();
     }
 }
