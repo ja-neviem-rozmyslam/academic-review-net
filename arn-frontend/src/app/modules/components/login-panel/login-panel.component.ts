@@ -28,23 +28,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
     this.loadSavedEmail();
   }
 
-  private loadSavedEmail() {
-    const savedEmail = localStorage.getItem(this.storageIdentifier);
-    this.loginInfo.email = savedEmail || '';
-    this.rememberMe = !!savedEmail;
-  }
-
-  private initErrorHandling() {
-    this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
-      if (error && typeof error.error === 'string') {
-        this.errorMessage = error.error;
-      } else if (error) {
-        console.error(error);
-        this.dialogService.openErrorDialog(error.message);
-      }
-    });
-  }
-
   onSubmit() {
     if (this.loginInfo.email && this.loginInfo.password) {
       if (!this.isValidEmail(this.loginInfo.email)) {
@@ -60,12 +43,29 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
     }
   }
 
-  isValidEmail(email: string): boolean {
+  ngOnDestroy() {
+    this.errorSubscription.unsubscribe();
+  }
+
+  private isValidEmail(email: string): boolean {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   }
 
-  ngOnDestroy() {
-    this.errorSubscription.unsubscribe();
+  private loadSavedEmail() {
+    const savedEmail = localStorage.getItem(this.storageIdentifier);
+    this.loginInfo.email = savedEmail || '';
+    this.rememberMe = !!savedEmail;
+  }
+
+  private initErrorHandling() {
+    this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
+      if (error && typeof error.error === 'string') {
+        this.errorMessage = error.error;
+      } else if (error) {
+        console.error(error);
+        this.dialogService.openErrorDialog(error.message);
+      }
+    });
   }
 }

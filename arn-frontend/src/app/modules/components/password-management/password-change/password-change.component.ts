@@ -14,12 +14,13 @@ import {DialogService} from '../../dialog-service/dialog.service';
   providers: [PasswordChangeService]
 })
 export class PasswordChangeComponent implements OnInit {
+  private passwordChangeToken: string;
+  tokenVerified: boolean = false;
+
   password: string;
   secondPassword: string;
   passwordsNotMatch: boolean = false;
   errorMessage: string;
-  tokenVerified: boolean = false;
-  passwordChangeToken: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -40,16 +41,6 @@ export class PasswordChangeComponent implements OnInit {
     ).subscribe();
   }
 
-  verifyToken(token: string): void {
-    this.passwordChangeService.verifyToken(token).subscribe({
-      next: () => {
-        this.tokenVerified = true;
-        this.passwordChangeToken = token;
-      },
-      error: () => this.router.navigate(['/'])
-    });
-  }
-
   checkPasswordMatch(): boolean {
     const passwordsMatch = this.password === this.secondPassword;
     this.errorMessage = passwordsMatch ? '' : 'Heslá sa nezhodujú';
@@ -67,6 +58,16 @@ export class PasswordChangeComponent implements OnInit {
         error: (error: HttpErrorResponse) => this.handleError(error)
       });
     }
+  }
+
+  private verifyToken(token: string): void {
+    this.passwordChangeService.verifyToken(token).subscribe({
+      next: () => {
+        this.tokenVerified = true;
+        this.passwordChangeToken = token;
+      },
+      error: () => this.router.navigate(['/'])
+    });
   }
 
   private handleError(error: HttpErrorResponse): void {

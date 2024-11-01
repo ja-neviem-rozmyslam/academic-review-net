@@ -10,9 +10,9 @@ import {DialogService} from '../../dialog-service/dialog.service';
   providers: [PasswordChangeService]
 })
 export class ForgotPasswordComponent {
+  private countdownInterval: any;
   email: string = '';
   countdown: number = 0;
-  private countdownInterval: any;
 
   constructor(private passwordChangeService: PasswordChangeService, private dialogService: DialogService) {
   }
@@ -33,7 +33,7 @@ export class ForgotPasswordComponent {
     );
   }
 
-  startCountdown() {
+  private startCountdown() {
     this.countdown = 60;
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
