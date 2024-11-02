@@ -1,0 +1,7 @@
+<button type="submit"
+        class="button-base"
+        [disabled]="disabled"
+        [ngClass]="[negativeColor ? 'negative-color' : 'default-color', classes]"
+        (click)="buttonClick.emit()">
+  {{ buttonText }}
+</button>
