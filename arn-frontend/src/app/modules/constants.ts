@@ -1,1 +1,5 @@
-export const apiUrl = 'http://localhost:8080/';
+export const StatusMessages = {
+  TOO_MANY_REQUESTS: "TOO_MANY_REQUESTS",
+  TOKEN_NOT_FOUND: "TOKEN_NOT_FOUND",
+  TOKEN_EXPIRED: "TOKEN_EXPIRED"
+};
