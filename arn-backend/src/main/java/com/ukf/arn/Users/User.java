@@ -1,16 +1,12 @@
 package com.ukf.arn.Users;
 
-import com.ukf.arn.PasswordReset.PasswordReset;
-import com.ukf.arn.Roles.Role;
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -37,16 +33,10 @@ public class User implements Serializable {
     @JoinColumn(name = "universities_id")
     private University university;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_ident")
-    )
-    private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PasswordReset> passwordResetTokens = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_ident")
+    private List<String> roles = new ArrayList<>();
 
     public User() {
     }
@@ -108,11 +98,11 @@ public class User implements Serializable {
         this.university = university;
     }
 
-    public Set<Role> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 }
