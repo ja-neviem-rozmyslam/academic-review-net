@@ -18,13 +18,14 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String name, String surname, String email, LocalDateTime registrationDate, University university) {
+    public UserDTO(Long id, String name, String surname, String email, LocalDateTime registrationDate, University university, List<String> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.registrationDate = registrationDate;
         this.university = university;
+        this.roles = roles;
     }
 
     public Long getId() {
