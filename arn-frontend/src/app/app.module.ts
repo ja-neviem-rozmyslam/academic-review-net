@@ -16,15 +16,16 @@ import {AuthEffects} from './modules/components/login-panel/store/auth-effects';
 import {provideHttpClient} from '@angular/common/http';
 import {
   DialogComponent
-} from './modules/components/dialog-service/dialog-component/dialog.component';
+} from './modules/components/dialog-component/dialog.component';
 import { ArnButtonComponent } from './modules/components/arn-button/arn-button.component';
-import {DialogService} from './modules/components/dialog-service/dialog.service';
+import {DialogService} from './modules/services/dialog.service';
 import { PasswordChangeComponent } from './modules/components/password-management/password-change/password-change.component';
 import { ForgotPasswordComponent } from './modules/components/password-management/forgot-password/forgot-password.component';
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {FormValidationDirective} from './modules/directives/FormValidationDirective';
-import { PasswordChangedDialogComponent } from './modules/components/password-management/password-changed-dialog/password-changed-dialog.component';
+import { PasswordChangedModalComponent } from './modules/components/password-management/password-changed-dialog/password-changed-modal.component';
+import { BaseModalComponent } from './modules/components/base-modal/base-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PasswordChangedDialogComponent } from './modules/components/password-ma
     PasswordChangeComponent,
     ForgotPasswordComponent,
     FormValidationDirective,
-    PasswordChangedDialogComponent
+    PasswordChangedModalComponent,
+    BaseModalComponent
   ],
   imports: [
     BrowserModule,

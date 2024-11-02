@@ -5,9 +5,8 @@ import {take, tap} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {StatusMessages} from '../../../constants';
-import {DialogService} from '../../dialog-service/dialog.service';
-import {PasswordChangedDialogComponent} from '../password-changed-dialog/password-changed-dialog.component';
-import {ModalOptions} from 'flowbite';
+import {DialogService} from '../../../services/dialog.service';
+import {PasswordChangedModalComponent} from '../password-changed-dialog/password-changed-modal.component';
 
 @Component({
   selector: 'app-password-change',
@@ -54,11 +53,9 @@ export class PasswordChangeComponent implements OnInit {
     if (this.password && this.secondPassword && this.checkPasswordMatch()) {
       this.passwordChangeService.passwordChange(this.passwordChangeToken, this.password).subscribe({
         next: () => {
-          const modalOptions: ModalOptions = {
-            placement: 'center',
-            backdrop: 'dynamic',
-          }
-          this.dialogService.openCustomModal(PasswordChangedDialogComponent, modalOptions);
+          this.password = '';
+          this.secondPassword = '';
+          this.dialogService.openCustomModal(PasswordChangedModalComponent);
         },
         error: (error: HttpErrorResponse) => this.handleError(error)
       });
