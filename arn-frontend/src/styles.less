@@ -1,3 +1,42 @@
+@import 'fonts.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input-base {
+@apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-secondary block w-full p-3 px-4 rounded-full;
+@apply transition duration-300 ease-in-out transform;
+  &.invalid {
+  @apply border-red-500;
+  }
+  &::placeholder {
+  @apply text-gray-400;
+    &:focus {
+    @apply text-transparent;
+    @apply transition duration-200 ease-in-out transform;
+    }
+  }
+}
+
+.label {
+@apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+.checkbox-custom {
+@apply w-4 h-4 border-gray-300 rounded-full focus:ring-transparent cursor-pointer;
+  &:checked {
+  @apply bg-primary border-primary;
+  animation: checkmarkAnimation 0.3s ease-out;
+  }
+}
+
+@keyframes checkmarkAnimation {
+  0% {
+    background-size: 0;
+    opacity: 0;
+  }
+  100% {
+    background-size: 0.55em 0.55em;
+    opacity: 1;
+  }
+}
