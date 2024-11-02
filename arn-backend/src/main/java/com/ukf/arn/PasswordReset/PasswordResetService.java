@@ -80,7 +80,7 @@ public class PasswordResetService {
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
-        //passwordResetRepository.delete(passwordResetOpt);
+        passwordResetRepository.delete(passwordResetOpt);
 
         return ResponseEntity.ok().build();
     }

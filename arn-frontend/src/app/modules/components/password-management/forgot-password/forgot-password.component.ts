@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {PasswordChangeService} from '../service/password-change.service';
 import {StatusMessages} from '../../../constants';
-import {DialogService} from '../../dialog-service/dialog.service';
+import {DialogService} from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-forgot-password',

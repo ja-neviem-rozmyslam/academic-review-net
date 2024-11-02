@@ -1,7 +1,8 @@
 import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Type} from '@angular/core';
-import {DialogOptions, ERROR} from './entities/DialogOptions';
-import {DialogComponent} from './dialog-component/dialog.component';
+import {DialogSettings, ERROR} from '../components/dialog-component/entities/DialogSettings';
+import {DialogComponent} from '../components/dialog-component/dialog.component';
 import {Modal, ModalOptions} from 'flowbite';
+import {BaseModalComponent} from '../components/base-modal/base-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,11 @@ export class DialogService {
   ) {
   }
 
-  private dialogInitialization(dialogOptions: DialogOptions) {
+  private dialogInitialization(dialogSettings: DialogSettings) {
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory(DialogComponent)
       .create(this.injector);
 
-
-    componentRef.instance.dialogOptions = dialogOptions;
     this.appRef.attachView(componentRef.hostView);
 
     const domElem = (componentRef.hostView as any).rootNodes[0];
@@ -33,7 +32,7 @@ export class DialogService {
         componentRef.destroy();
       },
     });
-    componentRef.instance.setModalInstance(modal);
+    componentRef.instance.setDialogInstance(modal, dialogSettings);
   }
 
   openErrorDialog(errorMessage: string) {
@@ -61,7 +60,7 @@ export class DialogService {
   }
 
   openConfirmDialog(dialogTitle: string, confirmMessage: string, acceptCallback: () => void, buttonText?: { confirm: string; cancel: string }) {
-    const dialogOptions: DialogOptions = {
+    const dialogOptions: DialogSettings = {
       title: dialogTitle,
       dialogType: 'confirm',
       content: confirmMessage,
@@ -75,7 +74,7 @@ export class DialogService {
     this.dialogInitialization(dialogOptions);
   }
 
-  openCustomModal<T>(component: Type<T>, modalOptions: ModalOptions) {
+  openCustomModal<T extends BaseModalComponent>(component: Type<T>, modalOptions: ModalOptions = { placement: 'center', backdrop: 'dynamic' }) {
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory(component)
       .create(this.injector);
@@ -85,16 +84,15 @@ export class DialogService {
     const domElem = (componentRef.hostView as any).rootNodes[0];
     document.body.appendChild(domElem);
 
-    const originalOnHide = modalOptions.onHide;
-    modalOptions.onHide = () => {
+    const { onHide: originalOnHide } = modalOptions;
+    modalOptions.onHide = (modal) => {
+      originalOnHide?.(modal);
       this.appRef.detachView(componentRef.hostView);
       componentRef.destroy();
     };
 
     const modal = new Modal(domElem, modalOptions);
-    if ((componentRef.instance as any).setModalInstance) {
-      (componentRef.instance as any).setModalInstance(modal);
-    }
+    componentRef.instance.setModalInstance(modal);
 
     modal.show();
   }

@@ -5,7 +5,7 @@ import {loginStart} from './store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from './store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DialogService} from '../dialog-service/dialog.service';
+import {DialogService} from '../../services/dialog.service';
 
 @Component({
   selector: 'app-login-panel',
