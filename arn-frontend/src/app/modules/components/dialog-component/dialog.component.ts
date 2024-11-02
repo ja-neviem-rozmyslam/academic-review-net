@@ -1,6 +1,6 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Modal} from 'flowbite';
-import {CONFIRM, DialogOptions, ERROR, INFO, WARNING} from '../entities/DialogOptions';
+import {CONFIRM, DialogSettings, ERROR, INFO, WARNING} from './entities/DialogSettings';
 
 @Component({
   selector: 'app-dialog-component',
@@ -9,25 +9,18 @@ import {CONFIRM, DialogOptions, ERROR, INFO, WARNING} from '../entities/DialogOp
 })
 export class DialogComponent {
   @ViewChild('modal') modalElement!: ElementRef;
-  @Input() dialogOptions: DialogOptions = {
-    title: '',
-    content: '',
-    dialogType: INFO,
-    buttonText: {
-      confirm: 'Potvrdiť',
-      cancel: 'Zrušiť'
-    }
-  };
+  dialogSettings: DialogSettings;
   modal: Modal;
 
-  setModalInstance(modal: Modal) {
+  setDialogInstance(modal: Modal, dialogSettings: DialogSettings) {
+    this.dialogSettings = dialogSettings;
     this.modal = modal;
     modal.show();
   }
 
   onAccept() {
-    if (this.dialogOptions.acceptCallback) {
-      this.dialogOptions.acceptCallback();
+    if (this.dialogSettings.acceptCallback) {
+      this.dialogSettings.acceptCallback();
     }
     this.onClose();
   }
@@ -37,7 +30,7 @@ export class DialogComponent {
   }
 
   getDialogHeaderClass() {
-    switch (this.dialogOptions.dialogType) {
+    switch (this.dialogSettings.dialogType) {
       case ERROR:
         return 'bg-lightRed';
       case WARNING:

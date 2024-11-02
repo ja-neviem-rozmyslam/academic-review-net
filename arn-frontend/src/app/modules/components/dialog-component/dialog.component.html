@@ -3,7 +3,7 @@
     <div class="relative bg-white rounded-lg shadow">
       <div [ngClass]="getDialogHeaderClass()" class="flex items-center justify-between p-4 md:p-5 border-b rounded-t-lg">
         <h3 class="text-xl font-semibold text-gray-900">
-          {{ dialogOptions.title }}
+          {{ dialogSettings.title }}
         </h3>
         <button type="button" (click)="onClose()" class="text-gray-400 bg-transparent hover:bg-dark-transparent hover:text-black rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center transition duration-200 ease-in-out transform">
           <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -13,9 +13,9 @@
       </div>
       <div class="p-4 md:p-5 space-y-4">
         <p class="text-base leading-relaxed text-gray-500">
-          {{ dialogOptions.content }}
+          {{ dialogSettings.content }}
       </div>
-      <ng-container *ngIf="CONFIRM === dialogOptions.dialogType"
+      <ng-container *ngIf="CONFIRM === dialogSettings.dialogType"
                     [ngTemplateOutlet]="confirmFooter"></ng-container>
 
     </div>
@@ -25,10 +25,10 @@
 <ng-template #confirmFooter>
   <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b gap-3">
     <app-arn-button
-      [buttonText]="dialogOptions.buttonText.confirm"
+      [buttonText]="dialogSettings.buttonText.confirm"
       (buttonClick)="onAccept()"></app-arn-button>
     <app-arn-button
-      [buttonText]="dialogOptions.buttonText.cancel"
+      [buttonText]="dialogSettings.buttonText.cancel"
       [negativeColor]="true"
       (buttonClick)="onClose()"></app-arn-button>
   </div>

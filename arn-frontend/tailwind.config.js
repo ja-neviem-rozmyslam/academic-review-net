@@ -5,7 +5,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'public-sans': ['Public Sans', 'sans-serif']
+      },
       colors: {
+        expressive: '#6aa43d',
         primary: '#506041',
         secondary: '#364126',
         lightRed: '#F8D7DA',

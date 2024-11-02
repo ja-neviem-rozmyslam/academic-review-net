@@ -5,7 +5,7 @@ import {loginStart} from './store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from './store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DialogService} from '../dialog-service/dialog.service';
+import {DialogService} from '../../services/dialog.service';
 
 @Component({
   selector: 'app-login-panel',
@@ -18,7 +18,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
-  submitted: boolean = false;
   errorMessage: string;
 
   constructor(private store: Store, private dialogService: DialogService) {
@@ -27,6 +26,30 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initErrorHandling();
     this.loadSavedEmail();
+  }
+
+  onSubmit() {
+    if (this.loginInfo.email && this.loginInfo.password) {
+      if (!this.isValidEmail(this.loginInfo.email)) {
+        this.errorMessage = 'Neplatný formát emailu';
+        this.loginInfo.email = '';
+        return;
+      }
+      if (this.rememberMe)
+        localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
+      else
+        localStorage.removeItem(this.storageIdentifier);
+      this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));
+    }
+  }
+
+  ngOnDestroy() {
+    this.errorSubscription.unsubscribe();
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
   }
 
   private loadSavedEmail() {
@@ -44,38 +67,5 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
         this.dialogService.openErrorDialog(error.message);
       }
     });
-  }
-
-  onSubmit() {
-    this.submitted = true;
-    if (this.loginInfo.email && this.loginInfo.password) {
-      if (!this.isValidEmail(this.loginInfo.email)) {
-        this.errorMessage = 'Neplatný formát emailu';
-        this.loginInfo.email = '';
-        return;
-      }
-      if (this.rememberMe)
-        localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
-      else
-        localStorage.removeItem(this.storageIdentifier);
-      this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));
-    }
-  }
-
-  isValidEmail(email: string): boolean {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  }
-
-  openRegistrationPage() {
-    console.log();
-  }
-
-  passwordResetClicked() {
-    console.log();
-  }
-
-  ngOnDestroy() {
-    this.errorSubscription.unsubscribe();
   }
 }
