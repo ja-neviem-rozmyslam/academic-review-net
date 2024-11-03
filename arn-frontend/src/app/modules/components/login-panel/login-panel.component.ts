@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
-import {loginStart} from './store/auth.actions';
+import {loginStart} from '../../store/auth-store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
-import {selectError} from './store/auth.selector';
+import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DialogService} from '../../services/dialog.service';
 

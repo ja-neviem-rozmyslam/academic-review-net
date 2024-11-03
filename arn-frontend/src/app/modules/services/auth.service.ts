@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Login} from '../enitites/Login';
+import {Login} from '../components/login-panel/enitites/Login';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
   USER_API_ENDPOINT = "api/users";
 
   constructor(private http: HttpClient) { }

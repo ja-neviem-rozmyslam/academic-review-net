@@ -3,13 +3,13 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {of, switchMap} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import * as AuthAction from './auth.actions';
-import {LoginService} from '../service/login.service';
+import {AuthService} from '../../services/auth.service';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
 
-  constructor(private actions$: Actions, private loginService: LoginService) {
+  constructor(private actions$: Actions, private loginService: AuthService) {
   }
 
   login$ = createEffect(() =>
