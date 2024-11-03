@@ -1,4 +1,4 @@
-import {User} from '../../../objects/User';
+import {User} from '../../objects/User';
 import {HttpErrorResponse} from '@angular/common/http';
 
 export interface AuthState {

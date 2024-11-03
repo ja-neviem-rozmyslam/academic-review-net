@@ -1,4 +1,4 @@
-import {AuthState} from '../components/login-panel/store/auth.state';
+import {AuthState} from './auth-store/auth.state';
 
 export interface AppState {
   authState: AuthState;

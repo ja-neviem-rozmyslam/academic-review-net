@@ -3,8 +3,28 @@
 @tailwind components;
 @tailwind utilities;
 
+.underline-animation {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.2s ease;
+  }
+
+  &:hover:after {
+    width: 100%;
+  }
+}
+
 .input-base {
-@apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-secondary block w-full p-3 px-4 rounded-full;
+@apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-3 px-4 rounded-full;
 @apply transition duration-300 ease-in-out transform;
   &.invalid {
   @apply border-red-500;

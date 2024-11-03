@@ -31,7 +31,7 @@
               <label for="remember" class="text-gray-500">Zapamätať si ma</label>
             </div>
           </div>
-          <a class="text-sm font-medium text-gray-600 hover:underline cursor-pointer"
+          <a class="text-sm font-medium text-gray-600 underline-animation cursor-pointer"
              [routerLink]="['/forgot-password']">Zabudnuté heslo?</a>
         </div>
         <div>
@@ -40,7 +40,8 @@
                           type="submit"></app-arn-button>
         </div>
         <p class="text-small">
-          Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" [routerLink]="['/password-change']">Vytvoriť
+          Nemáte ešte účet? <a class="font-medium underline-animation cursor-pointer"
+                               [routerLink]="['/password-change']">Vytvoriť
           účet</a>
         </p>
       </form>
