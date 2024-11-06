@@ -27,6 +27,7 @@ import {FormValidationDirective} from './modules/directives/FormValidationDirect
 import { PasswordChangedModalComponent } from './modules/components/password-management/password-changed-dialog/password-changed-modal.component';
 import { BaseModalComponent } from './modules/components/base-modal/base-modal.component';
 import { RegistrationPanelComponent } from './modules/components/registration-panel/registration-panel.component';
+import { ArnSelectComponent } from './modules/components/arn-select/arn-select.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RegistrationPanelComponent } from './modules/components/registration-pa
     FormValidationDirective,
     PasswordChangedModalComponent,
     BaseModalComponent,
-    RegistrationPanelComponent
+    RegistrationPanelComponent,
+    ArnSelectComponent
   ],
   imports: [
     BrowserModule,

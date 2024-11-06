@@ -38,11 +38,6 @@ public class PasswordReset implements Serializable {
         this.expirationTime = expirationTime;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
@@ -77,9 +72,5 @@ public class PasswordReset implements Serializable {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

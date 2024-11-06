@@ -15,6 +15,7 @@ import {DialogService} from '../../services/dialog.service';
 export class LoginPanelComponent implements OnInit, OnDestroy {
   private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
   private errorSubscription: Subscription;
+  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
@@ -29,27 +30,27 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.loginInfo.email && this.loginInfo.password) {
-      if (!this.isValidEmail(this.loginInfo.email)) {
+    if (this.formValidationErrors) {
+      if (this.formValidationErrors.emptyFields.length > 0) {
+        this.errorMessage = 'Všetky polia musia byť vyplnené';
+        return;
+      }
+      if (this.formValidationErrors.invalidEmails.length > 0) {
         this.errorMessage = 'Neplatný formát emailu';
         this.loginInfo.email = '';
         return;
       }
+    } else {
       if (this.rememberMe)
         localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
         localStorage.removeItem(this.storageIdentifier);
-      this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));
+      this.store.dispatch(loginStart({loginInfo: {...this.loginInfo}}));
     }
   }
 
   ngOnDestroy() {
     this.errorSubscription.unsubscribe();
-  }
-
-  private isValidEmail(email: string): boolean {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
   }
 
   private loadSavedEmail() {

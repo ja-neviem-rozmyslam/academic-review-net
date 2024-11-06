@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,6 +70,7 @@ public class PasswordResetService {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
     public ResponseEntity<?> resetPassword(String token, String password) {
         PasswordReset passwordResetOpt = passwordResetRepository.findByToken(token).orElse(null);
 
@@ -80,7 +83,7 @@ public class PasswordResetService {
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
-        passwordResetRepository.delete(passwordResetOpt);
+        passwordResetRepository.deleteByUser(user);
 
         return ResponseEntity.ok().build();
     }

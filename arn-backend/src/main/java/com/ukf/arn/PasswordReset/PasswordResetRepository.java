@@ -10,4 +10,6 @@ public interface PasswordResetRepository extends JpaRepository<PasswordReset, Lo
 
     PasswordReset findTopByUserOrderByCreatedAtDesc(User user);
 
+    void deleteByUser(User user);
+
 }

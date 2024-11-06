@@ -25,16 +25,17 @@
 
 .input-base {
 @apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-3 px-4 rounded-full;
-@apply transition duration-300 ease-in-out transform;
+
   &.invalid {
   @apply border-red-500;
   }
+
+  &:focus::placeholder {
+  @apply text-transparent placeholder-transition;
+  }
+
   &::placeholder {
-  @apply text-gray-400;
-    &:focus {
-    @apply text-transparent;
-    @apply transition duration-200 ease-in-out transform;
-    }
+  @apply text-gray-400 placeholder-transition;
   }
 }
 
@@ -48,6 +49,10 @@
   @apply bg-primary border-primary;
   animation: checkmarkAnimation 0.3s ease-out;
   }
+}
+
+.placeholder-transition {
+@apply transition duration-200 ease-in-out transform;
 }
 
 @keyframes checkmarkAnimation {

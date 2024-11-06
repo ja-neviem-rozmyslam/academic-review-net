@@ -17,6 +17,11 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        return userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return userService.login(loginRequest);
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity<?> registration(@RequestBody RegistrationRequest registrationRequest) {
+        return userService.registration(registrationRequest);
     }
 }
