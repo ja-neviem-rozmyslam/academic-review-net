@@ -4,10 +4,11 @@ import com.ukf.arn.Universities.University;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class UserDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
     private String surname;
     private String email;
@@ -18,7 +19,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String name, String surname, String email, LocalDateTime registrationDate, University university, List<String> roles) {
+    public UserDTO(UUID id, String name, String surname, String email, LocalDateTime registrationDate, University university, List<String> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -28,11 +29,11 @@ public class UserDTO {
         this.roles = roles;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
