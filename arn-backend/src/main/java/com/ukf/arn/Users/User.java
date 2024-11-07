@@ -27,6 +27,8 @@ public class User implements Serializable {
 
     private String email;
 
+    private boolean verified;
+
     @Column(nullable = false)
     private String password;
 
@@ -88,6 +90,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     public LocalDateTime getRegistrationDate() {
