@@ -68,7 +68,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> verifyToken(String token) {
-        UserToken userToken = userTokenRepository.findByToken(token).orElse(null);
+        UserToken userToken = userTokenRepository.findByTokenAndTokenType(token, VERIFICATION_TOKEN).orElse(null);
 
         if (userToken == null) {
             return ResponseEntity.badRequest().body("Token overenia registrácie neexistuje");

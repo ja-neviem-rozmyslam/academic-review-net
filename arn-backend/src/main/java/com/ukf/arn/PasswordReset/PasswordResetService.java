@@ -60,7 +60,7 @@ public class PasswordResetService {
     }
 
     public ResponseEntity<?> verifyPasswordReset(String token) {
-        UserToken passwordResetObj = userTokenRepository.findByToken(token).orElse(null);
+        UserToken passwordResetObj = userTokenRepository.findByTokenAndTokenType(token, PASSWORD_RESET_TOKEN).orElse(null);
 
         if (passwordResetObj == null) {
             return ResponseEntity.badRequest().body(TOKEN_NOT_FOUND);
@@ -75,7 +75,7 @@ public class PasswordResetService {
 
     @Transactional
     public ResponseEntity<?> resetPassword(String token, String password) {
-        UserToken passwordResetOpt = userTokenRepository.findByToken(token).orElse(null);
+        UserToken passwordResetOpt = userTokenRepository.findByTokenAndTokenType(token, PASSWORD_RESET_TOKEN).orElse(null);
 
         ResponseEntity<?> verifyResponse = verifyPasswordReset(token);
         if (verifyResponse.getStatusCode().is4xxClientError()) {
