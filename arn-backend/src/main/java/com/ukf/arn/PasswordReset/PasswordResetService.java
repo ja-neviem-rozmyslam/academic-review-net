@@ -1,34 +1,37 @@
 package com.ukf.arn.PasswordReset;
 
+import com.ukf.arn.Authentication.UserToken;
+import com.ukf.arn.Authentication.UserTokenRepository;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
+
+import static com.ukf.arn.ConstantsKatalog.TOO_MANY_REQUESTS;
+import static com.ukf.arn.ConstantsKatalog.TOKEN_NOT_FOUND;
+import static com.ukf.arn.ConstantsKatalog.TOKEN_EXPIRED;
+
 
 @Service
 public class PasswordResetService {
+    public final String PASSWORD_RESET_TOKEN = "PASS_RESET";
 
-    private final PasswordResetRepository passwordResetRepository;
+    private final UserTokenRepository userTokenRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     private static final int RESET_REQUEST_LIMIT_SECONDS = 60;
     private static final int TOKEN_EXPIRATION_MINUTES = 30;
-    private static final String TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS";
-    private static final String TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
-    private static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
 
     @Autowired
-    public PasswordResetService(PasswordResetRepository passwordResetRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.passwordResetRepository = passwordResetRepository;
+    public PasswordResetService(UserTokenRepository userTokenRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userTokenRepository = userTokenRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -40,7 +43,7 @@ public class PasswordResetService {
             return ResponseEntity.ok().build();
         }
 
-        PasswordReset lastResetRequests = passwordResetRepository.findTopByUserOrderByCreatedAtDesc(userObj);
+        UserToken lastResetRequests = userTokenRepository.findTopByUserAndTokenTypeOrderByCreatedAtDesc(userObj, PASSWORD_RESET_TOKEN);
 
         if (lastResetRequests != null && lastResetRequests.getCreatedAt().plusSeconds(RESET_REQUEST_LIMIT_SECONDS).isAfter(LocalDateTime.now())) {
             return ResponseEntity.badRequest().body(TOO_MANY_REQUESTS);
@@ -49,7 +52,7 @@ public class PasswordResetService {
         String token = UUID.randomUUID().toString();
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(TOKEN_EXPIRATION_MINUTES);
 
-        passwordResetRepository.save(new PasswordReset(token, userObj, expirationTime));
+        userTokenRepository.save(new UserToken(token, userObj, expirationTime, PASSWORD_RESET_TOKEN));
 
         String link = "http://localhost:4200/password-change?&token=" + token;
 
@@ -57,7 +60,7 @@ public class PasswordResetService {
     }
 
     public ResponseEntity<?> verifyPasswordReset(String token) {
-        PasswordReset passwordResetObj = passwordResetRepository.findByToken(token).orElse(null);
+        UserToken passwordResetObj = userTokenRepository.findByToken(token).orElse(null);
 
         if (passwordResetObj == null) {
             return ResponseEntity.badRequest().body(TOKEN_NOT_FOUND);
@@ -72,7 +75,7 @@ public class PasswordResetService {
 
     @Transactional
     public ResponseEntity<?> resetPassword(String token, String password) {
-        PasswordReset passwordResetOpt = passwordResetRepository.findByToken(token).orElse(null);
+        UserToken passwordResetOpt = userTokenRepository.findByToken(token).orElse(null);
 
         ResponseEntity<?> verifyResponse = verifyPasswordReset(token);
         if (verifyResponse.getStatusCode().is4xxClientError()) {
@@ -83,8 +86,7 @@ public class PasswordResetService {
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
-        passwordResetRepository.deleteByUser(user);
-
+        userTokenRepository.deleteByUserAndTokenType(user, PASSWORD_RESET_TOKEN);
         return ResponseEntity.ok().build();
     }
 }
