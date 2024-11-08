@@ -1,6 +1,7 @@
 package com.ukf.arn.Users;
 
 import com.ukf.arn.LoginAttemptService.LoginAttemptService;
+import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final LoginAttemptService loginAttemptService;
     private final HttpServletRequest request;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService, HttpServletRequest request) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService, HttpServletRequest request, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptService = loginAttemptService;
         this.request = request;
+        this.jwtUtil = jwtUtil;
     }
 
     public ResponseEntity<?> login(String email, String password) {
@@ -53,6 +56,7 @@ public class UserService {
                 userObj.getUniversity(),
                 userObj.getRoles());
 
+        loggedInUser.setToken(jwtUtil.generateToken(userObj.getEmail()));
         return ResponseEntity.ok().body(loggedInUser);
     }
 

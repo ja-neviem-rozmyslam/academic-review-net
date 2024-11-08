@@ -15,6 +15,7 @@ public class UserDTO {
     private LocalDateTime registrationDate;
     private University university;
     private List<String> roles;
+    private String token;
 
     public UserDTO() {
     }
@@ -27,6 +28,15 @@ public class UserDTO {
         this.registrationDate = registrationDate;
         this.university = university;
         this.roles = roles;
+    }
+
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public UUID getId() {
