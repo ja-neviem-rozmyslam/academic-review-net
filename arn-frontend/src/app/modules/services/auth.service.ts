@@ -8,7 +8,7 @@ import {Registration} from '../components/registration-panel/entities/Registrati
   providedIn: 'root'
 })
 export class AuthService {
-  USER_API_ENDPOINT = "api/users";
+  USER_API_ENDPOINT = "api/auth";
 
   constructor(private http: HttpClient) { }
 
