@@ -1,5 +1,6 @@
 package com.ukf.arn.Authentication;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyToken(@RequestParam("token") String token) {
-        return authService.verifyToken(token);
+    public void verifyToken(@RequestParam("token") String token, HttpServletResponse response) {
+        authService.verifyToken(token, response);
     }
 }

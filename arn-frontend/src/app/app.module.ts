@@ -28,6 +28,7 @@ import { PasswordChangedModalComponent } from './modules/components/password-man
 import { BaseModalComponent } from './modules/components/base-modal/base-modal.component';
 import { RegistrationPanelComponent } from './modules/components/registration-panel/registration-panel.component';
 import { ArnSelectComponent } from './modules/components/arn-select/arn-select.component';
+import { VerifyPageComponent } from './modules/components/verify-page/verify-page.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ArnSelectComponent } from './modules/components/arn-select/arn-select.c
     PasswordChangedModalComponent,
     BaseModalComponent,
     RegistrationPanelComponent,
-    ArnSelectComponent
+    ArnSelectComponent,
+    VerifyPageComponent
   ],
   imports: [
     BrowserModule,

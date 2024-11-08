@@ -7,11 +7,15 @@ import com.ukf.arn.Universities.University;
 import com.ukf.arn.Universities.UniversityService;
 import com.ukf.arn.Users.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -19,9 +23,11 @@ import java.util.UUID;
 @Service
 public class AuthService {
 
+    @Value("${app.domain}")
+    private String appDomain;
+
     public final String VERIFICATION_TOKEN = "VERIFICATION";
     private static final int TOKEN_EXPIRATION_MINUTES = 1440;
-
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -67,26 +73,27 @@ public class AuthService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> verifyToken(String token) {
+    @Transactional
+    public void verifyToken(String token, HttpServletResponse response) {
         UserToken userToken = userTokenRepository.findByTokenAndTokenType(token, VERIFICATION_TOKEN).orElse(null);
 
-        if (userToken == null) {
-            return ResponseEntity.badRequest().body("Token overenia registrácie neexistuje");
+        try {
+            if (userToken == null || userToken.getExpirationTime().isBefore(LocalDateTime.now())) {
+                response.sendRedirect(appDomain + "/verification?status=failure");
+                return;
+            }
+
+            User user = userToken.getUser();
+            user.setVerified(true);
+            userRepository.save(user);
+            userTokenRepository.deleteByUserAndTokenType(user, VERIFICATION_TOKEN);
+
+            response.sendRedirect(appDomain + "/verification?status=success");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to redirect for verification", e);
         }
-
-        if (userToken.getExpirationTime().isBefore(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body("Platnosť tokenu na overenie vypršala");
-        }
-
-        User user = userToken.getUser();
-        user.setVerified(true);
-        userRepository.save(user);
-
-        userTokenRepository.deleteByUserAndTokenType(user, VERIFICATION_TOKEN);
-
-
-        return ResponseEntity.ok().body("Registrácia bola úspešne overená");
     }
+
 
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         String ip = getClientIP();
