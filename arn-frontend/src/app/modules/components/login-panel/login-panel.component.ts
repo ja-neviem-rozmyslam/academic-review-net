@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
 import {loginStart} from '../../store/auth-store/auth.actions';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, take} from 'rxjs';
 import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DialogService} from '../../services/dialog.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login-panel',
@@ -21,10 +22,19 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   rememberMe: boolean = false;
   errorMessage: string;
 
-  constructor(private store: Store, private dialogService: DialogService) {
+  verificationStatus: boolean;
+  verificationMessage: string;
+
+  constructor(private store: Store, private dialogService: DialogService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.route.queryParamMap.pipe(take(1)).subscribe(params => {
+      if (params.has('status') && params.has('message')) {
+        this.verificationStatus = params.get('status') === 'success';
+        this.verificationMessage = params.get('message');
+      }
+    });
     this.initErrorHandling();
     this.loadSavedEmail();
   }

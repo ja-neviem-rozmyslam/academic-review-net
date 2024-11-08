@@ -3,6 +3,7 @@ import {Registration} from './entities/Registration';
 import {SelectOption} from '../arn-select/entities/SelectOption';
 import {EmailDomain} from './entities/EmailDomain';
 import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration-panel',
@@ -16,7 +17,7 @@ export class RegistrationPanelComponent implements OnInit {
   emailDomains: EmailDomain[];
   errorMessage: string;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
@@ -57,9 +58,14 @@ export class RegistrationPanelComponent implements OnInit {
         () => {
           this.errorMessage = null;
           this.registrationInfo = new Registration();
+          this.router.navigate(['/login'], {queryParams: {status: 'success', message: 'Registrácia prebehla úspešne \n Skontrolujte si email pre overenie'}});
         },
-        () => {
-          this.errorMessage = 'Registrácia zlyhala';
+        (error: any) => {
+          if (error && typeof error.error === 'string') {
+            this.errorMessage = error.error;
+          } else {
+            this.errorMessage = 'Nastala chyba pri registrácii';
+          }
         }
       );
     }
