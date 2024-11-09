@@ -1,15 +1,14 @@
-package com.ukf.arn.PasswordReset;
+package com.ukf.arn.Authentication;
 
 import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "password_reset_tokens")
-public class PasswordReset implements Serializable {
+@Table(name = "user_tokens")
+public class UserToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,6 +17,8 @@ public class PasswordReset implements Serializable {
     private Long id;
 
     private String token;
+
+    private String tokenType;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -29,18 +30,22 @@ public class PasswordReset implements Serializable {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public PasswordReset() {
+    public UserToken() {
     }
 
-    public PasswordReset(String token, User user, LocalDateTime expirationTime) {
+    public UserToken(String token, User user, LocalDateTime expirationTime, String tokenType) {
         this.token = token;
         this.user = user;
         this.expirationTime = expirationTime;
+        this.tokenType = tokenType;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
     public Long getId() {
@@ -77,9 +82,5 @@ public class PasswordReset implements Serializable {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

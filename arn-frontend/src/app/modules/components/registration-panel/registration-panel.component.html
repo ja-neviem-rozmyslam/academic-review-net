@@ -1,0 +1,58 @@
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+  <div class="w-full bg-white rounded-2xl shadow md:mt-0 sm:max-w-2xl xl:p-0">
+    <div class="p-6 space-y-6 md:space-y-8 sm:p-8">
+      <h1 class="text-2xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
+        Vytvorte si účet
+      </h1>
+      <form appFormValidation (ngSubmit)="onSubmit()" (getValidationErrors)="formValidationErrors = $event" class="space-y-4">
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <div class="flex-1 space-y-4">
+            <div>
+              <input type="email" name="email" id="email"
+                     class="input-base w-full"
+                     placeholder="E-mail"
+                     (focusout)="findRelevantUniversity()"
+                     [(ngModel)]="registrationInfo.email" required>
+            </div>
+            <div>
+              <input type="password" name="password" id="password"
+                     class="input-base w-full"
+                     placeholder="Heslo"
+                     [(ngModel)]="registrationInfo.password" required>
+            </div>
+          </div>
+          <div class="flex-1 space-y-4">
+            <div>
+              <input type="text" name="name" id="name"
+                     class="input-base w-full"
+                     placeholder="Krstné meno"
+                     [(ngModel)]="registrationInfo.name" required>
+            </div>
+            <div>
+              <input type="text" name="surname" id="surname"
+                     class="input-base w-full"
+                     placeholder="Priezvisko"
+                     [(ngModel)]="registrationInfo.surname" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <app-arn-select [options]="universities"
+                          [placeholder]="'Vyberte univerzitu'"
+                          [(selectedOption)]="registrationInfo.universityId"></app-arn-select>
+        </div>
+
+        <div class="flex items-center h-0.5">
+          <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
+        </div>
+
+        <div>
+          <app-arn-button [buttonText]="'Vytvoriť účet'"
+                          [classes]="'w-full'"
+                          type="submit"></app-arn-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

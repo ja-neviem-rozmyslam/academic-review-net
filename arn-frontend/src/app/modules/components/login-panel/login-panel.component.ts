@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
-import {loginStart} from './store/auth.actions';
+import {loginStart} from '../../store/auth-store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
-import {selectError} from './store/auth.selector';
+import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DialogService} from '../../services/dialog.service';
 
@@ -15,41 +15,54 @@ import {DialogService} from '../../services/dialog.service';
 export class LoginPanelComponent implements OnInit, OnDestroy {
   private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
   private errorSubscription: Subscription;
+  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
   errorMessage: string;
 
+  showAlert: boolean = false;
+  verificationStatus: boolean;
+  verificationMessage: string;
+
   constructor(private store: Store, private dialogService: DialogService) {
   }
 
   ngOnInit() {
+    this.showAlert = true;
+    const state = history.state as { status?: string, message?: string };
+    if (state.status && state.message) {
+      this.showAlert = true;
+      this.verificationStatus = state.status === 'success';
+      this.verificationMessage = state.message;
+      history.replaceState({}, '');
+    }
     this.initErrorHandling();
     this.loadSavedEmail();
   }
 
   onSubmit() {
-    if (this.loginInfo.email && this.loginInfo.password) {
-      if (!this.isValidEmail(this.loginInfo.email)) {
+    if (this.formValidationErrors) {
+      if (this.formValidationErrors.emptyFields.length > 0) {
+        this.errorMessage = 'Všetky polia musia byť vyplnené';
+        return;
+      }
+      if (this.formValidationErrors.invalidEmails.length > 0) {
         this.errorMessage = 'Neplatný formát emailu';
         this.loginInfo.email = '';
         return;
       }
+    } else {
       if (this.rememberMe)
         localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
         localStorage.removeItem(this.storageIdentifier);
-      this.store.dispatch(loginStart({ loginInfo: {...this.loginInfo }}));
+      this.store.dispatch(loginStart({loginInfo: {...this.loginInfo}}));
     }
   }
 
   ngOnDestroy() {
     this.errorSubscription.unsubscribe();
-  }
-
-  private isValidEmail(email: string): boolean {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
   }
 
   private loadSavedEmail() {

@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ConstantsKatalog {
+    public static final String TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS";
+    public static final String TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
+    public static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
+
     public enum Role {
         STUDENT("S", "Študent"),
         REVIEWER("R", "Recenzent"),
