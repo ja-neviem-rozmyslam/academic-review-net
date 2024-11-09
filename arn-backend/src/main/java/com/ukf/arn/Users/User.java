@@ -2,6 +2,8 @@ package com.ukf.arn.Users;
 
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
     private String name;
@@ -24,7 +27,9 @@ public class User implements Serializable {
 
     private String email;
 
-    @Column(nullable = false, length = 255)
+    private boolean verified;
+
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "registration_date")
@@ -35,26 +40,24 @@ public class User implements Serializable {
     private University university;
 
     @ElementCollection
-    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
 
     public User() {
     }
 
-    @PrePersist
-    public void generateGuid() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+    public User(String name, String surname, String email, String password, University university, List<String> roles) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.university = university;
+        this.roles = roles;
     }
 
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID guid) {
-        this.id = id;
     }
 
     public String getName() {
@@ -89,12 +92,16 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
+    public boolean isVerified() {
+        return verified;
     }
 
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
     }
 
     public University getUniversity() {
