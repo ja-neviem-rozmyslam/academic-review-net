@@ -12,7 +12,7 @@ import {FormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
 import {appReducer} from './modules/store/app.reducer';
 import {EffectsModule} from '@ngrx/effects';
-import {AuthEffects} from './modules/components/login-panel/store/auth-effects';
+import {AuthEffects} from './modules/store/auth-store/auth-effects';
 import {provideHttpClient} from '@angular/common/http';
 import {
   DialogComponent
@@ -26,6 +26,10 @@ import {routes} from './app.routes';
 import {FormValidationDirective} from './modules/directives/FormValidationDirective';
 import { PasswordChangedModalComponent } from './modules/components/password-management/password-changed-dialog/password-changed-modal.component';
 import { BaseModalComponent } from './modules/components/base-modal/base-modal.component';
+import { RegistrationPanelComponent } from './modules/components/registration-panel/registration-panel.component';
+import { ArnSelectComponent } from './modules/components/arn-select/arn-select.component';
+import { VerifyPageComponent } from './modules/components/verify-page/verify-page.component';
+import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,11 @@ import { BaseModalComponent } from './modules/components/base-modal/base-modal.c
     ForgotPasswordComponent,
     FormValidationDirective,
     PasswordChangedModalComponent,
-    BaseModalComponent
+    BaseModalComponent,
+    RegistrationPanelComponent,
+    ArnSelectComponent,
+    VerifyPageComponent,
+    ArnToastComponent
   ],
   imports: [
     BrowserModule,

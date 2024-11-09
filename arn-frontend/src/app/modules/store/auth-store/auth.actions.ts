@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import {User} from '../../../objects/User';
-import {Login} from '../enitites/Login';
+import {User} from '../../objects/User';
+import {Login} from '../../components/login-panel/enitites/Login';
 import {HttpErrorResponse} from '@angular/common/http';
 
 export const loginStart = createAction(

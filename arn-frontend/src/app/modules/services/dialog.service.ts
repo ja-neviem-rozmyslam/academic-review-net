@@ -1,8 +1,8 @@
-import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Type} from '@angular/core';
-import {DialogSettings, ERROR} from '../components/dialog-component/entities/DialogSettings';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, Type} from '@angular/core';
+import {CONFIRM, DialogSettings, ERROR, INFO, WARNING} from '../components/dialog-component/entities/DialogSettings';
 import {DialogComponent} from '../components/dialog-component/dialog.component';
 import {Modal, ModalOptions} from 'flowbite';
-import {BaseModalComponent} from '../components/base-modal/base-modal.component';
+import {BaseModal} from '../components/base-modal/entities/BaseModal';
 
 @Injectable({
   providedIn: 'root',
@@ -16,23 +16,8 @@ export class DialogService {
   }
 
   private dialogInitialization(dialogSettings: DialogSettings) {
-    const componentRef = this.componentFactoryResolver
-      .resolveComponentFactory(DialogComponent)
-      .create(this.injector);
-
-    this.appRef.attachView(componentRef.hostView);
-
-    const domElem = (componentRef.hostView as any).rootNodes[0];
-    document.body.appendChild(domElem);
-
-    const modal = new Modal(domElem, {
-      placement: 'center',
-      onHide: () => {
-        this.appRef.detachView(componentRef.hostView);
-        componentRef.destroy();
-      },
-    });
-    componentRef.instance.setDialogInstance(modal, dialogSettings);
+    const componentRef = this.openCustomModal<DialogComponent>(DialogComponent);
+    componentRef.instance.setDialogInstance(dialogSettings);
   }
 
   openErrorDialog(errorMessage: string) {
@@ -46,7 +31,7 @@ export class DialogService {
   openWarningDialog(warningMessage: string) {
     this.dialogInitialization({
       title: 'Varovanie',
-      dialogType: 'warning',
+      dialogType: WARNING,
       content: warningMessage,
     });
   }
@@ -54,15 +39,18 @@ export class DialogService {
   openInfoDialog(infoTitle: string, infoMessage: string) {
     this.dialogInitialization({
       title: infoTitle,
-      dialogType: 'info',
+      dialogType: INFO,
       content: infoMessage,
     });
   }
 
-  openConfirmDialog(dialogTitle: string, confirmMessage: string, acceptCallback: () => void, buttonText?: { confirm: string; cancel: string }) {
+  openConfirmDialog(dialogTitle: string, confirmMessage: string, acceptCallback: () => void, buttonText?: {
+    confirm: string;
+    cancel: string
+  }) {
     const dialogOptions: DialogSettings = {
       title: dialogTitle,
-      dialogType: 'confirm',
+      dialogType: CONFIRM,
       content: confirmMessage,
       acceptCallback: acceptCallback,
     };
@@ -74,26 +62,30 @@ export class DialogService {
     this.dialogInitialization(dialogOptions);
   }
 
-  openCustomModal<T extends BaseModalComponent>(component: Type<T>, modalOptions: ModalOptions = { placement: 'center', backdrop: 'dynamic' }) {
+  openCustomModal<T extends BaseModal>(component: Type<T>, modalOptions: ModalOptions = {
+    placement: 'center',
+    backdrop: 'dynamic'
+  }): ComponentRef<T> {
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory(component)
-      .create(this.injector);
+      .create(this.injector) as ComponentRef<T>;
 
     this.appRef.attachView(componentRef.hostView);
 
     const domElem = (componentRef.hostView as any).rootNodes[0];
     document.body.appendChild(domElem);
+    const modalElement = domElem.querySelector('#default-modal');
 
-    const { onHide: originalOnHide } = modalOptions;
+    const {onHide: originalOnHide} = modalOptions;
     modalOptions.onHide = (modal) => {
       originalOnHide?.(modal);
       this.appRef.detachView(componentRef.hostView);
       componentRef.destroy();
     };
 
-    const modal = new Modal(domElem, modalOptions);
+    const modal = new Modal(modalElement, modalOptions);
     componentRef.instance.setModalInstance(modal);
 
-    modal.show();
+    return componentRef;
   }
 }

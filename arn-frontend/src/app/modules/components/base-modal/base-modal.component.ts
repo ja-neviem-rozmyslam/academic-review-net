@@ -8,15 +8,10 @@ import {ModalSettings} from './entities/ModalSettings';
   styleUrl: './base-modal.component.less'
 })
 export class BaseModalComponent {
+  @Input({ required: true }) modal: Modal;
   @Input() modalSettings: ModalSettings = new ModalSettings();
   @Output() acceptCallback = new EventEmitter();
   @Output() cancelCallback = new EventEmitter();
-  modal: Modal;
-
-  setModalInstance(modal: Modal) {
-    this.modal = modal;
-    modal.show();
-  }
 
   onAccept() {
     this.acceptCallback.emit();

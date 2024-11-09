@@ -1,7 +1,7 @@
 import {University} from './University';
 
 export class User {
-  id: number;
+  id: string;
   name: string;
   surname: string;
   email: string;
@@ -10,7 +10,7 @@ export class User {
   roles: string[];
 
   constructor(
-    id: number,
+    id: string,
     name: string,
     surname: string,
     email: string,
