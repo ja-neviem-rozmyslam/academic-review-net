@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 
 @Component({
   selector: 'app-verify-page',
@@ -13,7 +13,12 @@ export class VerifyPageComponent implements OnInit {
       const status = params.get('status');
       const message = status === 'success' ? 'Overenie vášho účtu prebehlo úspešne'
         : 'Overenie vášho účtu zlyhalo \n Platnosť odkazu vypršala';
-      this.router.navigate(['/login'], {queryParams: {status: status, message: message}});
+      this.router.navigate(['/login'], {
+        state: {
+          status: status,
+          message: message
+        }
+      } as NavigationExtras);
     });
   }
 }

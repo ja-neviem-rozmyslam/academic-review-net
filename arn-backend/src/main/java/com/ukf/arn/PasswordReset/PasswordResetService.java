@@ -2,6 +2,7 @@ package com.ukf.arn.PasswordReset;
 
 import com.ukf.arn.Authentication.UserToken;
 import com.ukf.arn.Authentication.UserTokenRepository;
+import com.ukf.arn.MailService.MailService;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,20 @@ public class PasswordResetService {
     private final UserTokenRepository userTokenRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     private static final int RESET_REQUEST_LIMIT_SECONDS = 60;
     private static final int TOKEN_EXPIRATION_MINUTES = 30;
 
     @Autowired
-    public PasswordResetService(UserTokenRepository userTokenRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public PasswordResetService(UserTokenRepository userTokenRepository,
+                                UserRepository userRepository,
+                                PasswordEncoder passwordEncoder,
+                                MailService mailService) {
         this.userTokenRepository = userTokenRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
     }
 
     public ResponseEntity<?> requestPasswordReset(String email) {
@@ -54,7 +60,7 @@ public class PasswordResetService {
 
         userTokenRepository.save(new UserToken(token, userObj, expirationTime, PASSWORD_RESET_TOKEN));
 
-        String link = "http://localhost:4200/password-change?&token=" + token;
+        this.mailService.sendPasswordResetEmail(email,String.format("http://localhost:4200/password-change?token=%s", token));
 
         return ResponseEntity.ok().build();
     }

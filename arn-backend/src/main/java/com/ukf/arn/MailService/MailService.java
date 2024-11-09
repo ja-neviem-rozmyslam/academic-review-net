@@ -15,6 +15,35 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
+    public void sendPasswordResetEmail(String emailReceiver, String resetLink) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom("UKF ARN <arn.noreply@gmail.com>");
+            helper.setTo(emailReceiver);
+            helper.setSubject("Obnova hesla v Univerzitnom Konferenčnom Systéme");
+
+            String htmlContent = "<html>" +
+                    "<body>" +
+                    "<h2>Obnova hesla v Univerzitnom Konferenčnom Systéme</h2>" +
+                    "<p>Pre obnovenie hesla kliknite na tlačidlo nižšie:</p>" +
+                    "<a href='" + resetLink + "' " +
+                    "style='background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; " +
+                    "border-radius: 5px;'>Obnoviť heslo</a>" +
+                    "<p>Ak ste túto akciu nevykonali vy, môžete tento e-mail ignorovať.</p>" +
+                    "</body>" +
+                    "</html>";
+
+            helper.setText(htmlContent, true);
+
+            javaMailSender.send(mimeMessage);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Počas odosielania e-mailu na obnovu hesla nastala chyba", e);
+        }
+    }
+
     public void sendVerificationEmail(String emailReceiver, String verificationLink) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
