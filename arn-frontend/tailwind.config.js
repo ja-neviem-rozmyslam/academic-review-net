@@ -12,9 +12,9 @@ module.exports = {
         expressive: '#6aa43d',
         primary: '#506041',
         secondary: '#364126',
-        lightRed: '#F8D7DA',
-        lightYellow: '#FFEACD',
-        lightGreen: '#D4EDDA',
+        lightRed: '#ff3c4d',
+        lightYellow: '#ffa72d',
+        lightGreen: '#2a9444',
         disabledColor: '#E9ECEF',
         'dark-transparent': 'rgba(0, 0, 0, 0.05)',
       }

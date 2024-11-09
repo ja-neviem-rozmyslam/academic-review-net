@@ -107,6 +107,9 @@ public class AuthService {
         if (userObj == null) {
             return ResponseEntity.badRequest().body("Používateľ s takýmto emailom neexistuje");
         }
+        if(!userObj.isVerified()){
+            return ResponseEntity.badRequest().body("Používateľ nie je overený");
+        }
         if (!passwordEncoder.matches(loginRequest.getPassword(), userObj.getPassword())) {
             loginAttemptService.loginFailed(ip);
             return ResponseEntity.badRequest().body("Nesprávne prihlasovacie údaje");

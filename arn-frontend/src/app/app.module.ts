@@ -29,6 +29,7 @@ import { BaseModalComponent } from './modules/components/base-modal/base-modal.c
 import { RegistrationPanelComponent } from './modules/components/registration-panel/registration-panel.component';
 import { ArnSelectComponent } from './modules/components/arn-select/arn-select.component';
 import { VerifyPageComponent } from './modules/components/verify-page/verify-page.component';
+import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { VerifyPageComponent } from './modules/components/verify-page/verify-pag
     BaseModalComponent,
     RegistrationPanelComponent,
     ArnSelectComponent,
-    VerifyPageComponent
+    VerifyPageComponent,
+    ArnToastComponent
   ],
   imports: [
     BrowserModule,

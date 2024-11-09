@@ -23,7 +23,7 @@ export class ForgotPasswordComponent {
     }
     this.passwordChangeService.requestPasswordReset(this.email).subscribe(
       () => {
-        this.dialogService.openInfoDialog('Formulár zmeny hesla','Email s inštrukciami na obnovenie hesla bol odoslaný.');
+        this.dialogService.openInfoDialog('Zmena hesla', 'Na váš email bol odoslaný odkaz na zmenu hesla.');
         this.startCountdown();
       }, (error) => {
         if (error.error === StatusMessages.TOO_MANY_REQUESTS) {
