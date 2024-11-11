@@ -29,7 +29,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.showAlert = true;
     const state = history.state as { status?: string, message?: string };
     if (state.status && state.message) {
       this.showAlert = true;
