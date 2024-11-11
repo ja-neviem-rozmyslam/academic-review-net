@@ -30,6 +30,7 @@ import { RegistrationPanelComponent } from './modules/components/registration-pa
 import { ArnSelectComponent } from './modules/components/arn-select/arn-select.component';
 import { VerifyPageComponent } from './modules/components/verify-page/verify-page.component';
 import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.component';
+import { HomePageComponent } from './modules/main-panel/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.comp
     RegistrationPanelComponent,
     ArnSelectComponent,
     VerifyPageComponent,
-    ArnToastComponent
+    ArnToastComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
