@@ -30,15 +30,6 @@ public class UserDTO {
         this.roles = roles;
     }
 
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
     public UUID getId() {
         return id;
     }

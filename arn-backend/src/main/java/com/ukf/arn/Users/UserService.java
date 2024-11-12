@@ -56,8 +56,13 @@ public class UserService {
                 userObj.getUniversity(),
                 userObj.getRoles());
 
-        loggedInUser.setToken(jwtUtil.generateToken(userObj.getEmail()));
-        return ResponseEntity.ok().body(loggedInUser);
+        String token = jwtUtil.generateToken(userObj.getEmail());
+
+        return ResponseEntity.ok().body(new AuthResponse(token, loggedInUser));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByEmail(username).orElse(null);
     }
 
     private String getClientIP() {
