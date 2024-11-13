@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -126,7 +128,11 @@ public class AuthService {
                 userObj.getUniversity(),
                 userObj.getRoles());
 
-        return ResponseEntity.ok().body(loggedInUser);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", loggedInUser);
+        response.put("token", UUID.randomUUID().toString());
+
+        return ResponseEntity.ok().body(response);
     }
 
     private User createUser(RegistrationRequest registrationRequest, University university) {

@@ -5,7 +5,7 @@ import {catchError, map} from 'rxjs/operators';
 import * as AuthAction from './auth.actions';
 import {AuthService} from '../../services/auth.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
