@@ -17,8 +17,9 @@ export const routes: Routes = [
   { path: 'password-change', component: PasswordChangeComponent },
   { path: 'verification', component: VerifyPageComponent },
 
-  { path: 'administration', component: AdministrationPanelComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] } },
-  { path: 'main', component: HomePageComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: [UserRoles.STUDENT, UserRoles.REVIEWER] } },
-  { path: '', redirectTo: 'main', pathMatch: 'full' },
-  { path: '**', redirectTo: 'main' }
+  { path: 'administration', component: AdministrationPanelComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] } },
+  { path: 'main', component: HomePageComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.STUDENT, UserRoles.REVIEWER] } },
+  { path: '', component: LoginPanelComponent, canActivate: [AuthGuard] },
+
+  { path: '**', component: LoginPanelComponent, canActivate: [AuthGuard] }
 ];
