@@ -6,29 +6,34 @@ import {Registration} from '../components/registration-panel/entities/Registrati
 import {map} from 'rxjs/operators';
 import {LoginResponse} from '../objects/LoginResponse';
 import {UserRoles} from '../constants';
+import {TokenService} from './token.service';
+import {RoleService} from './role.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  USER_API_ENDPOINT = "api/auth";
-  private authStatus = new BehaviorSubject<boolean>(this.isAuthenticatedInStorage());
+  USER_API_ENDPOINT = 'api/auth';
+  private authStatus = new BehaviorSubject<boolean>(this.tokenService.isAuthenticated());
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private roleService: RoleService
+  ) { }
 
   login(loginInfo: Login): Observable<any> {
     return this.http.post<LoginResponse>(`${this.USER_API_ENDPOINT}/login`, loginInfo, {
       headers: { 'Content-Type': 'application/json' }
     }).pipe(
       map(({ user, token }) => {
-        this.storeToken(token);
-        this.storeRoles([UserRoles.ADMIN]);
+        this.tokenService.storeToken(token);
+        this.roleService.storeRoles([UserRoles.STUDENT]);
         this.authStatus.next(true);
         return { user };
       })
     );
   }
-
 
   registration(registrationInfo: Registration): Observable<any> {
     return this.http.post(`${this.USER_API_ENDPOINT}/registration`, registrationInfo, {
@@ -36,42 +41,13 @@ export class AuthService {
     });
   }
 
-  logout(): void {
-    localStorage.removeItem('authToken');
-    this.authStatus.next(false);
-  }
-
-  private storeToken(token: string): void {
-    localStorage.setItem('authToken', token);
-  }
-
-  private storeRoles(roles: string[]): void {
-    localStorage.setItem('authRoles', JSON.stringify(roles));
-  }
-
-  getRoles(): string[] | null {
-    const roles = localStorage.getItem('authRoles');
-    return roles ? JSON.parse(roles) : null;
-  }
-
-  hasRole(role: string | string[]): boolean {
-    const roles = this.getRoles();
-    if (!roles) return false;
-
-    if (Array.isArray(role)) {
-      return role.some(r => roles.includes(r));
-    }
-    return roles.includes(role);
-  }
-
-
-  private isAuthenticatedInStorage(): boolean {
-    console.log(!!localStorage.getItem('authToken'));
-    // Check token expiration
-    return !!localStorage.getItem('authToken');
-  }
-
   isAuthenticated(): Observable<boolean> {
     return this.authStatus.asObservable();
   }
+
+  logout(): void {
+    this.tokenService.removeToken();
+    this.authStatus.next(false);
+  }
 }
+

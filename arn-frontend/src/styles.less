@@ -14,28 +14,30 @@
   }
 }
 
-.underline-animation {
-  position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    display: block;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 1px;
-    background-color: currentColor;
-    transition: width 0.2s ease;
+@layer utilities {
+  .element-transition {
+  @apply transition duration-200 ease-in-out transform;
   }
 
-  &:hover:after {
-    width: 100%;
-  }
-}
+  .underline-animation {
+    position: relative;
 
-.placeholder-transition {
-@apply transition duration-200 ease-in-out transform;
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background-color: currentColor;
+      transition: width 0.2s ease;
+    }
+
+    &:hover:after {
+      width: 100%;
+    }
+  }
 }
 
 .toast-container {
@@ -49,17 +51,18 @@
 /* Inputs and Labels */
 .input-base {
 @apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-3 px-4 rounded-full;
+@apply element-transition;
 
   &.invalid {
   @apply border-red-500;
   }
 
   &:focus::placeholder {
-  @apply text-transparent placeholder-transition;
+  @apply text-transparent element-transition;
   }
 
   &::placeholder {
-  @apply text-gray-400 placeholder-transition;
+  @apply text-gray-400 element-transition;
   }
 }
 
