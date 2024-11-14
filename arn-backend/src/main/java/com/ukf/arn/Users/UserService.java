@@ -56,7 +56,7 @@ public class UserService {
                 userObj.getUniversity(),
                 userObj.getRoles());
 
-        String token = jwtUtil.generateToken(userObj.getEmail());
+        String token = jwtUtil.generateToken(userObj);
 
         return ResponseEntity.ok().body(new AuthResponse(token, loggedInUser));
     }
