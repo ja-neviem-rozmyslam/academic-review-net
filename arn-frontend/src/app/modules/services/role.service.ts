@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {UserRoles} from '../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class RoleService {
     localStorage.setItem(this.rolesKey, JSON.stringify(roles));
   }
 
-  getRoles(): string[] | null {
+  private getRoles(): string[] | null {
     const roles = localStorage.getItem(this.rolesKey);
     return roles ? JSON.parse(roles) : null;
   }
@@ -24,4 +25,21 @@ export class RoleService {
     }
     return roles.includes(role);
   }
+
+  isAdmin(): boolean {
+    return this.hasRole([UserRoles.ADMIN, UserRoles.SUPERADMIN]);
+  }
+
+  isUser(): boolean {
+    return this.hasRole([UserRoles.STUDENT, UserRoles.REVIEWER]);
+  }
+
+  isStudent(): boolean {
+    return this.hasRole([UserRoles.STUDENT]);
+  }
+
+  isReviewer(): boolean {
+    return this.hasRole([UserRoles.REVIEWER]);
+  }
+
 }
