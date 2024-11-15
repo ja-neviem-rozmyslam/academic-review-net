@@ -2,6 +2,8 @@ package com.ukf.arn.Users;
 
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,7 +17,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @Column(columnDefinition = "VARCHAR(36)")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
     private String name;
@@ -34,7 +37,7 @@ public class User implements Serializable {
     @JoinColumn(name = "universities_id")
     private University university;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
@@ -54,7 +57,7 @@ public class User implements Serializable {
     }
 
     public void setId(UUID guid) {
-        this.id = id;
+        this.id = guid;
     }
 
     public String getName() {

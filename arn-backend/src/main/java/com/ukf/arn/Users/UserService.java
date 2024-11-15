@@ -4,6 +4,7 @@ import com.ukf.arn.LoginAttemptService.LoginAttemptService;
 import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,9 @@ public class UserService {
 
         String token = jwtUtil.generateToken(userObj);
 
-        return ResponseEntity.ok().body(new AuthResponse(token, loggedInUser));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .body(loggedInUser);
     }
 
     public User findByUsername(String username) {
