@@ -3,7 +3,6 @@ import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { UserRoles } from '../constants';
 import {RoleService} from '../services/role.service';
 
 @Injectable({
@@ -23,7 +22,7 @@ export class AuthGuard implements CanActivate {
           return false;
         }
 
-        const targetRoute = this.roleService.hasRole([UserRoles.ADMIN, UserRoles.SUPERADMIN])
+        const targetRoute = this.roleService.isAdmin()
           ? '/administration'
           : '/main';
 

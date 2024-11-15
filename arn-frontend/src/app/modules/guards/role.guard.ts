@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
-import {UserRoles} from '../constants';
 import {RoleService} from '../services/role.service';
 
 @Injectable({
@@ -18,10 +17,10 @@ export class RoleGuard implements CanActivate {
       return true;
     }
 
-    if (this.roleService.hasRole([UserRoles.ADMIN, UserRoles.SUPERADMIN])
+    if (this.roleService.isAdmin()
       && next.routeConfig?.path === 'main') {
       this.router.navigate(['/administration']);
-    } else if (this.roleService.hasRole([UserRoles.STUDENT, UserRoles.REVIEWER])
+    } else if (this.roleService.isUser()
       && next.routeConfig?.path === 'administration') {
       this.router.navigate(['/main']);
     } else {
