@@ -1,11 +1,35 @@
+<app-arn-toast [showToast]="showAlert">
+  @if (verificationStatus) {
+    <div class="toast-icon text-green-500 bg-green-100 rounded">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+           viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+      </svg>
+      <span class="sr-only">Success</span>
+    </div>
+  } @else {
+    <div class="toast-icon text-red-500 bg-red-100">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+           viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+      </svg>
+      <span class="sr-only">Error</span>
+    </div>
+  }
+  <div class="ms-3 text-sm font-normal">{{ verificationMessage }}</div>
+</app-arn-toast>
+
 <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
   <div
     class="w-full bg-white rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0">
     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-      <h1 class="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
+      <h1 class="text-2xl font-bold leading-tight tracking-tight text-primary md:text-2xl">
         Prihláste sa do svojho účtu
       </h1>
-      <form appFormValidation (ngSubmit)="onSubmit()" class="space-y-6">
+      <form appFormValidation (ngSubmit)="onSubmit()" (getValidationErrors)="formValidationErrors = $event"
+            class="space-y-6">
         <div>
           <input type="email" name="email" id="email"
                  class="input-base"
@@ -31,7 +55,7 @@
               <label for="remember" class="text-gray-500">Zapamätať si ma</label>
             </div>
           </div>
-          <a class="text-sm font-medium text-gray-600 hover:underline cursor-pointer"
+          <a class="text-sm font-medium text-gray-600 underline-animation cursor-pointer"
              [routerLink]="['/forgot-password']">Zabudnuté heslo?</a>
         </div>
         <div>
@@ -40,8 +64,8 @@
                           type="submit"></app-arn-button>
         </div>
         <p class="text-small">
-          Nemáte ešte účet? <a class="font-medium hover:underline cursor-pointer" [routerLink]="['/password-change']">Vytvoriť
-          účet</a>
+          Nemáte ešte účet? <a class="font-medium underline-animation cursor-pointer"
+                               [routerLink]="['/registration']">Vytvoriť účet</a>
         </p>
       </form>
     </div>

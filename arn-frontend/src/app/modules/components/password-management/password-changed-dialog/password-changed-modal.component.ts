@@ -1,15 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ModalSettings} from '../../base-modal/entities/ModalSettings';
-import {BaseModalComponent} from '../../base-modal/base-modal.component';
+import {BaseModal} from '../../base-modal/entities/BaseModal';
 
 @Component({
   selector: 'app-password-changed-dialog',
   templateUrl: './password-changed-modal.component.html',
   styleUrls: ['./password-changed-modal.component.less']
 })
-export class PasswordChangedModalComponent extends BaseModalComponent implements OnInit {
-  modalSettings: ModalSettings;
+export class PasswordChangedModalComponent extends BaseModal implements OnInit {
   countdown: number = 15;
 
   constructor(private router: Router) {
@@ -17,10 +15,7 @@ export class PasswordChangedModalComponent extends BaseModalComponent implements
   }
 
   ngOnInit(): void {
-    this.modalSettings = {
-      showHeader: false,
-      showFooter: false,
-    } as ModalSettings;
+    this.modalSettings.hideCloseButton = true;
     this.startTimer();
   }
 

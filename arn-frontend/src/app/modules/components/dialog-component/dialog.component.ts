@@ -1,47 +1,39 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {Modal} from 'flowbite';
+import {Component} from '@angular/core';
 import {CONFIRM, DialogSettings, ERROR, INFO, WARNING} from './entities/DialogSettings';
+import {BaseModal} from '../base-modal/entities/BaseModal';
 
 @Component({
   selector: 'app-dialog-component',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.less'
 })
-export class DialogComponent {
-  @ViewChild('modal') modalElement!: ElementRef;
-  dialogSettings: DialogSettings;
-  modal: Modal;
+export class DialogComponent extends BaseModal {
+  dialogSettings: DialogSettings = new DialogSettings();
 
-  setDialogInstance(modal: Modal, dialogSettings: DialogSettings) {
+  setDialogInstance(dialogSettings: DialogSettings) {
     this.dialogSettings = dialogSettings;
-    this.modal = modal;
-    modal.show();
+    if (dialogSettings.dialogType === CONFIRM) {
+      this.modalSettings.showFooter = true;
+    }
   }
 
   onAccept() {
     if (this.dialogSettings.acceptCallback) {
       this.dialogSettings.acceptCallback();
     }
-    this.onClose();
-  }
-
-  onClose() {
-    this.modal.hide();
   }
 
   getDialogHeaderClass() {
     switch (this.dialogSettings.dialogType) {
       case ERROR:
-        return 'bg-lightRed';
+        return 'text-lightRed';
       case WARNING:
-        return 'bg-lightYellow';
+        return 'text-lightYellow';
       case CONFIRM:
       case INFO:
-        return 'bg-lightGreen';
+        return 'text-lightGreen';
       default:
         return '';
     }
   }
-
-  protected readonly CONFIRM = CONFIRM;
 }

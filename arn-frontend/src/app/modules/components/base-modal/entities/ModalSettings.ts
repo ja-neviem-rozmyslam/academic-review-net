@@ -2,6 +2,7 @@ export class ModalSettings {
   title?: string;
   showHeader?: boolean;
   showFooter?: boolean;
+  hideCloseButton?: boolean;
   buttonText?: {
     confirm: string;
     cancel: string;
@@ -9,8 +10,9 @@ export class ModalSettings {
 
   constructor() {
     this.title = '';
-    this.showHeader = true;
-    this.showFooter = true;
+    this.showHeader = false;
+    this.showFooter = false;
+    this.hideCloseButton = false;
     this.buttonText = { confirm: 'Uložiť', cancel: 'Zrušiť' };
   }
 }
