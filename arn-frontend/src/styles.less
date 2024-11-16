@@ -3,65 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.underline-animation {
-  position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    display: block;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 1px;
-    background-color: currentColor;
-    transition: width 0.2s ease;
-  }
-
-  &:hover:after {
-    width: 100%;
-  }
-}
-
-.toast-container {
-@apply fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col space-y-4;
-}
-.toast-icon {
-@apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
-}
-
-.input-base {
-@apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-3 px-4 rounded-full;
-
-  &.invalid {
-  @apply border-red-500;
-  }
-
-  &:focus::placeholder {
-  @apply text-transparent placeholder-transition;
-  }
-
-  &::placeholder {
-  @apply text-gray-400 placeholder-transition;
-  }
-}
-
-.label {
-@apply block mb-2 text-sm font-medium text-gray-900;
-}
-
-.checkbox-custom {
-@apply w-4 h-4 border-gray-300 rounded-full focus:ring-transparent cursor-pointer;
-  &:checked {
-  @apply bg-primary border-primary;
-  animation: checkmarkAnimation 0.3s ease-out;
-  }
-}
-
-.placeholder-transition {
-@apply transition duration-200 ease-in-out transform;
-}
-
 @keyframes checkmarkAnimation {
   0% {
     background-size: 0;
@@ -70,5 +11,71 @@
   100% {
     background-size: 0.55em 0.55em;
     opacity: 1;
+  }
+}
+
+@layer utilities {
+  .element-transition {
+  @apply transition duration-200 ease-in-out transform;
+  }
+
+  .underline-animation {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background-color: currentColor;
+      transition: width 0.2s ease;
+    }
+
+    &:hover:after {
+      width: 100%;
+    }
+  }
+}
+
+.toast-container {
+@apply fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col space-y-4;
+}
+
+.toast-icon {
+@apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
+}
+
+/* Inputs and Labels */
+.input-base {
+@apply bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-3 px-4 rounded-full;
+@apply element-transition;
+
+  &.invalid {
+  @apply border-red-500;
+  }
+
+  &:focus::placeholder {
+  @apply text-transparent element-transition;
+  }
+
+  &::placeholder {
+  @apply text-gray-400 element-transition;
+  }
+}
+
+.label {
+@apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+/* Checkboxes */
+.checkbox-custom {
+@apply w-4 h-4 border-gray-300 rounded-full focus:ring-transparent cursor-pointer;
+
+  &:checked {
+  @apply bg-primary border-primary;
+    animation: checkmarkAnimation 0.3s ease-out;
   }
 }

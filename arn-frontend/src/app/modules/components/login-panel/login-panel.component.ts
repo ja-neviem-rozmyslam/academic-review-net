@@ -13,7 +13,7 @@ import {DialogService} from '../../services/dialog.service';
   styleUrl: './login-panel.component.less'
 })
 export class LoginPanelComponent implements OnInit, OnDestroy {
-  private storageIdentifier: string = 'ARN_STORAGE_EMAIL';
+  private storageIdentifier: string = 'arn-remembered-email';
   private errorSubscription: Subscription;
   formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
@@ -29,7 +29,6 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.showAlert = true;
     const state = history.state as { status?: string, message?: string };
     if (state.status && state.message) {
       this.showAlert = true;
