@@ -5,11 +5,15 @@ import com.ukf.arn.LoginAttemptService.LoginAttemptService;
 import com.ukf.arn.MailService.MailService;
 import com.ukf.arn.Universities.University;
 import com.ukf.arn.Universities.UniversityService;
-import com.ukf.arn.Users.*;
+import com.ukf.arn.Users.User;
+import com.ukf.arn.Users.UserDTO;
+import com.ukf.arn.Users.UserRepository;
+import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -38,14 +40,16 @@ public class AuthService {
     private final UserTokenRepository userTokenRepository;
     private final HttpServletRequest request;
     private final MailService mailService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        LoginAttemptService loginAttemptService,
                        UniversityService universityService,
-                          UserTokenRepository userTokenRepository,
+                       UserTokenRepository userTokenRepository,
                        HttpServletRequest request,
+                       JwtUtil jwtUtil,
                        MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -53,6 +57,7 @@ public class AuthService {
         this.universityService = universityService;
         this.userTokenRepository = userTokenRepository;
         this.request = request;
+        this.jwtUtil = jwtUtil;
         this.mailService = mailService;
     }
 
@@ -109,7 +114,7 @@ public class AuthService {
         if (userObj == null) {
             return ResponseEntity.badRequest().body("Používateľ s takýmto emailom neexistuje");
         }
-        if(!userObj.isVerified()){
+        if (!userObj.isVerified()) {
             return ResponseEntity.badRequest().body("Používateľ nie je overený");
         }
         if (!passwordEncoder.matches(loginRequest.getPassword(), userObj.getPassword())) {
@@ -128,11 +133,13 @@ public class AuthService {
                 userObj.getUniversity(),
                 userObj.getRoles());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("user", loggedInUser);
-        response.put("token", UUID.randomUUID().toString());
+        String token = jwtUtil.generateToken(userObj);
+        String refreshToken = jwtUtil.generateRefreshToken(userObj);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .header("Refresh-Token", refreshToken)
+                .body(loggedInUser);
     }
 
     private User createUser(RegistrationRequest registrationRequest, University university) {
@@ -157,6 +164,10 @@ public class AuthService {
     private void sendVerificationEmail(String email, String token) {
         String link = "http://localhost:8080/api/auth/verify?token=" + token;
         mailService.sendVerificationEmail(email, link);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByEmail(username).orElse(null);
     }
 
     private String getClientIP() {

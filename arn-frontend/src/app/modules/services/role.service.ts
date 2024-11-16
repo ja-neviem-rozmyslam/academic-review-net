@@ -5,7 +5,7 @@ import {UserRoles} from '../constants';
   providedIn: 'root'
 })
 export class RoleService {
-  private readonly rolesKey = 'authRoles';
+  private readonly rolesKey = 'arn-auth-roles';
 
   storeRoles(roles: string[]): void {
     localStorage.setItem(this.rolesKey, JSON.stringify(roles));
@@ -40,6 +40,10 @@ export class RoleService {
 
   isReviewer(): boolean {
     return this.hasRole([UserRoles.REVIEWER]);
+  }
+
+  clearRoles(): void {
+    localStorage.removeItem(this.rolesKey);
   }
 
 }

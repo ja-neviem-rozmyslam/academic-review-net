@@ -66,6 +66,7 @@ export class RegistrationPanelComponent implements OnInit {
           } as NavigationExtras);
         },
         (error: any) => {
+          console.log(error);
           if (error && typeof error.error === 'string') {
             this.errorMessage = error.error;
           } else {

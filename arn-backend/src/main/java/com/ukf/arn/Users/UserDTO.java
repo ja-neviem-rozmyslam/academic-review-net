@@ -15,6 +15,7 @@ public class UserDTO {
     private LocalDateTime registrationDate;
     private University university;
     private List<String> roles;
+    private String token;
 
     public UserDTO() {
     }
