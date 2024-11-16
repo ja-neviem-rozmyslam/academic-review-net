@@ -1,6 +1,11 @@
 package com.ukf.arn.config;
 
+import com.ukf.arn.Authentication.AuthService;
 import com.ukf.arn.Users.User;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,8 +16,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ukf.arn.Users.UserService;
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -20,17 +23,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Override
-    protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             String username = jwtUtil.extractUsername(token);
             if (username != null && jwtUtil.validateToken(token, username)) {
-                User user = userService.findByUsername(username);
+                User user = authService.findByUsername(username);
 
                 if (user != null) {
                     List<SimpleGrantedAuthority> authorities = user.getRoles().stream()

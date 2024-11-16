@@ -40,7 +40,7 @@ public class User implements Serializable {
     private University university;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
 
