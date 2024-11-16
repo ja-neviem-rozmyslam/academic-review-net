@@ -9,10 +9,11 @@ import { HomePageComponent } from './modules/main-panel/home-page/home-page.comp
 import {AuthGuard} from './modules/guards/auth.guard';
 import {RoleGuard} from './modules/guards/role.guard';
 import {UserRoles} from './modules/constants';
+import {LoginGuard} from './modules/guards/login.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginPanelComponent },
-  { path: 'registration', component: RegistrationPanelComponent },
+  { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
+  { path: 'registration', component: RegistrationPanelComponent, canActivate: [LoginGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'password-change', component: PasswordChangeComponent },
   { path: 'verification', component: VerifyPageComponent },
@@ -20,6 +21,5 @@ export const routes: Routes = [
   { path: 'administration', component: AdministrationPanelComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] } },
   { path: 'main', component: HomePageComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.STUDENT, UserRoles.REVIEWER] } },
   { path: '', component: LoginPanelComponent, canActivate: [AuthGuard] },
-
   { path: '**', component: LoginPanelComponent, canActivate: [AuthGuard] }
 ];
