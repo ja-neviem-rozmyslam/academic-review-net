@@ -17,7 +17,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @Column(columnDefinition = "VARCHAR(36)")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
@@ -39,7 +39,7 @@ public class User implements Serializable {
     @JoinColumn(name = "universities_id")
     private University university;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();

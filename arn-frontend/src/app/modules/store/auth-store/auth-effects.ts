@@ -5,11 +5,12 @@ import {catchError, map} from 'rxjs/operators';
 import * as AuthAction from './auth.actions';
 import {AuthService} from '../../services/auth.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
 
-  constructor(private actions$: Actions, private loginService: AuthService) {
+  constructor(private actions$: Actions, private loginService: AuthService, private router: Router) {
   }
 
   login$ = createEffect(() =>
@@ -30,7 +31,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthAction.loginSuccess),
         map(() => {
-          console.log('Login success'); //TODO: token
+          this.router.navigate(['/']);
         })
       ),
     {dispatch: false}
