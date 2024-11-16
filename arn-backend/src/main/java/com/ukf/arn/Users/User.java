@@ -2,6 +2,7 @@ package com.ukf.arn.Users;
 
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -17,7 +18,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 

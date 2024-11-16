@@ -40,18 +40,21 @@ export class AuthService {
     });
   }
 
-  refreshToken(): Observable<any> {
+  refreshToken(): Observable<boolean> {
     const refreshToken = this.tokenService.getRefreshToken();
     if (!refreshToken) {
       this.logout();
-      return of(null);
+      return of(false);
     }
-    return this.http.post<{ accessToken: string }>(`${this.USER_API_ENDPOINT}/refresh-token`, {refreshToken}).pipe(
+    return this.http.post<{ accessToken: string }>(`${this.USER_API_ENDPOINT}/refresh-token`, { refreshToken }).pipe(
       map(response => {
         this.tokenService.storeToken(response.accessToken);
+        return true;
       }),
       catchError(err => {
-        return new Observable(observer => observer.error(err));
+        console.error('Error refreshing token:', err);
+        this.logout();
+        return of(false);
       })
     );
   }
@@ -59,12 +62,7 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     if (!this.tokenService.isAuthenticated()) {
       return this.refreshToken().pipe(
-        map(() => {
-          return true;
-        }),
-        catchError(() => {
-          return of(false);
-        })
+        catchError(() => of(false))
       );
     }
     return of(true);
