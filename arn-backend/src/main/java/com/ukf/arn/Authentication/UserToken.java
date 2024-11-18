@@ -40,6 +40,11 @@ public class UserToken implements Serializable {
         this.tokenType = tokenType;
     }
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+    }
+
     public String getTokenType() {
         return tokenType;
     }
