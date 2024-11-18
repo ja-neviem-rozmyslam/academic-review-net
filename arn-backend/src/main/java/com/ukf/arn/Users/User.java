@@ -19,7 +19,6 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
@@ -56,6 +55,12 @@ public class User implements Serializable {
         this.password = password;
         this.university = university;
         this.roles = roles;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        id = UUID.randomUUID();
+        registrationDate = LocalDateTime.now();
     }
 
     public UUID getId() {
