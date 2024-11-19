@@ -10,6 +10,7 @@ import {AuthGuard} from './modules/guards/auth.guard';
 import {RoleGuard} from './modules/guards/role.guard';
 import {UserRoles} from './modules/constants';
 import {LoginGuard} from './modules/guards/login.guard';
+import {ConferencePageComponent} from './modules/main-panel/conference-page/conference-page.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -18,8 +19,25 @@ export const routes: Routes = [
   { path: 'password-change', component: PasswordChangeComponent },
   { path: 'verification', component: VerifyPageComponent },
 
-  { path: 'administration', component: AdministrationPanelComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] } },
-  { path: 'main', component: HomePageComponent, canActivate: [RoleGuard], data: { roles: [UserRoles.STUDENT, UserRoles.REVIEWER] } },
+  { path: 'administration',
+    component: AdministrationPanelComponent,
+    canActivate: [RoleGuard],
+    data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] },
+    children: []
+  },
+  {
+    path: 'main',
+    component: HomePageComponent,
+    canActivate: [RoleGuard],
+    data: {roles: [UserRoles.STUDENT, UserRoles.REVIEWER]},
+    children: [
+      {
+        path: 'conferences',
+        component: ConferencePageComponent,
+      }
+  ]
+  },
+
   { path: '', component: LoginPanelComponent, canActivate: [AuthGuard] },
   { path: '**', component: LoginPanelComponent, canActivate: [AuthGuard] }
 ];

@@ -9,7 +9,7 @@
         "@schematics/angular:component": {
           "style": "less",
           "standalone": false,
-          "path": "src/app/modules/components"
+          "path": "src/app/modules"
         },
         "@schematics/angular:service": {
           "path": "src/app/modules/services"
