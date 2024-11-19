@@ -16,6 +16,7 @@ module.exports = {
         lightYellow: '#ffa72d',
         lightGreen: '#2a9444',
         disabledColor: '#E9ECEF',
+        background: '#fCfCfC',
         'dark-transparent': 'rgba(0, 0, 0, 0.05)',
       }
     },
