@@ -2,7 +2,7 @@ export interface Conference {
   id: number;
   name: string;
   faculty: string;
-  password: string;
+  isFavorite: boolean;
   uploadDeadline: string;
   reviewDeadline: string;
   creationDate: string;

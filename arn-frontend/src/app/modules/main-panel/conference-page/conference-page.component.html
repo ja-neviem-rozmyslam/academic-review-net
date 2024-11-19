@@ -1,3 +1,14 @@
-@for (conference of conferences; track conference) {
-  <app-conference-card></app-conference-card>
-}
+<div class="mb-6">
+  <h1 class="text-6xl font-bold">Konferencie</h1>
+</div>
+
+<div class="flex items-center mb-6 w-full lg:w-1/4">
+  <magnifying-glass-outline-icon size="30" class="mr-4"></magnifying-glass-outline-icon>
+  <input type="text" class="input-base" placeholder="Vyhladať konferenciu..." [(ngModel)]="searchTerm">
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  <ng-container *ngFor="let conference of filteredConferences | slice:0:6">
+    <app-conference-card [conference]="conference"></app-conference-card>
+  </ng-container>
+</div>

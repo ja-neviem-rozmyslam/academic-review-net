@@ -32,10 +32,15 @@ export const routes: Routes = [
     data: {roles: [UserRoles.STUDENT, UserRoles.REVIEWER]},
     children: [
       {
+        path: '',
+        redirectTo: 'conferences',
+        pathMatch: 'full'
+      },
+      {
         path: 'conferences',
         component: ConferencePageComponent,
       }
-  ]
+    ]
   },
 
   { path: '', component: LoginPanelComponent, canActivate: [AuthGuard] },
