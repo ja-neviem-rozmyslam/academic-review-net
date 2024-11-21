@@ -1,29 +1,29 @@
+# Stage 1: Build the Angular application
 FROM node:20.18-alpine AS builder
 
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY . /app
-COPY /arn-frontend/package.json /arn-frontend/package-lock.json ./
+# Copy package.json and package-lock.json from the angular subdirectory
+COPY arn-frontend/package.json arn-frontend/package-lock.json ./
 
-RUN npm install -g @angular/cli
-
+# Install the dependencies
 RUN npm install
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# Copy all Angular project files from the angular subdirectory
+COPY arn-frontend/ ./
 
-#WORKDIR /app
+# Build the Angular application
+RUN npm run build --prod
 
-#COPY /arn-frontend/package.json /arn-frontend/package-lock.json ./
-#RUN npm install
+# Stage 2: Serve the app using Nginx
+FROM nginx:alpine
 
-#COPY . .
+# Copy the built Angular app from the builder stage to the Nginx web directory
+COPY --from=builder /app/dist/arn-frontend /usr/share/nginx/html
 
-#RUN npm run build
+# Expose port 80
+EXPOSE 80
 
-#FROM nginx:alpine
-
-#COPY --from=builder /app/dist/your-angular-app /usr/share/nginx/html
-
-#EXPOSE 80
-
-#CMD ["nginx", "-g", "daemon off;"]
+# Run Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
