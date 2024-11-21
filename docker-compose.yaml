@@ -1,0 +1,132 @@
+networks:
+  sw-ing:
+
+services:
+  # Remote Database Client
+  # sw-ing-db:
+  #   build:
+  #     context: .
+  #     dockerfile: config/db/Dockerfile
+  #   image: sw-ing-db
+  #   platform: 'linux/x86_64'
+  #   container_name: SW-ING-DB
+  #   environment:
+  #     MYSQL_HOST: b2kzf.h.filess.io
+  #     MYSQL_DATABASE: arn_noddedoil
+  #     MYSQL_USER: arn_noddedoil
+  #     MYSQL_PASSWORD: cee4f5e4b4085ff157069934c638209350fe53d7
+  #     MYSQL_PORT: 3307
+  #   networks:
+  #     - sw-ing
+  #   command: ["tail", "-f", "/dev/null"]
+
+  # Redis + Redis Commander
+  # redis:
+  #   image: library/redis:6-alpine
+  #   container_name: SW-ING-Redis
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - sw-ing
+
+  # redis-commander:
+  #   image: rediscommander/redis-commander:latest
+  #   container_name: SW-ING-RedisCommander
+  #   environment:
+  #     - REDIS_HOSTS=local-0:redis:6379:0,local-1:redis:6379:1
+  #     - HTTP_USER=root
+  #     - HTTP_PASSWORD=qwerty
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - sw-ing
+
+  # api-web:
+  #   # extends:
+  #   #   file: ./src/board-games-be/docker-compose.yml
+  #   #   service: board-api-web
+  #   image: library/nginx:1.20.1
+  #   container_name: ApiWeb
+  #   volumes:
+  #     - ./backend:/var/www/api
+  #     - ./config/web/default.conf:/etc/nginx/conf.d/default.conf
+  #   networks:
+  #     - sw-ing
+  #   ports:
+  #     - 8080:80
+  #   depends_on:
+  #     - api-php
+
+  # api-php:
+  #   build:
+  #     context: .
+  #     dockerfile: config/php/Dockerfile
+  #   image: api-php
+  #   container_name: ApiPhp
+  #   environment:
+  #     DB_DATABASE: sw-ing
+  #     DB_HOST: sw-ing-db
+  #     DB_PORT: 3306
+  #     DB_USERNAME: docker
+  #     DB_PASSWORD: docker
+  #   volumes:
+  #     - ./backend:/var/www/api
+  #     - ./config/php/php.ini:/usr/local/etc/php/php.ini
+  #   networks:
+  #     - sw-ing
+
+  # Frontend web - NodeJS
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: config/nodejs/Dockerfile
+  #   image: frontend
+  #   container_name: Frontend
+  #   volumes:
+  #     - ./frontend:/usr/src/arn-frontend
+  #     - /usr/src/arn-frontend/node_modules
+  #   networks:
+  #     - sw-ing
+  #   ports:
+  #     - 3002:3000
+  #     - 3001:3001
+
+  # Backend web - Spring Boot
+  backend:
+    build:
+      context: .
+      dockerfile: config/spring/Dockerfile
+    image: arn-backend
+    container_name: ARN-Backend
+    # environment:
+    #   DB_HOST:
+    #   DB_PORT:
+    #   DB_USERNAME:
+    #   DB_PASSWORD:
+    #   DB_DATABASE:
+    networks:
+      - sw-ing
+    ports:
+      - 8080:8080
+    #depends_on:
+    #  - sw-ing-db
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: config/angular/Dockerfile
+    image: arn-frontend
+    container_name: ARN-Frontend
+    networks:
+      - sw-ing
+    ports:
+      - 3000:80
+    depends_on:
+      - backend
+
+volumes:
+  dev_swing_db:
+    driver: local
