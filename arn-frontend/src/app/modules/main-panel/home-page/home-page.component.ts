@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {UniversityService} from '../../services/university.service';
+import {MENU_ITEMS} from './enitites/MainMenu';
 
 @Component({
   selector: 'app-home-page',
@@ -7,12 +8,9 @@ import {UniversityService} from '../../services/university.service';
   styleUrl: './home-page.component.less'
 })
 export class HomePageComponent {
-  constructor(private universityService: UniversityService) {
+
+  constructor() {
   }
 
-  onClick(): void {
-    this.universityService.getUniversities().subscribe((response) => {
-      console.log(response);
-    });
-  }
+  protected readonly MENU_ITEMS = MENU_ITEMS;
 }
