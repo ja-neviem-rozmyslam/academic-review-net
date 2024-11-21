@@ -9,7 +9,7 @@ COPY /arn-backend/pom.xml .
 RUN mvn dependency:go-offline -B
 
 # Copy the rest of the application source code
-COPY src ./src
+COPY /arn-backend/src ./src
 
 # Build the application
 RUN mvn clean package -DskipTests

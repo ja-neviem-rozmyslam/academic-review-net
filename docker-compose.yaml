@@ -11,10 +11,10 @@ services:
   #   platform: 'linux/x86_64'
   #   container_name: SW-ING-DB
   #   environment:
-  #     MYSQL_HOST: b2kzf.h.filess.io
-  #     MYSQL_DATABASE: arn_noddedoil
-  #     MYSQL_USER: arn_noddedoil
-  #     MYSQL_PASSWORD: cee4f5e4b4085ff157069934c638209350fe53d7
+  #     MYSQL_HOST:
+  #     MYSQL_DATABASE:
+  #     MYSQL_USER
+  #     MYSQL_PASSWORD:
   #     MYSQL_PORT: 3307
   #   networks:
   #     - sw-ing
