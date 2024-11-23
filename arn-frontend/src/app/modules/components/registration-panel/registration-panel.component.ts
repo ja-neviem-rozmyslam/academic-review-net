@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Registration} from './entities/Registration';
-import {SelectOption} from '../arn-select/entities/SelectOption';
 import {EmailDomain} from './entities/EmailDomain';
 import {AuthService} from '../../services/auth.service';
 import {NavigationExtras, Router} from '@angular/router';
+import {SelectOption} from '../arn-select/entities/SelectOption';
 
 @Component({
   selector: 'app-registration-panel',
@@ -13,32 +13,32 @@ import {NavigationExtras, Router} from '@angular/router';
 export class RegistrationPanelComponent implements OnInit {
   formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
   registrationInfo: Registration = new Registration();
-  universities: SelectOption[];
   emailDomains: EmailDomain[];
+  universitiesSelectOptions: SelectOption[];
   errorMessage: string;
 
   constructor(private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
-    this.universities = [
-      {value: 1, display: 'Univerzita Konštantína Filozofa v Nitre'},
-      {value: 2, display: 'Univerzita Komenského v Bratislave'},
-      {value: 3, display: 'Technická univerzita v Košiciach'}
-    ];
     this.emailDomains = [
-      {domain: 'ukf.sk', universityId: 1},
-      {domain: 'uniba.sk', universityId: 2},
-      {domain: 'tuke.sk', universityId: 3}
+      {universityId: 1, universityName: 'Univerzita Konštantína Filozofa v Nitre', domain: 'ukf.sk'},
+      {universityId: 2, universityName: 'Univerzita Komenského v Bratislave', domain: 'uniba.sk'},
+      {universityId: 3, universityName: 'Technická univerzita v Košiciach', domain: 'tuke.sk'}
     ];
+    this.universitiesSelectOptions = this.emailDomains.map(university => ({
+      value: university.universityId,
+      display: university.universityName,
+      selectObject: university
+    }));
   }
 
   findRelevantUniversity() {
     const domain = this.registrationInfo.email.split('@')[1] || '';
-    const matchingDomain = this.emailDomains.find(emailDomain => domain.includes(emailDomain.domain));
+    const matchingUniversity = this.universitiesSelectOptions.find(option => domain.includes(option.selectObject.domain));
 
-    if (matchingDomain) {
-      this.registrationInfo.universityId = matchingDomain.universityId;
+    if (matchingUniversity) {
+      this.registrationInfo.universityId = Number(matchingUniversity.value);
     }
   }
 
