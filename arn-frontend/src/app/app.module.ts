@@ -29,8 +29,15 @@ import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.comp
 import { HomePageComponent } from './modules/main-panel/home-page/home-page.component';
 import { AuthInterceptor } from './modules/services/AuthInterceptor';
 import {NgHeroiconsModule} from '@dimaslz/ng-heroicons';
-import { ConferencePageComponent } from './modules/main-panel/conference-page/conference-page.component';
+import { ConferencesListPageComponent } from './modules/main-panel/conference-page/conferences-list-page.component';
 import { ConferenceCardComponent } from './modules/main-panel/conference-page/conference-card/conference-card.component';
+import { ConferencePageComponent } from './modules/main-panel/conference/conference-page.component';
+import {
+  ConferenceJoinModalComponent
+} from './modules/main-panel/conference-page/conference-card/conference-join-modal/conference-join-modal.component';
+import { TabsComponent } from './modules/components/tabs/tabs.component';
+import { ThesisComponent } from './modules/main-panel/conference/thesis/thesis.component';
+import { ReviewComponent } from './modules/main-panel/conference/review/review.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +57,13 @@ import { ConferenceCardComponent } from './modules/main-panel/conference-page/co
     VerifyPageComponent,
     ArnToastComponent,
     HomePageComponent,
+    ConferencesListPageComponent,
+    ConferenceCardComponent,
     ConferencePageComponent,
-    ConferenceCardComponent
+    ConferenceJoinModalComponent,
+    TabsComponent,
+    ThesisComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,

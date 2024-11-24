@@ -65,10 +65,14 @@ export class DialogService {
   openCustomModal<T extends BaseModal>(component: Type<T>, modalOptions: ModalOptions = {
     placement: 'center',
     backdrop: 'dynamic'
-  }): ComponentRef<T> {
+  }, data?: any): ComponentRef<T> {
+    const injector = Injector.create({
+      providers: [{ provide: 'modalData', useValue: data }],
+      parent: this.injector
+    });
     const componentRef = this.componentFactoryResolver
       .resolveComponentFactory(component)
-      .create(this.injector) as ComponentRef<T>;
+      .create(injector) as ComponentRef<T>;
 
     this.appRef.attachView(componentRef.hostView);
 

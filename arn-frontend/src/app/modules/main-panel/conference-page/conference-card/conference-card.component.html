@@ -1,13 +1,13 @@
 <div class="p-5 bg-white border border-gray-200 rounded-2xl shadow-md flex flex-col space-y-7 h-full">
   <div class="flex flex-col space-y-1">
-    <div class="flex justify-between items-center">
-      <h1 class="text-lg font-bold">{{conference.name}}</h1>
-      @if(conference.isFavorite) {
+    <div class="flex justify-between items-start">
+      <h1 class="text-lg font-bold">{{ conference.name }}</h1>
+      @if (conference.joined) {
         <check-circle-outline-icon size="24" stroke="2" class="text-green-500"></check-circle-outline-icon>
       }
     </div>
     <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
-      {{conference.faculty}}
+      {{ conference.faculty }}
     </span>
   </div>
 
@@ -17,6 +17,12 @@
   </div>
 
   <div>
-    <app-arn-button class="w-full" [buttonText]="'Pripojiť sa'" [classes]="'bg-gray-800'"></app-arn-button>
+    @if (conference.joined) {
+      <app-arn-button class="w-full" [buttonText]="'Otvoriť'" (buttonClick)="openConference()"
+                      [classes]="'bg-gray-800'"></app-arn-button>
+    } @else {
+      <app-arn-button class="w-full" [buttonText]="'Pripojiť sa'" (buttonClick)="joinConference()"
+                      [classes]="'bg-gray-800'"></app-arn-button>
+    }
   </div>
 </div>

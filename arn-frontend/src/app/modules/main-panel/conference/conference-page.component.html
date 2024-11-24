@@ -1,0 +1,14 @@
+<app-tabs
+  [tabs]="tabOptions"
+  [activeTab]="selectedOption"
+  (tabChanged)="onTabChange($event)"
+></app-tabs>
+
+<div class="p-4">
+  <ng-container *ngIf="selectedOption === 'DETAILS'">
+    <app-submission-details></app-submission-details>
+  </ng-container>
+  <ng-container *ngIf="selectedOption === 'REVIEW'">
+    <app-review-form></app-review-form>
+  </ng-container>
+</div>

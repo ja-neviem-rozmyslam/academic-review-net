@@ -5,10 +5,14 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class ConferenceService {
   USER_API_ENDPOINT = 'api/conference';
 
   constructor(private http: HttpClient) {
+  }
+
+  requestConferenceJoin(conferenceId: number, password: string) {
+    return this.http.post(`${this.USER_API_ENDPOINT}/conferences/${conferenceId}/join`, {password});
   }
 
   getConferences() {

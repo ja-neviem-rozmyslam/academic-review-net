@@ -1,0 +1,14 @@
+<ul class="inline-flex text-sm font-medium text-gray-500 bg-gray-200 py-1 px-0.5 rounded-md">
+  @for (tab of tabs; track tab) {
+    <li class="mx-1">
+      <div
+        class="px-6 py-2 cursor-pointer rounded-md element-transition"
+        [ngClass]="{
+        'bg-white text-black font-bold rounded-md shadow': tab.value === activeTab,
+        'text-gray-500 hover:text-black': tab.value !== activeTab}"
+        (click)="setActiveTab(tab.value)">
+        {{ tab.label }}
+      </div>
+    </li>
+  }
+</ul>

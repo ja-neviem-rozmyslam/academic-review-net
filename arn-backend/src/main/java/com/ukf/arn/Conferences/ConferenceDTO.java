@@ -8,7 +8,7 @@ public class ConferenceDTO {
     private String creationDate;
     private String faculty;
     private boolean closed;
-    private String review_form;
+    private String reviewForm;
     private boolean joined;
 
     public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, String creationDate, String faculty, boolean closed, String review_form, boolean joined) {
@@ -19,7 +19,7 @@ public class ConferenceDTO {
         this.creationDate = creationDate;
         this.faculty = faculty;
         this.closed = closed;
-        this.review_form = review_form;
+        this.reviewForm = review_form;
         this.joined = joined;
     }
 
@@ -51,8 +51,8 @@ public class ConferenceDTO {
         return closed;
     }
 
-    public String getReview_form() {
-        return review_form;
+    public String getReviewForm() {
+        return reviewForm;
     }
 
     public boolean isJoined() {
