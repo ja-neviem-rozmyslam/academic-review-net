@@ -39,7 +39,6 @@ public class ConstantsKatalog {
             return role != null ? role.getPrettyName() : null;
         }
     }
-
 }
 
 

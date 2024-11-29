@@ -36,8 +36,9 @@ import {
   ConferenceJoinModalComponent
 } from './modules/main-panel/conference-page/conference-card/conference-join-modal/conference-join-modal.component';
 import { TabsComponent } from './modules/components/tabs/tabs.component';
-import { ThesisComponent } from './modules/main-panel/conference/thesis/thesis.component';
+import { SubmissionComponent } from './modules/main-panel/conference/submission/submission.component';
 import { ReviewComponent } from './modules/main-panel/conference/review/review.component';
+import { ArnFileinputComponent } from './modules/components/arn-fileinput/arn-fileinput.component';
 
 @NgModule({
   declarations: [
@@ -62,8 +63,9 @@ import { ReviewComponent } from './modules/main-panel/conference/review/review.c
     ConferencePageComponent,
     ConferenceJoinModalComponent,
     TabsComponent,
-    ThesisComponent,
-    ReviewComponent
+    SubmissionComponent,
+    ReviewComponent,
+    ArnFileinputComponent
   ],
   imports: [
     BrowserModule,

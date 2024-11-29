@@ -1,0 +1,54 @@
+<div class="card-base p-6">
+  <form class="space-y-4">
+    <div class="arn-input">
+      <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
+      <input
+        type="text"
+        id="nadpis-zaverecnej-prace"
+        placeholder="Vložte nadpis"/>
+    </div>
+
+    <div class="arn-input">
+      <label for="typ-zaverecnej-prace">Typ záverečnej práce</label>
+      <app-arn-select
+        id="typ-zaverecnej-prace"
+        [placeholder]="'Vyberte typ záverečnej práce'" />
+    </div>
+
+    <div class="arn-input">
+      <label for="abstrakt-anglicky">Abstrakt (Anglický)</label>
+      <textarea
+        id="abstrakt-anglicky"
+        rows="3"
+        placeholder="Vyplňte abstrakt v Anglickom jazyku">
+        </textarea>
+    </div>
+
+    <div class="arn-input">
+      <label for="abstrakt-slovensky">Abstrakt (Slovenský)</label>
+      <textarea
+        id="abstrakt-slovensky"
+        rows="3"
+        placeholder="Vyplňte abstrakt v Slovenskom jazyku">
+        </textarea>
+    </div>
+
+    <div class="arn-input">
+      <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
+      <app-arn-select
+        id="spolu-autori"
+        [placeholder]="'Vyberte spolu autorov'" />
+    </div>
+
+    <div class="flex items-center justify-between">
+      <div class="flex space-x-5">
+        <app-arn-fileinput [placeholder]="'Vybrte súbor práce vo formáte DOCX'"
+                           [required]="true"
+                           [acceptedFormats]="'.doc, .docx, .pdf'"
+                           [multiple]="true" />
+      </div>
+      <app-arn-button [buttonText]="'Odovzdať Prácu'"></app-arn-button>
+    </div>
+  </form>
+</div>
+

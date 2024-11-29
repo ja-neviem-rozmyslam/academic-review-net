@@ -1,14 +1,13 @@
 <app-tabs
   [tabs]="tabOptions"
   [activeTab]="selectedOption"
-  (tabChanged)="onTabChange($event)"
-></app-tabs>
+  (tabChanged)="onTabChange($event)" />
 
-<div class="p-4">
+<div class="pt-4">
   <ng-container *ngIf="selectedOption === 'DETAILS'">
-    <app-submission-details></app-submission-details>
+    <app-submission />
   </ng-container>
   <ng-container *ngIf="selectedOption === 'REVIEW'">
-    <app-review-form></app-review-form>
+    <app-review />
   </ng-container>
 </div>
