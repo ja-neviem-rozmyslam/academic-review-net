@@ -1,6 +1,6 @@
 export interface Conference {
   id: number;
-  name: string;
+  conferenceName: string;
   faculty: string;
   joined: boolean;
   uploadDeadline: string;

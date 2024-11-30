@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-submission',
@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './submission.component.less'
 })
 export class SubmissionComponent {
+  uploadedFiles: File[] = [];
 
+
+  onSubmit(): void {
+    console.log('Submitted files:', this.uploadedFiles);
+  }
 }

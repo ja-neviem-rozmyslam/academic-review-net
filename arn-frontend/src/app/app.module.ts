@@ -39,6 +39,7 @@ import { TabsComponent } from './modules/components/tabs/tabs.component';
 import { SubmissionComponent } from './modules/main-panel/conference/submission/submission.component';
 import { ReviewComponent } from './modules/main-panel/conference/review/review.component';
 import { ArnFileinputComponent } from './modules/components/arn-fileinput/arn-fileinput.component';
+import {ConferenceStore} from './modules/main-panel/conference-page/store/conferences-store.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { ArnFileinputComponent } from './modules/components/arn-fileinput/arn-fi
       multi: true
     },
     AuthEffects,
-    DialogService
+    DialogService,
+    ConferenceStore
   ],
   bootstrap: [AppComponent]
 })

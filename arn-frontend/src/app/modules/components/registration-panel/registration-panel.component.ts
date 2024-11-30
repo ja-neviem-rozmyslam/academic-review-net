@@ -4,11 +4,13 @@ import {EmailDomain} from './entities/EmailDomain';
 import {AuthService} from '../../services/auth.service';
 import {NavigationExtras, Router} from '@angular/router';
 import {SelectOption} from '../arn-select/entities/SelectOption';
+import {EmailDomainService} from './services/email-domain.service';
 
 @Component({
   selector: 'app-registration-panel',
   templateUrl: './registration-panel.component.html',
-  styleUrl: './registration-panel.component.less'
+  styleUrl: './registration-panel.component.less',
+  providers: [EmailDomainService]
 })
 export class RegistrationPanelComponent implements OnInit {
   formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
@@ -17,20 +19,18 @@ export class RegistrationPanelComponent implements OnInit {
   universitiesSelectOptions: SelectOption[];
   errorMessage: string;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private emailDomainService: EmailDomainService) {
   }
 
   ngOnInit() {
-    this.emailDomains = [
-      {universityId: 1, universityName: 'Univerzita Konštantína Filozofa v Nitre', domain: 'ukf.sk'},
-      {universityId: 2, universityName: 'Univerzita Komenského v Bratislave', domain: 'uniba.sk'},
-      {universityId: 3, universityName: 'Technická univerzita v Košiciach', domain: 'tuke.sk'}
-    ];
-    this.universitiesSelectOptions = this.emailDomains.map(university => ({
-      value: university.universityId,
-      display: university.universityName,
-      selectObject: university
-    }));
+    this.emailDomainService.getAllDomains().pipe().subscribe((domains: EmailDomain[]) => {
+      this.emailDomains = domains;
+      this.universitiesSelectOptions = this.emailDomains.map(university => ({
+        value: university.universityId,
+        display: university.universityName,
+        selectObject: university
+      }));
+    });
   }
 
   findRelevantUniversity() {

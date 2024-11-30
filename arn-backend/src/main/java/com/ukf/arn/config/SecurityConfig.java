@@ -39,12 +39,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/auth/**").anonymous()
+                        .requestMatchers("/api/email-domains/**").anonymous()
                         .requestMatchers("/api/password-reset/**").anonymous()
                         .anyRequest().authenticated()
-                )
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                        .accessDeniedHandler(accessDeniedHandler())
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

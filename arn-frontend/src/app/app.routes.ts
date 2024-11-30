@@ -11,9 +11,6 @@ import {RoleGuard} from './modules/guards/role.guard';
 import {UserRoles} from './modules/constants';
 import {LoginGuard} from './modules/guards/login.guard';
 import {ConferencesListPageComponent} from './modules/main-panel/conference-page/conferences-list-page.component';
-import {
-  ConferenceJoinModalComponent
-} from './modules/main-panel/conference-page/conference-card/conference-join-modal/conference-join-modal.component';
 import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
 
 export const routes: Routes = [

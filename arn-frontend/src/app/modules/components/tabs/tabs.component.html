@@ -1,14 +1,12 @@
-<ul class="inline-flex text-sm font-medium text-gray-500 bg-gray-200 py-1.5 px-0.5 rounded-[.8rem]">
-  @for (tab of tabs; track tab) {
-    <li class="mx-1">
-      <div
-        class="px-6 py-2 cursor-pointer rounded-[.5rem] element-transition"
-        [ngClass]="{
-        'bg-white text-black font-bold rounded-md shadow': tab.value === activeTab,
-        'text-gray-500 hover:text-black hover:bg-gray-300 rounded-lg': tab.value !== activeTab}"
-        (click)="setActiveTab(tab.value)">
-        {{ tab.label }}
-      </div>
-    </li>
-  }
+<ul class="inline-flex text-sm font-medium text-gray-500 bg-gray-200 p-1.5 rounded-[.8rem] gap-1.5">
+  <li *ngFor="let tab of tabs">
+    <div class="px-6 py-2 cursor-pointer rounded-[.6rem] element-transition"
+         (click)="setActiveTab(tab.value)"
+         [ngClass]="{
+           'bg-white text-black shadow-md': tab.value === activeTab,
+           'text-gray-500 hover:text-black hover:bg-gray-300': tab.value !== activeTab
+         }">
+      {{ tab.label }}
+    </div>
+  </li>
 </ul>

@@ -1,7 +1,7 @@
 <div class="card-base p-5 border flex flex-col space-y-7 h-full">
   <div class="flex flex-col space-y-1">
     <div class="flex justify-between items-start">
-      <h1 class="text-lg font-bold">{{ conference.name }}</h1>
+      <h1 class="text-lg font-bold">{{ conference.conferenceName }}</h1>
       @if (conference.joined) {
         <check-circle-outline-icon size="24" stroke="2" class="text-green-500"></check-circle-outline-icon>
       }

@@ -12,9 +12,12 @@ import java.util.UUID;
 
 @Service
 public class ConferenceService {
-    @Autowired
+
     private ConferenceRepository conferenceRepository;
 
+    public ConferenceService(ConferenceRepository conferenceRepository) {
+        this.conferenceRepository = conferenceRepository;
+    }
 
     public ResponseEntity<?> getConferencesForUser(UUID userId) {
         List<Conference> conferences = conferenceRepository.findAll();

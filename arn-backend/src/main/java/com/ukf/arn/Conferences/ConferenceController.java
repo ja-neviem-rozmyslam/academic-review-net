@@ -12,8 +12,11 @@ import java.util.UUID;
 @RequestMapping("/api/conferences")
 public class ConferenceController {
 
-    @Autowired
     private ConferenceService conferenceService;
+
+    public ConferenceController(ConferenceService conferenceService) {
+        this.conferenceService = conferenceService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getConferences() {

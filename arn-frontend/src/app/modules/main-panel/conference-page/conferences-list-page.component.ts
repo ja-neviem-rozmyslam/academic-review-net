@@ -1,70 +1,79 @@
-import { Component } from '@angular/core';
-import {Conference} from './entities/Conference';
+import { Component, OnInit } from '@angular/core';
+import { Conference } from './entities/Conference';
+import { ConferenceService } from './service/conference.service';
+import { ConferenceStore } from './store/conferences-store.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-conference-page',
   templateUrl: './conferences-list-page.component.html',
-  styleUrl: './conferences-list-page.component.less'
+  styleUrls: ['./conferences-list-page.component.less'],
+  providers: [ConferenceService]
 })
-export class ConferencesListPageComponent {
-  conferences: Conference[] = [
-    {
-      id: 1,
-      name: 'AI Innovations Summit',
-      faculty: 'Computer Science Faculty',
-      joined: true,
-      uploadDeadline: '2024-11-30',
-      reviewDeadline: '2024-12-15',
-      creationDate: '2024-01-10',
-      reviewForm: 'AIReviewForm'
-    },
-    {
-      id: 2,
-      name: 'Sustainable Energy Conference',
-      faculty: 'Engineering Faculty',
-      joined: true,
-      uploadDeadline: '2024-09-10',
-      reviewDeadline: '2024-09-25',
-      creationDate: '2023-12-01',
-      reviewForm: 'EnergyReviewForm'
-    },
-    {
-      id: 3,
-      name: 'Medical Technology Expo',
-      faculty: 'Health Sciences Faculty',
-      joined: false,
-      uploadDeadline: '2024-07-15',
-      reviewDeadline: '2024-08-01',
-      creationDate: '2023-11-20',
-      reviewForm: 'MedTechReviewForm'
-    },
-    {
-      id: 4,
-      name: 'Education Futures Forum',
-      faculty: 'Education Faculty',
-      joined: false,
-      uploadDeadline: '2024-10-01',
-      reviewDeadline: '2024-10-20',
-      creationDate: '2024-02-15',
-      reviewForm: 'EducationReviewForm'
-    },
-    {
-      id: 5,
-      name: 'Environmental Research Congress',
-      faculty: 'Environmental Sciences Faculty',
-      joined: false,
-      uploadDeadline: '2024-06-20',
-      reviewDeadline: '2024-07-10',
-      creationDate: '2023-09-05',
-      reviewForm: 'EnviroReviewForm'
-    }
-  ];
-
+export class ConferencesListPageComponent implements OnInit {
+  conferences$: Observable<Conference[]> = this.conferenceStore.conferences$;
+  filteredConferences$: Observable<Conference[]> = this.conferences$;
+  currentPageConferences: Conference[] = [];
   searchTerm: string = '';
+  currentPage: number = 1;
+  pageSize: number = 6;
+  totalPages: number = 1;
 
-  get filteredConferences(): Conference[] {
-    return this.conferences.filter(conference =>
-      conference.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore) {}
+
+  ngOnInit(): void {
+    this.filteredConferences$.subscribe(filtered => {
+      this.totalPages = Math.ceil(filtered.length / this.pageSize);
+      this.updateCurrentPageConferences(filtered);
+    });
+
+    this.conferenceService.getConferences().subscribe((conferences: Conference[]) => {
+      this.conferenceStore.updateConferences(conferences);
+      this.filteredConferences$ = this.conferences$;
+      this.filteredConferences$.subscribe(filtered => {
+        this.totalPages = Math.ceil(filtered.length / this.pageSize);
+        this.updateCurrentPageConferences(filtered);
+      });
+    });
+  }
+
+  onSearch(): void {
+    this.filteredConferences$ = this.conferences$.pipe(
+      map(conferences =>
+        conferences.filter(conference =>
+          conference.conferenceName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        )
+      )
     );
+    this.filteredConferences$.subscribe(filtered => {
+      this.totalPages = Math.ceil(filtered.length / this.pageSize);
+      this.currentPage = 1;
+      this.updateCurrentPageConferences(filtered);
+    });
+  }
+
+  updateCurrentPageConferences(conferences: Conference[]): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.currentPageConferences = conferences.slice(startIndex, endIndex);
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.filteredConferences$.subscribe(filtered => {
+        this.updateCurrentPageConferences(filtered);
+      });
+    }
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.filteredConferences$.subscribe(filtered => {
+        this.updateCurrentPageConferences(filtered);
+      });
+    }
   }
 }
