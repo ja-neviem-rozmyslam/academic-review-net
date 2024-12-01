@@ -5,6 +5,8 @@
       <input
         type="text"
         id="nadpis-zaverecnej-prace"
+        name="title"
+        [(ngModel)]="submissionForm.title"
         placeholder="Vložte nadpis" />
     </div>
 
@@ -12,6 +14,7 @@
       <label for="typ-zaverecnej-prace">Typ záverečnej práce</label>
       <app-arn-select
         id="typ-zaverecnej-prace"
+        [(selectedOption)]="submissionForm.category"
         [placeholder]="'Vyberte typ záverečnej práce'" />
     </div>
 
@@ -21,6 +24,8 @@
         <textarea
           id="abstrakt-anglicky"
           rows="6"
+          name="abstractEn"
+          [(ngModel)]="submissionForm.abstractEn"
           placeholder="Vyplňte abstrakt v Anglickom jazyku"></textarea>
       </div>
 
@@ -29,6 +34,8 @@
         <textarea
           id="abstrakt-slovensky"
           rows="6"
+          name="abstractSk"
+          [(ngModel)]="submissionForm.abstractSk"
           placeholder="Vyplňte abstrakt v Slovenskom jazyku"></textarea>
       </div>
     </div>
@@ -37,6 +44,7 @@
       <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
       <app-arn-select
         id="spolu-autori"
+
         [placeholder]="'Vyberte spolu autorov'" />
     </div>
 
@@ -47,7 +55,7 @@
           [placeholder]="'Nahrajte prácu 2-krát (Jednu v PDF a druhú v DOCX formáte)'"
           [multiple]="true"
           [fileLimit]="2"
-          [(fileSelected)]="uploadedFiles" />
+          [(fileSelected)]="submissionForm.uploadedFiles" />
       </div>
 
       <div class="flex-shrink-0 w-full sm:w-auto">
