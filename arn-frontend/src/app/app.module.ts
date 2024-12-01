@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
 import { LoginPanelComponent } from './modules/components/login-panel/login-panel.component';
 import { AdministrationPanelComponent } from './modules/administration-panel/administration-panel/administration-panel.component';
 import { SidemenuComponent } from './modules/components/sidemenu/sidemenu.component';
@@ -28,6 +28,9 @@ import { VerifyPageComponent } from './modules/components/verify-page/verify-pag
 import { ArnToastComponent } from './modules/components/arn-toast/arn-toast.component';
 import { HomePageComponent } from './modules/main-panel/home-page/home-page.component';
 import { AuthInterceptor } from './modules/services/AuthInterceptor';
+import {NgHeroiconsModule} from '@dimaslz/ng-heroicons';
+import { ConferencePageComponent } from './modules/main-panel/conference-page/conference-page.component';
+import { ConferenceCardComponent } from './modules/main-panel/conference-page/conference-card/conference-card.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +49,15 @@ import { AuthInterceptor } from './modules/services/AuthInterceptor';
     ArnSelectComponent,
     VerifyPageComponent,
     ArnToastComponent,
-    HomePageComponent
+    HomePageComponent,
+    ConferencePageComponent,
+    ConferenceCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgHeroiconsModule,
     RouterModule.forRoot(routes),
     StoreModule.forRoot(appReducer, {}),
     EffectsModule.forRoot([AuthEffects]),
