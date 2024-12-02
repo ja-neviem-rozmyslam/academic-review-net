@@ -23,7 +23,6 @@ public class SubmissionController {
             @RequestPart("submissionRequest") SubmissionRequest submissionRequest,
             @RequestPart("uploadedFiles") MultipartFile[] uploadedFiles
     ) throws IOException {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(submissionService.createSubmission(submissionRequest, uploadedFiles));
     }
-
 }

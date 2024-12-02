@@ -1,13 +1,17 @@
 package com.ukf.arn.Submissions;
 
+import com.ukf.arn.config.SecurityConfig;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class SubmissionService {
@@ -19,7 +23,8 @@ public class SubmissionService {
     }
 
     public String generateFolderHash() {
-        return "folderHash";
+        UUID id = SecurityConfig.getLoggedInUser().getId();
+        return id.toString();
     }
 
     public void createFolderIfNotExists(String folderPath) throws IOException {
@@ -36,8 +41,8 @@ public class SubmissionService {
         }
     }
 
-    public Submission createSubmission(SubmissionRequest submission, MultipartFile[] uploadedFiles) throws IOException {
-        String conferenceFolderPath = "../conferences/" + submission.getConferenceId();
+    public ResponseEntity<?> createSubmission(SubmissionRequest submission, MultipartFile[] uploadedFiles) throws IOException {
+        String conferenceFolderPath = "conferences/" + submission.getConferenceId();
         createFolderIfNotExists(conferenceFolderPath);
 
         String folderHash = generateFolderHash();
@@ -53,6 +58,6 @@ public class SubmissionService {
         newSubmission.setFolderHash(generateFolderHash());
         newSubmission.setConferencesId(submission.getConferenceId());
         newSubmission.setThesesCategoriesId(submission.getCategory());
-        return submissionRepository.save(newSubmission);
+        return ResponseEntity.ok(submissionRepository.save(newSubmission));
     }
 }
