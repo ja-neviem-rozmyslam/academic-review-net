@@ -4,9 +4,9 @@
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-6">
-  <ng-container *ngFor="let conference of currentPageConferences">
+  @for(conference of currentPageConferences; track conference) {
     <app-conference-card [conference]="conference" class="h-full flex flex-col"></app-conference-card>
-  </ng-container>
+  }
 </div>
 
 <div class="pagination-controls">

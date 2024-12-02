@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ArnFileinputComponent implements OnInit {
   @Input() placeholder: string;
+  @Input() invalid: boolean = false;
   @Input() required: boolean = false;
   @Input() multiple: boolean = false;
   @Input() acceptedFormats: string = '';

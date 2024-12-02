@@ -13,7 +13,7 @@ export class ConferenceService {
   }
 
   requestConferenceJoin(conferenceId: number, password: string) {
-    return this.http.post(`${this.USER_API_ENDPOINT}/conferences/${conferenceId}/join`, {password});
+    return this.http.post(`${this.USER_API_ENDPOINT}/join/${conferenceId}`, {password});
   }
 
   getConferences(): Observable<any> {

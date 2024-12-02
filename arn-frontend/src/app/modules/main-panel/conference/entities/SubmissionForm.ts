@@ -5,7 +5,6 @@ export class SubmissionForm {
   abstractSk: string;
   coauthors?: number[];
   conferenceId?: number;
-  uploadedFiles: File[];
 
   constructor() {
     this.title = '';
@@ -13,6 +12,5 @@ export class SubmissionForm {
     this.abstractEn = '';
     this.abstractSk = '';
     this.coauthors = [];
-    this.uploadedFiles = [];
   }
 }

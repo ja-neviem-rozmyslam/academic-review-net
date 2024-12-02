@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { SubmissionService } from '../../../services/submission.service';
 import {ActivatedRoute} from '@angular/router';
 import {SubmissionForm} from '../entities/SubmissionForm';
+import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
 
 @Component({
   selector: 'app-submission',
@@ -10,7 +11,15 @@ import {SubmissionForm} from '../entities/SubmissionForm';
 })
 export class SubmissionComponent implements OnInit {
   id: number;
+  invalidFileAmount: boolean = false;
   submissionForm: SubmissionForm = new SubmissionForm();
+  uploadedFiles: File[] = [];
+
+  thesisTypes: SelectOption[] = [
+    { value: 1, display: 'Bakalárska práca' },
+    { value: 2, display: 'Diplomová práca' },
+    { value: 3, display: 'Dizertačná práca' }
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -22,15 +31,15 @@ export class SubmissionComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.id === undefined) {
+    this.invalidFileAmount = this.uploadedFiles.length !== 2;
+    this.submissionForm.conferenceId = this.id;
+
+    if (!this.submissionForm.conferenceId || this.invalidFileAmount) {
       console.error('Conference ID is not defined');
       return;
     }
-    this.submissionForm.conferenceId = this.id;
-    console.log('Submitting form:', this.submissionForm);
 
-
-    this.submissionService.uploadFiles(this.submissionForm).subscribe(
+    this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
       response => {
         console.log('Upload response:', response);
       },
@@ -39,4 +48,10 @@ export class SubmissionComponent implements OnInit {
       }
     );
   }
+
+  onselectCategory(selectedCategory: number): void {
+    console.log('Selected category:', selectedCategory);
+  }
+
+  protected readonly onselect = onselect;
 }
