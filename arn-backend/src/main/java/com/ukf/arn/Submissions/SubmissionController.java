@@ -23,6 +23,12 @@ public class SubmissionController {
             @RequestPart("submissionRequest") SubmissionRequest submissionRequest,
             @RequestPart("uploadedFiles") MultipartFile[] uploadedFiles
     ) throws IOException {
-        return ResponseEntity.ok(submissionService.createSubmission(submissionRequest, uploadedFiles));
+        return submissionService.createSubmission(submissionRequest, uploadedFiles);
     }
+
+    @GetMapping("/{conferenceId}")
+    public ResponseEntity<?> getSubmission(@PathVariable Long conferenceId) {
+        return submissionService.getSubmission(conferenceId);
+    }
+
 }

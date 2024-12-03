@@ -1,19 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SubmissionService } from '../../../services/submission.service';
-import {ActivatedRoute} from '@angular/router';
-import {SubmissionForm} from '../entities/SubmissionForm';
-import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
+import { ActivatedRoute } from '@angular/router';
+import { SubmissionForm } from '../entities/SubmissionForm';
+import { SelectOption } from '../../../components/arn-select/entities/SelectOption';
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
-  styleUrl: './submission.component.less'
+  styleUrls: ['./submission.component.less']
 })
 export class SubmissionComponent implements OnInit {
   id: number;
   invalidFileAmount: boolean = false;
   submissionForm: SubmissionForm = new SubmissionForm();
   uploadedFiles: File[] = [];
+  existingSubmission: any = null;
+  errorMessage: string = '';
 
   thesisTypes: SelectOption[] = [
     { value: 1, display: 'Bakalárska práca' },
@@ -28,7 +30,16 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.fetchExistingSubmission();
   }
+
+  fetchExistingSubmission(): void {
+    this.submissionService.getSubmission(this.id).subscribe({
+      next: (data) => (this.existingSubmission = data),
+      error: (err) => (this.errorMessage = err.message),
+    });
+  }
+
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
@@ -40,10 +51,11 @@ export class SubmissionComponent implements OnInit {
     }
 
     this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
-      response => {
+      (response) => {
         console.log('Upload response:', response);
+        this.fetchExistingSubmission();
       },
-      error => {
+      (error) => {
         console.error('Upload error:', error);
       }
     );
@@ -52,6 +64,4 @@ export class SubmissionComponent implements OnInit {
   onselectCategory(selectedCategory: number): void {
     console.log('Selected category:', selectedCategory);
   }
-
-  protected readonly onselect = onselect;
 }

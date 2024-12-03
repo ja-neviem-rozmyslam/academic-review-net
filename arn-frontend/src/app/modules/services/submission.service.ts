@@ -7,7 +7,7 @@ import { SubmissionForm } from '../main-panel/conference/entities/SubmissionForm
   providedIn: 'root'
 })
 export class SubmissionService {
-  SUBMISSION_API_ENDPOINT = 'api/submissions';
+  private SUBMISSION_API_ENDPOINT = 'api/submissions';
 
   constructor(private http: HttpClient) {}
 
@@ -19,5 +19,9 @@ export class SubmissionService {
     });
 
     return this.http.post(`${this.SUBMISSION_API_ENDPOINT}/upload`, formData, { observe: 'response' });
+  }
+
+  getSubmission(conferenceId: number): Observable<any> {
+    return this.http.get<any>(`${this.SUBMISSION_API_ENDPOINT}/${conferenceId}`);
   }
 }

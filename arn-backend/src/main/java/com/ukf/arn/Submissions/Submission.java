@@ -1,8 +1,11 @@
 package com.ukf.arn.Submissions;
 
+import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "uploaded_theses")
@@ -33,6 +36,14 @@ public class Submission implements Serializable {
 
     @Column(name = "theses_categories_id")
     private Long thesesCategoriesId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "theses_authors",
+            joinColumns = @JoinColumn(name = "thesis_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> authors = new HashSet<>();
 
     public Submission() {
     }
@@ -124,5 +135,13 @@ public class Submission implements Serializable {
 
     public void setThesesCategoriesId(Long thesesCategoriesId) {
         this.thesesCategoriesId = thesesCategoriesId;
+    }
+
+    public Set<User> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<User> authors) {
+        this.authors = authors;
     }
 }

@@ -1,5 +1,6 @@
 package com.ukf.arn.Users;
 
+import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,9 +9,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -43,6 +42,9 @@ public class User implements Serializable {
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Submission> authoredTheses = new HashSet<>();
 
     public User() {
     }

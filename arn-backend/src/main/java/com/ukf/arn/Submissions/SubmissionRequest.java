@@ -1,17 +1,20 @@
 package com.ukf.arn.Submissions;
 
+import java.util.List;
+import java.util.UUID;
+
 public class SubmissionRequest {
     private String title;
     private String abstractSk;
     private String abstractEn;
     private Long conferenceId;
     private Long category;
-    private Long[] coauthors;
+    private List<UUID> coauthors;
 
     public SubmissionRequest() {
     }
 
-    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferencesId, Long thesesCategoriesId, Long[] coauthors) {
+    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferencesId, Long thesesCategoriesId, List<UUID> coauthors) {
         this.title = thesisTitle;
         this.abstractSk = abstractSk;
         this.abstractEn = abstractEn;
@@ -20,11 +23,11 @@ public class SubmissionRequest {
         this.coauthors = coauthors;
     }
 
-    public Long[] getCoauthors() {
+    public List<UUID> getCoauthors() {
         return coauthors;
     }
 
-    public void setCoauthors(Long[] coauthors) {
+    public void setCoauthors(List<UUID> coauthors) {
         this.coauthors = coauthors;
     }
 

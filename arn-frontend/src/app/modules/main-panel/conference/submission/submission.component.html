@@ -7,7 +7,9 @@
         id="nadpis-zaverecnej-prace"
         name="title"
         placeholder="Vložte nadpis"
-        [(ngModel)]="submissionForm.title" required />
+        [(ngModel)]="submissionForm.title"
+        [value]="existingSubmission?.title"
+      required />
     </div>
 
     <div class="arn-input">
@@ -17,14 +19,18 @@
         [(selectedOption)]="submissionForm.category"
         [options]="thesisTypes"
         [placeholder]="'Vyberte typ záverečnej práce'"
-        [required]="true"/>
+        [required]="true"
+        [selectedOption]="existingSubmission?.category"
+      />
     </div>
 
     <div class="arn-input">
       <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
       <app-arn-select
         id="spolu-autori"
-        [placeholder]="'Vyberte spolu autorov'"/>
+        [placeholder]="'Vyberte spolu autorov'"
+        [selectedOption]="existingSubmission?.authors || []"
+      />
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
@@ -35,7 +41,10 @@
           rows="9"
           name="abstractEn"
           [(ngModel)]="submissionForm.abstractEn"
-          placeholder="Vyplňte abstrakt v Anglickom jazyku" required></textarea>
+          placeholder="Vyplňte abstrakt v Anglickom jazyku"
+          [value]="existingSubmission?.abstractEn"
+        required>
+        </textarea>
       </div>
 
       <div class="arn-input sm:w-1/2">
@@ -45,7 +54,10 @@
           rows="9"
           name="abstractSk"
           [(ngModel)]="submissionForm.abstractSk"
-          placeholder="Vyplňte abstrakt v Slovenskom jazyku" required></textarea>
+          placeholder="Vyplňte abstrakt v Slovenskom jazyku"
+          [value]="existingSubmission?.abstractSk"
+        required>
+        </textarea>
       </div>
     </div>
 
