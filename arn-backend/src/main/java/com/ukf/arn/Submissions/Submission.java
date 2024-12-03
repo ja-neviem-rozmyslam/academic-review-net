@@ -1,12 +1,12 @@
 package com.ukf.arn.Submissions;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ukf.arn.Users.User;
+import com.ukf.arn.Users.UserDTO;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "uploaded_theses")
@@ -44,6 +44,7 @@ public class Submission implements Serializable {
             joinColumns = @JoinColumn(name = "thesis_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonManagedReference
     private Set<User> authors = new HashSet<>();
 
     public Submission() {

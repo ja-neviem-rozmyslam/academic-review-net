@@ -5,9 +5,9 @@
 
 <div class="pt-4">
   @if (selectedOption === 'DETAILS') {
-    <app-submission [conferenceId]="conferenceDetail.id"
-                    [uploadDeadline]="conferenceDetail.uploadDeadline"
-                    [submission]="conferenceDetail.submission"/>
+    <app-submission [conferenceId]="conferenceDetail?.id"
+                    [uploadDeadline]="conferenceDetail?.uploadDeadline"
+                    [submission]="conferenceDetail?.submission"/>
   }
   @if (selectedOption === 'REVIEW') {
     <app-review />

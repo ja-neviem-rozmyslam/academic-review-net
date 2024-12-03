@@ -1,6 +1,8 @@
 package com.ukf.arn.Conferences;
 
 import com.ukf.arn.Submissions.Submission;
+import com.ukf.arn.Submissions.SubmissionCategoryRepository;
+import com.ukf.arn.Submissions.SubmissionDto;
 import com.ukf.arn.Submissions.SubmissionRepository;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.config.SecurityConfig;
@@ -11,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,21 +37,28 @@ public class ConferenceService {
     }
 
     public ResponseEntity<?> getConferenceData(Long conferenceId) {
-
+        ConferenceDetail conferenceDetail = new ConferenceDetail();
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         if (conference == null) {
-            return ResponseEntity.badRequest().body("Conference not found.");
+            return ResponseEntity.badRequest().body("Konferencia neexistuje.");
         }
 
         User user = SecurityConfig.getLoggedInUser();
         if (!conferenceRepository.isUserJoined(conferenceId, user.getId())) {
-            return ResponseEntity.badRequest().body("User is not joined to this conference.");
+            return ResponseEntity.badRequest().body("Nemáte prístup k tejto konferencii.");
         }
 
+        Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
+        SubmissionDto submissionDto = submission == null ? null :
+                new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(),
+                submission.getAuthors().stream().map(User::getId).toList(), new ArrayList<>());
 
+        conference.setId(conference.getId());
+        conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
+        conferenceDetail.setReviewDeadline(conference.getReviewDeadline());
+        conferenceDetail.setSubmission(submissionDto);
 
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(conferenceDetail);
     }
 
     public UUID getCurrentUserId() {

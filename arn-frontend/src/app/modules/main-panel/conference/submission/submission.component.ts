@@ -34,6 +34,7 @@ export class SubmissionComponent implements OnInit {
       this.thesisCategories = categories;
     });
 
+    console.log('Submission:', this.submission);
     this.handleRoleBasedView();
   }
 
@@ -87,6 +88,8 @@ export class SubmissionComponent implements OnInit {
     if (this.roleService.isStudent()) {
       const deadlineDate = new Date(this.uploadDeadline);
       const isInDeadline = new Date() < deadlineDate;
+
+      console.log('Is in deadline:', isInDeadline);
 
       this.showInReadMode = !(this.submission === null && isInDeadline);
       this.allowEditation = isInDeadline;

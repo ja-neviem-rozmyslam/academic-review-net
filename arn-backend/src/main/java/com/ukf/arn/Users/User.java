@@ -1,5 +1,6 @@
 package com.ukf.arn.Users;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
@@ -42,9 +43,6 @@ public class User implements Serializable {
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "authors")
-    private Set<Submission> authoredTheses = new HashSet<>();
 
     public User() {
     }
@@ -126,13 +124,5 @@ public class User implements Serializable {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-    }
-
-    public Set<Submission> getAuthoredTheses() {
-        return authoredTheses;
-    }
-
-    public void setAuthoredTheses(Set<Submission> authoredTheses) {
-        this.authoredTheses = authoredTheses;
     }
 }

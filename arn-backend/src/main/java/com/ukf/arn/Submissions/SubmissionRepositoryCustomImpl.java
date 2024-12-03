@@ -6,24 +6,25 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 import java.util.UUID;
 
 @Repository
 public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCustom {
+    private final QSubmission SUBMISSION = QSubmission.submission;
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    private final QSubmission SUBMISSION = QSubmission.submission;
 
 
     @Override
     public Submission findByConferenceIdAndUserId(Long conferenceId, UUID userId) {
         return new JPAQuery<>(entityManager)
-                .select(QSubmission.submission)
-                .from(QSubmission.submission)
-                .where(QSubmission.submission.conferences.id.eq(conferenceId)
-                        .and(QSubmission.submission.authors.id.eq(userId)))
+                .select(SUBMISSION)
+                .from(SUBMISSION)
+                .where(SUBMISSION.conferencesId.eq(conferenceId)
+                        .and(SUBMISSION.authors.any().id.eq(userId)
+                                .or(SUBMISSION.reviewerId.eq(userId))))
                 .fetchOne();
     }
 }
