@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,11 +22,17 @@ import java.util.UUID;
 public class SubmissionService {
 
     private final SubmissionRepository submissionRepository;
+    private final SubmissionCategoryRepository submissionCategoryRepository;
     private final UserRepository userRepository;
 
-    public SubmissionService(SubmissionRepository submissionRepository, UserRepository userRepository) {
+    public SubmissionService(SubmissionRepository submissionRepository, UserRepository userRepository, SubmissionCategoryRepository submissionCategoryRepository) {
         this.submissionRepository = submissionRepository;
+        this.submissionCategoryRepository = submissionCategoryRepository;
         this.userRepository = userRepository;
+    }
+
+    public List<SubmissionCategory> getCategories() {
+        return submissionCategoryRepository.findAll();
     }
 
     public String generateFolderHash() {

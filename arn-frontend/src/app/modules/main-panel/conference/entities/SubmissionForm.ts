@@ -1,4 +1,5 @@
 export class SubmissionForm {
+  id?: number;
   title: string;
   category: number;
   abstractEn: string;
@@ -11,6 +12,5 @@ export class SubmissionForm {
     this.category = 0;
     this.abstractEn = '';
     this.abstractSk = '';
-    this.coauthors = [];
   }
 }

@@ -7,16 +7,20 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ConferenceService {
-  USER_API_ENDPOINT = 'api/conferences';
+  CONFERENCE_API_ENDPOINT = 'api/conferences';
 
   constructor(private http: HttpClient) {
   }
 
   requestConferenceJoin(conferenceId: number, password: string) {
-    return this.http.post(`${this.USER_API_ENDPOINT}/join/${conferenceId}`, {password});
+    return this.http.post(`${this.CONFERENCE_API_ENDPOINT}/join/${conferenceId}`, {password});
   }
 
   getConferences(): Observable<any> {
-    return this.http.get(`${this.USER_API_ENDPOINT}`);
+    return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
+  }
+
+  getConferenceData(conferenceId: number): Observable<any> {
+    return this.http.get(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`);
   }
 }

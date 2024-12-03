@@ -1,11 +1,59 @@
 <div class="card-base p-6 h-full">
-  <ng-container *ngIf="showSubmissionReadMode; then submissionReadComponent else submissionFormComponent" />
+  <ng-container *ngIf="showInReadMode; then submissionReadComponent else submissionFormComponent" />
 </div>
 
 <ng-template #submissionReadComponent>
   <div class="space-y-6">
-    {{submission | json}}
+    <div class="arn-input">
+      <label for="nadpis-zaverecnej-prace-r">Nadpis záverečnej práce</label>
+      <p id="nadpis-zaverecnej-prace-r">{{ submission.title || 'Nedostupné' }}</p>
+    </div>
+
+    <div class="arn-input">
+      <label for="typ-zaverecnej-prace-r">Typ záverečnej práce</label>
+      <p id="typ-zaverecnej-prace-r">{{ getCategoryNameById(submission.category) }}</p>
+    </div>
+
+    <div class="arn-input">
+      <label for="spolu-autori-r">Spoluautori</label>
+      <p id="spolu-autori-r">{{ submission.coauthors?.join(', ') || 'Žiadni spoluautori' }}</p>
+    </div>
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
+      <div class="arn-input sm:w-1/2">
+        <label for="abstrakt-anglicky-r">Abstrakt (Anglický)</label>
+        <p id="abstrakt-anglicky-r">{{ submission.abstractEn || 'Nedostupné' }}</p>
+      </div>
+
+      <div class="arn-input sm:w-1/2">
+        <label for="abstrakt-slovensky-r">Abstrakt (Slovenský)</label>
+        <p id="abstrakt-slovensky-r">{{ submission.abstractSk || 'Nedostupné' }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 w-full">
+      <div class="flex-grow w-full h-36">
+        <p>Súbory:</p>
+        <div *ngIf="submission.uploadedFiles?.length; else noFiles">
+          <div *ngFor="let file of submission.uploadedFiles">
+            <div class="flex items-center gap-2">
+              <button class="arn-button flex items-center gap-2" (click)="downloadFile(file)">
+                <document-arrow-down-outline-icon></document-arrow-down-outline-icon>
+                <span>{{ shortenFileName(file.name) }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noFiles>
+          <p>Žiadne súbory nahraté.</p>
+        </ng-template>
+      </div>
+    </div>
+    <div class="flex w-full mt-4" *ngIf="allowEditation">
+      <app-arn-button [buttonText]="'Upraviť Prácu'" [classes]="'h-full'" (buttonClick)="openEditForm()"/>
+    </div>
   </div>
+
 </ng-template>
 
 <ng-template #submissionFormComponent>
@@ -25,7 +73,7 @@
       <app-arn-select
         id="typ-zaverecnej-prace"
         [(selectedOption)]="submissionForm.category"
-        [options]="thesisTypes"
+        [options]="thesisCategories"
         [placeholder]="'Vyberte typ záverečnej práce'"
         [required]="true"/>
     </div>

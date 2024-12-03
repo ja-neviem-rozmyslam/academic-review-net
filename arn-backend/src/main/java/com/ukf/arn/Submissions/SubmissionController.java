@@ -31,4 +31,9 @@ public class SubmissionController {
         return submissionService.getSubmission(conferenceId);
     }
 
+    @GetMapping("/categories")
+    public List<SubmissionCategory> getCategories() {
+        return submissionService.getCategories();
+    }
+
 }
