@@ -1,4 +1,14 @@
-<div class="card-base p-6">
+<div class="card-base p-6 h-full">
+  <ng-container *ngIf="showSubmissionReadMode; then submissionReadComponent else submissionFormComponent" />
+</div>
+
+<ng-template #submissionReadComponent>
+  <div class="space-y-6">
+    {{submission | json}}
+  </div>
+</ng-template>
+
+<ng-template #submissionFormComponent>
   <form class="space-y-4" (ngSubmit)="onSubmit()" appFormValidation>
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
@@ -7,9 +17,7 @@
         id="nadpis-zaverecnej-prace"
         name="title"
         placeholder="Vložte nadpis"
-        [(ngModel)]="submissionForm.title"
-        [value]="existingSubmission?.title"
-      required />
+        [(ngModel)]="submissionForm.title" required />
     </div>
 
     <div class="arn-input">
@@ -19,18 +27,14 @@
         [(selectedOption)]="submissionForm.category"
         [options]="thesisTypes"
         [placeholder]="'Vyberte typ záverečnej práce'"
-        [required]="true"
-        [selectedOption]="existingSubmission?.category"
-      />
+        [required]="true"/>
     </div>
 
     <div class="arn-input">
       <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
       <app-arn-select
         id="spolu-autori"
-        [placeholder]="'Vyberte spolu autorov'"
-        [selectedOption]="existingSubmission?.authors || []"
-      />
+        [placeholder]="'Vyberte spolu autorov'"/>
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
@@ -41,10 +45,7 @@
           rows="9"
           name="abstractEn"
           [(ngModel)]="submissionForm.abstractEn"
-          placeholder="Vyplňte abstrakt v Anglickom jazyku"
-          [value]="existingSubmission?.abstractEn"
-        required>
-        </textarea>
+          placeholder="Vyplňte abstrakt v Anglickom jazyku" required></textarea>
       </div>
 
       <div class="arn-input sm:w-1/2">
@@ -54,10 +55,7 @@
           rows="9"
           name="abstractSk"
           [(ngModel)]="submissionForm.abstractSk"
-          placeholder="Vyplňte abstrakt v Slovenskom jazyku"
-          [value]="existingSubmission?.abstractSk"
-        required>
-        </textarea>
+          placeholder="Vyplňte abstrakt v Slovenskom jazyku" required></textarea>
       </div>
     </div>
 
@@ -78,4 +76,4 @@
       <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'" />
     </div>
   </form>
-</div>
+</ng-template>

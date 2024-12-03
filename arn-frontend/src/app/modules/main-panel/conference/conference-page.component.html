@@ -4,10 +4,10 @@
   (tabChanged)="onTabChange($event)" />
 
 <div class="pt-4">
-  <ng-container *ngIf="selectedOption === 'DETAILS'">
+  @if (selectedOption === 'DETAILS') {
     <app-submission />
-  </ng-container>
-  <ng-container *ngIf="selectedOption === 'REVIEW'">
+  }
+  @if (selectedOption === 'REVIEW') {
     <app-review />
-  </ng-container>
+  }
 </div>
