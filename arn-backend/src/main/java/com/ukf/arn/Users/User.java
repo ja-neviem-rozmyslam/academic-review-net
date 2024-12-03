@@ -127,4 +127,12 @@ public class User implements Serializable {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
+    public Set<Submission> getAuthoredTheses() {
+        return authoredTheses;
+    }
+
+    public void setAuthoredTheses(Set<Submission> authoredTheses) {
+        this.authoredTheses = authoredTheses;
+    }
 }

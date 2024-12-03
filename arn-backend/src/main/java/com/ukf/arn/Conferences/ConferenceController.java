@@ -3,6 +3,7 @@ package com.ukf.arn.Conferences;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,11 @@ public class ConferenceController {
 
     public ConferenceController(ConferenceService conferenceService) {
         this.conferenceService = conferenceService;
+    }
+
+    @GetMapping("/{conferenceId}")
+    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId) {
+        return conferenceService.getConferenceData(conferenceId);
     }
 
     @GetMapping

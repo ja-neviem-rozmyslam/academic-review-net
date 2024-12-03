@@ -1,6 +1,10 @@
 package com.ukf.arn.Conferences;
 
+import com.ukf.arn.Submissions.Submission;
+import com.ukf.arn.Submissions.SubmissionRepository;
 import com.ukf.arn.Users.User;
+import com.ukf.arn.config.SecurityConfig;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,9 +18,11 @@ import java.util.UUID;
 public class ConferenceService {
 
     private ConferenceRepository conferenceRepository;
+    private SubmissionRepository submissionRepository;
 
-    public ConferenceService(ConferenceRepository conferenceRepository) {
+    public ConferenceService(ConferenceRepository conferenceRepository, SubmissionRepository submissionRepository) {
         this.conferenceRepository = conferenceRepository;
+        this.submissionRepository = submissionRepository;
     }
 
     public ResponseEntity<?> getConferencesForUser(UUID userId) {
@@ -25,6 +31,24 @@ public class ConferenceService {
         return ResponseEntity.ok(conferences.stream()
                 .map(conference -> mapToDTO(conference, userId))
                 .toList());
+    }
+
+    public ResponseEntity<?> getConferenceData(Long conferenceId) {
+
+        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
+        if (conference == null) {
+            return ResponseEntity.badRequest().body("Conference not found.");
+        }
+
+        User user = SecurityConfig.getLoggedInUser();
+        if (!conferenceRepository.isUserJoined(conferenceId, user.getId())) {
+            return ResponseEntity.badRequest().body("User is not joined to this conference.");
+        }
+
+
+
+
+        return ResponseEntity.ok().build();
     }
 
     public UUID getCurrentUserId() {

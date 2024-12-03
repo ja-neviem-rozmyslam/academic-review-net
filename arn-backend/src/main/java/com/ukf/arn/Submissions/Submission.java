@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "uploaded_theses")
@@ -30,7 +31,7 @@ public class Submission implements Serializable {
     private Long conferencesId;
 
     @Column(name = "reviewer_id")
-    private Long reviewerId;
+    private UUID reviewerId;
 
     private String review;
 
@@ -113,11 +114,11 @@ public class Submission implements Serializable {
         this.conferencesId = conferencesId;
     }
 
-    public Long getReviewerId() {
+    public UUID getReviewerId() {
         return reviewerId;
     }
 
-    public void setReviewerId(Long reviewerId) {
+    public void setReviewerId(UUID reviewerId) {
         this.reviewerId = reviewerId;
     }
 
