@@ -5,6 +5,7 @@
     </h3>
     <div>
       <input type="password" class="input-base" placeholder="Heslo" [(ngModel)]="password">
+      <p class="text-red-500 text-sm">{{ errorMessage }}</p>
     </div>
     <div class="flex justify-end mt-6">
       <app-arn-button [buttonText]="'Prihlásiť sa'" (buttonClick)="requestJoin()"

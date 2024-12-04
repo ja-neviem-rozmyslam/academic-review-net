@@ -14,6 +14,16 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
     };
   });
 
+  readonly updateConferenceJoinedStatus = this.updater((state, conferenceId: number) => {
+    const updatedConferences = state.conferences.map(conference =>
+      conference.id === conferenceId ? {...conference, joined: true} : conference
+    );
+    return {
+      ...state,
+      conferences: updatedConferences
+    };
+  });
+
   constructor() {
     super({
       conferences: []

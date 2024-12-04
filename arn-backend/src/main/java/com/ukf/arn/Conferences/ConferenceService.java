@@ -36,6 +36,26 @@ public class ConferenceService {
                 .toList());
     }
 
+    public ResponseEntity<?> joinConference(Long conferenceId, String password) {
+        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
+        if (conference == null || conference.isClosed()) {
+            return ResponseEntity.badRequest().body("Konferencia neexistuje.");
+        }
+
+        if (!conference.getPassword().equals(password)) {
+            return ResponseEntity.badRequest().body("Nesprávne heslo.");
+        }
+
+        User user = SecurityConfig.getLoggedInUser();
+        if (conferenceRepository.isUserJoined(conferenceId, user.getId())) {
+            return ResponseEntity.badRequest().body("Už ste členom tejto konferencie.");
+        }
+
+        conference.getUsers().add(user);
+        conferenceRepository.save(conference);
+        return ResponseEntity.ok().build();
+    }
+
     public ResponseEntity<?> getConferenceData(Long conferenceId) {
         ConferenceDetail conferenceDetail = new ConferenceDetail();
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
@@ -53,7 +73,7 @@ public class ConferenceService {
                 new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(),
                 submission.getAuthors().stream().map(User::getId).toList(), new ArrayList<>());
 
-        conference.setId(conference.getId());
+        conferenceDetail.setId(conference.getId());
         conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
         conferenceDetail.setReviewDeadline(conference.getReviewDeadline());
         conferenceDetail.setSubmission(submissionDto);

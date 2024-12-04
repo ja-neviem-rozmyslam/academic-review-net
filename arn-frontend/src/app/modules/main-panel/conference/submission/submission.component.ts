@@ -1,32 +1,33 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SubmissionService } from '../services/submission.service';
 import { SubmissionForm } from '../entities/SubmissionForm';
 import { SelectOption } from '../../../components/arn-select/entities/SelectOption';
-import { Submission } from '../entities/Submission';
 import { RoleService } from '../../../services/role.service';
 import { take } from 'rxjs';
+import { ThesisStore } from '../store/thesis-store.service';
+import { Submission } from '../entities/Submission';
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.less']
+  styleUrls: ['./submission.component.less'],
+
 })
 export class SubmissionComponent implements OnInit {
-  @Input() conferenceId: number;
-  @Input() submission: Submission;
-  @Input() uploadDeadline: string;
-
+  conferenceId: number;
+  uploadDeadline: string;
+  submission: Submission;
   invalidFileAmount = false;
   submissionForm: SubmissionForm = new SubmissionForm();
   uploadedFiles: File[] = [];
   thesisCategories: SelectOption[] = [];
-
   showInReadMode = true;
   allowEditation = false;
 
   constructor(
     private submissionService: SubmissionService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    protected thesisStore: ThesisStore
   ) {}
 
   ngOnInit(): void {
@@ -34,8 +35,13 @@ export class SubmissionComponent implements OnInit {
       this.thesisCategories = categories;
     });
 
-    console.log('Submission:', this.submission);
-    this.handleRoleBasedView();
+    this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
+      this.conferenceId = conferenceDetail.id;
+      this.uploadDeadline = conferenceDetail.uploadDeadline;
+      this.submission = conferenceDetail.submission;
+
+      this.handleRoleBasedView();
+    });
   }
 
   onSubmit(): void {
@@ -49,7 +55,6 @@ export class SubmissionComponent implements OnInit {
     this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
       (response) => {
         console.log('Upload response:', response);
-        this.submission = response;
         this.submissionForm = new SubmissionForm();
         this.showInReadMode = true;
       },
@@ -88,8 +93,6 @@ export class SubmissionComponent implements OnInit {
     if (this.roleService.isStudent()) {
       const deadlineDate = new Date(this.uploadDeadline);
       const isInDeadline = new Date() < deadlineDate;
-
-      console.log('Is in deadline:', isInDeadline);
 
       this.showInReadMode = !(this.submission === null && isInDeadline);
       this.allowEditation = isInDeadline;

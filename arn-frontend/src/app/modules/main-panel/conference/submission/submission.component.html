@@ -1,5 +1,32 @@
 <div class="card-base p-6 h-full">
-  <ng-container *ngIf="showInReadMode; then submissionReadComponent else submissionFormComponent" />
+  <ng-container *ngIf="conferenceId !== null; else loading">
+    <ng-container *ngIf="showInReadMode; then submissionReadComponent else submissionFormComponent"></ng-container>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="skeleton-loader">
+      <div class="arn-input">
+        <div class="skeleton skeleton-text"></div>
+      </div>
+      <div class="arn-input">
+        <div class="skeleton skeleton-text"></div>
+      </div>
+      <div class="arn-input">
+        <div class="skeleton skeleton-text"></div>
+      </div>
+      <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
+        <div class="arn-input sm:w-1/2">
+          <div class="skeleton skeleton-text"></div>
+        </div>
+        <div class="arn-input sm:w-1/2">
+          <div class="skeleton skeleton-text"></div>
+        </div>
+      </div>
+      <div class="flex-grow w-full h-36">
+        <div class="skeleton skeleton-text"></div>
+      </div>
+    </div>
+  </ng-template>
 </div>
 
 <ng-template #submissionReadComponent>
@@ -50,10 +77,9 @@
       </div>
     </div>
     <div class="flex w-full mt-4" *ngIf="allowEditation">
-      <app-arn-button [buttonText]="'Upraviť Prácu'" [classes]="'h-full'" (buttonClick)="openEditForm()"/>
+      <app-arn-button [buttonText]="'Upraviť Prácu'" [classes]="'h-full'" (buttonClick)="openEditForm()"></app-arn-button>
     </div>
   </div>
-
 </ng-template>
 
 <ng-template #submissionFormComponent>
@@ -75,14 +101,14 @@
         [(selectedOption)]="submissionForm.category"
         [options]="thesisCategories"
         [placeholder]="'Vyberte typ záverečnej práce'"
-        [required]="true"/>
+        [required]="true"></app-arn-select>
     </div>
 
     <div class="arn-input">
       <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
       <app-arn-select
         id="spolu-autori"
-        [placeholder]="'Vyberte spolu autorov'"/>
+        [placeholder]="'Vyberte spolu autorov'"></app-arn-select>
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
@@ -116,12 +142,12 @@
           [placeholder]="'Nahrajte prácu 2-krát (Jednu v PDF a druhú v DOCX formáte)'"
           [multiple]="true"
           [required]="true"
-          [fileLimit]="2" />
+          [fileLimit]="2"></app-arn-fileinput>
       </div>
     </div>
 
     <div class="flex w-full mt-4">
-      <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'" />
+      <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
     </div>
   </form>
 </ng-template>

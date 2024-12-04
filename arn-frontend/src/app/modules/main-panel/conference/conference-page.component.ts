@@ -4,39 +4,23 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ConferenceDetail} from './entities/ConferenceDetail';
 import {ConferenceService} from '../conference-page/service/conference.service';
 import {DialogService} from '../../services/dialog.service';
+import {ThesisStore} from './store/thesis-store.service';
 
 @Component({
   selector: 'app-thesis-page',
   templateUrl: './conference-page.component.html',
-  styleUrl: './conference-page.component.less'
+  styleUrl: './conference-page.component.less',
+  providers: [ThesisStore]
 })
 export class ConferencePageComponent implements OnInit {
   tabOptions = TABOPTIONS;
   selectedOption = TABOPTIONS[0].value;
 
-  conferenceDetail: ConferenceDetail =
-    {
-      "id": 1,
-      "uploadDeadline": "2024-12-16 23:59:59",
-      "reviewDeadline": "2025-01-15 23:59:59",
-      "submission": {
-        "id": 11,
-        "title": "asd",
-        "category": 1,
-        "abstractEn": "asd",
-        "abstractSk": "asd",
-        "coauthors": [
-          "eb3b24dc-1a7e-43dd-8cb2-25fa42e3cdca"
-        ],
-        "uploadedFiles": []
-      },
-      "review": null,
-      "reviewForm": null
-    };
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
+    private thesisStore: ThesisStore,
     private conferenceService: ConferenceService) {}
 
   ngOnInit(): void {
@@ -45,14 +29,13 @@ export class ConferencePageComponent implements OnInit {
       this.redirectToHome();
       return;
     }
-    //this.loadConferenceData(conferenceId);
+    this.loadConferenceData(conferenceId);
   }
 
   private loadConferenceData(conferenceId: number): void {
     this.conferenceService.getConferenceData(conferenceId).subscribe({
       next: (response) => {
-        this.conferenceDetail = response;
-        console.log('Conference detail:', this.conferenceDetail);
+        this.thesisStore.setConferenceDetail(response);
       },
       error: (error) => {
         this.redirectToHome();
