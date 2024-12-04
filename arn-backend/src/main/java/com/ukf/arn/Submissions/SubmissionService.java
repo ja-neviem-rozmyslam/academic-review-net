@@ -64,8 +64,11 @@ public class SubmissionService {
         createFolderIfNotExists(userFolderPath);
 
         saveFilesToFolder(uploadedFiles, userFolderPath);
-
-        Set<User> authors = new HashSet<>(userRepository.findAllById(submission.getCoauthors()));
+        Set<User> authors = new HashSet<>();
+        if(!submission.getCoauthors().isEmpty()) {
+            userRepository.findAllById(submission.getCoauthors())
+                    .stream().forEach(user -> authors.add(user));
+        }
         User loggedInUser = SecurityConfig.getLoggedInUser();
         authors.add(loggedInUser);
 

@@ -39,7 +39,7 @@ export class SubmissionComponent implements OnInit {
       this.conferenceId = conferenceDetail.id;
       this.uploadDeadline = conferenceDetail.uploadDeadline;
       this.submission = conferenceDetail.submission;
-
+      console.log('Submission:', this.submission);
       this.handleRoleBasedView();
     });
   }
@@ -51,10 +51,18 @@ export class SubmissionComponent implements OnInit {
       console.error('Invalid form or file count.');
       return;
     }
-
+    this.submissionForm.conferenceId = this.conferenceId;
     this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
       (response) => {
-        console.log('Upload response:', response);
+          this.submission = {
+          id: 0,
+          title: this.submissionForm.title,
+          category: this.submissionForm.category,
+          abstractEn: this.submissionForm.abstractEn,
+          abstractSk: this.submissionForm.abstractSk,
+          coauthors: this.submissionForm.coauthors,
+          uploadedFiles: this.uploadedFiles
+        } as Submission;
         this.submissionForm = new SubmissionForm();
         this.showInReadMode = true;
       },
@@ -79,9 +87,8 @@ export class SubmissionComponent implements OnInit {
       category: this.submission.category,
       abstractEn: this.submission.abstractEn,
       abstractSk: this.submission.abstractSk,
-      coauthors: this.submission.coauthors
+      coauthors: this.submission.coauthors || []
     });
-    this.uploadedFiles = this.submission.uploadedFiles;
   }
 
   getCategoryNameById(id: number): string {
@@ -91,10 +98,12 @@ export class SubmissionComponent implements OnInit {
 
   private handleRoleBasedView(): void {
     if (this.roleService.isStudent()) {
+
+      console.log('Deadline:', this.uploadDeadline);
       const deadlineDate = new Date(this.uploadDeadline);
       const isInDeadline = new Date() < deadlineDate;
 
-      this.showInReadMode = !(this.submission === null && isInDeadline);
+      this.showInReadMode = this.submission !== null;
       this.allowEditation = isInDeadline;
     }
   }

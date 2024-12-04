@@ -4,6 +4,5 @@ export interface Submission {
   category: number;
   abstractEn: string;
   abstractSk: string;
-  coauthors?: string[];
-  uploadedFiles: File[];
+  coauthors?: number[];
 }

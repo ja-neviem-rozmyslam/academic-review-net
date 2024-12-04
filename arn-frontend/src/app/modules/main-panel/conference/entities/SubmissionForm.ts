@@ -12,5 +12,6 @@ export class SubmissionForm {
     this.category = 0;
     this.abstractEn = '';
     this.abstractSk = '';
+    this.coauthors = [];
   }
 }
