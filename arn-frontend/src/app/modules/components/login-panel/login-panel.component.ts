@@ -7,6 +7,7 @@ import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DialogService} from '../../services/dialog.service';
 import {UtilityService} from '../../services/utility.service';
+import {FormValidationErrors} from '../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-login-panel',
@@ -16,7 +17,7 @@ import {UtilityService} from '../../services/utility.service';
 export class LoginPanelComponent implements OnInit, OnDestroy {
   private storageIdentifier: string = 'arn-remembered-email';
   private errorSubscription: Subscription;
-  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
+  formValidationErrors: FormValidationErrors;
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;

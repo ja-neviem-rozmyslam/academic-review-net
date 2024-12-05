@@ -6,9 +6,11 @@ import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.beans.Transient;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,62 +35,7 @@ public class SubmissionService {
         return submissionCategoryRepository.findAll();
     }
 
-    public String generateFolderHash() {
-        UUID id = SecurityConfig.getLoggedInUser().getId();
-        return id.toString();
-    }
-
-    public void createFolderIfNotExists(String folderPath) throws IOException {
-        Path path = Paths.get(folderPath);
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
-    }
-
-    public void saveFilesToFolder(MultipartFile[] files, String folderPath) throws IOException {
-        for (MultipartFile file : files) {
-            Path destination = Paths.get(folderPath, file.getOriginalFilename());
-            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
-
-    public ResponseEntity<?> createSubmission(SubmissionRequest submission, MultipartFile[] uploadedFiles) throws IOException {
-        if (getSubmission(submission.getConferenceId()).getStatusCodeValue() == 200) {
-            return ResponseEntity.badRequest().body("Submission already exists for this conference.");
-        }
-        String conferenceFolderPath = "conferences/" + submission.getConferenceId();
-        createFolderIfNotExists(conferenceFolderPath);
-
-        String folderHash = generateFolderHash();
-        String userFolderPath = conferenceFolderPath + "/" + folderHash;
-        createFolderIfNotExists(userFolderPath);
-
-        saveFilesToFolder(uploadedFiles, userFolderPath);
-        Set<User> authors = new HashSet<>();
-        if(!submission.getCoauthors().isEmpty()) {
-            userRepository.findAllById(submission.getCoauthors())
-                    .stream().forEach(user -> authors.add(user));
-        }
-        User loggedInUser = SecurityConfig.getLoggedInUser();
-        authors.add(loggedInUser);
-
-        if (authors.isEmpty()) {
-            return ResponseEntity.status(404).body("No authors found.");
-        }
-
-        Submission newSubmission = new Submission();
-        newSubmission.setThesisTitle(submission.getTitle());
-        newSubmission.setAbstractSk(submission.getAbstractSk());
-        newSubmission.setAbstractEn(submission.getAbstractEn());
-        newSubmission.setFolderHash(folderHash);
-        newSubmission.setConferencesId(submission.getConferenceId());
-        newSubmission.setThesesCategoriesId(submission.getCategory());
-        newSubmission.setAuthors(authors);
-
-        Submission savedSubmission = submissionRepository.save(newSubmission);
-        return ResponseEntity.ok(savedSubmission);
-    }
-
+    @Transactional
     public ResponseEntity<?> getSubmission(Long conferenceId) {
         UUID userId = SecurityConfig.getLoggedInUser().getId();
 
@@ -105,5 +52,76 @@ public class SubmissionService {
                 submission.getAuthors().stream().map(User::getId).toList()
         );
         return ResponseEntity.ok(submissionRequest);
+    }
+
+    @Transactional
+    public ResponseEntity<?> createSubmission(SubmissionRequest submissionRequest, MultipartFile[] uploadedFiles) throws IOException {
+        Submission submission;
+        String folderHash = generateFolderHash();
+
+        if (submissionRequest.getId() != null) {
+            submission = submissionRepository.findById(submissionRequest.getId()).orElseThrow();
+            submission.setThesisTitle(submissionRequest.getTitle());
+            submission.setAbstractSk(submissionRequest.getAbstractSk());
+            submission.setAbstractEn(submissionRequest.getAbstractEn());
+            submission.setAuthors(getAuthors(submissionRequest.getCoauthors()));
+        } else {
+            submission = new Submission(
+                    submissionRequest.getTitle(),
+                    submissionRequest.getAbstractSk(),
+                    submissionRequest.getAbstractEn(),
+                    folderHash,
+                    submissionRequest.getConferenceId(),
+                    submissionRequest.getCategory(),
+                    getAuthors(submissionRequest.getCoauthors())
+            );
+        }
+
+        String conferenceFolderPath = "conferences/" + submissionRequest.getConferenceId();
+        String userFolderPath = conferenceFolderPath + "/" + folderHash;
+        createFolderIfNotExists(userFolderPath);
+
+        saveFilesToFolder(uploadedFiles, userFolderPath);
+
+        Submission savedSubmission = submissionRepository.save(submission);
+
+        SubmissionDto submissionDto = new SubmissionDto(
+                savedSubmission.getId(),
+                savedSubmission.getThesisTitle(),
+                savedSubmission.getThesesCategoriesId(),
+                savedSubmission.getAbstractEn(),
+                savedSubmission.getAbstractSk(),
+                null
+        );
+
+        return ResponseEntity.ok(submissionDto);
+    }
+
+    private Set<User> getAuthors(List<UUID> coauthors) {
+        Set<User> authors = new HashSet<>();
+        if (!coauthors.isEmpty()) {
+            userRepository.findAllById(coauthors).forEach(authors::add);
+        }
+        authors.add(SecurityConfig.getLoggedInUser());
+        return authors;
+    }
+
+    private String generateFolderHash() {
+        UUID id = SecurityConfig.getLoggedInUser().getId();
+        return id.toString();
+    }
+
+    private void createFolderIfNotExists(String folderPath) throws IOException {
+        Path path = Paths.get(folderPath);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+    }
+
+    private void saveFilesToFolder(MultipartFile[] files, String folderPath) throws IOException {
+        for (MultipartFile file : files) {
+            Path destination = Paths.get(folderPath, file.getOriginalFilename());
+            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 }

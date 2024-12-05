@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { SubmissionService } from '../services/submission.service';
-import { SubmissionForm } from '../entities/SubmissionForm';
-import { SelectOption } from '../../../components/arn-select/entities/SelectOption';
-import { RoleService } from '../../../services/role.service';
-import { take } from 'rxjs';
-import { ThesisStore } from '../store/thesis-store.service';
-import { Submission } from '../entities/Submission';
+import {Component, OnInit} from '@angular/core';
+import {SubmissionService} from '../services/submission.service';
+import {SubmissionForm} from '../entities/SubmissionForm';
+import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
+import {RoleService} from '../../../services/role.service';
+import {take} from 'rxjs';
+import {ThesisStore} from '../store/thesis-store.service';
+import {Submission} from '../entities/Submission';
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.less'],
-
 })
 export class SubmissionComponent implements OnInit {
   conferenceId: number;
@@ -28,48 +27,56 @@ export class SubmissionComponent implements OnInit {
     private submissionService: SubmissionService,
     private roleService: RoleService,
     protected thesisStore: ThesisStore
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
+    this.loadThesisCategories();
+    this.loadConferenceDetails();
+  }
+
+  loadThesisCategories(): void {
     this.submissionService.getThesesCategories().pipe(take(1)).subscribe((categories) => {
       this.thesisCategories = categories;
     });
+  }
 
+  loadConferenceDetails(): void {
     this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
       this.conferenceId = conferenceDetail.id;
       this.uploadDeadline = conferenceDetail.uploadDeadline;
       this.submission = conferenceDetail.submission;
-      console.log('Submission:', this.submission);
       this.handleRoleBasedView();
     });
   }
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
-
-    if (this.invalidFileAmount || !this.submissionForm) {
-      console.error('Invalid form or file count.');
-      return;
+    if (!this.invalidFileAmount) {
+      this.submissionForm.conferenceId = this.conferenceId;
+      this.uploadSubmission();
     }
-    this.submissionForm.conferenceId = this.conferenceId;
+  }
+
+  uploadSubmission(): void {
     this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
-      (response) => {
-          this.submission = {
-          id: 0,
-          title: this.submissionForm.title,
-          category: this.submissionForm.category,
-          abstractEn: this.submissionForm.abstractEn,
-          abstractSk: this.submissionForm.abstractSk,
-          coauthors: this.submissionForm.coauthors,
-          uploadedFiles: this.uploadedFiles
-        } as Submission;
-        this.submissionForm = new SubmissionForm();
-        this.showInReadMode = true;
-      },
-      (error) => {
-        console.error('Upload error:', error);
-      }
+      (result) => this.handleSubmissionSuccess(result.body),
+      (error) => console.error('Upload error:', error)
     );
+  }
+
+  handleSubmissionSuccess(savedSubmission: Submission): void {
+    console.log('Submission saved:', savedSubmission);
+    this.submission = {
+      id: savedSubmission.id,
+      title: savedSubmission.title,
+      category: savedSubmission.category,
+      abstractEn: savedSubmission.abstractEn,
+      abstractSk: savedSubmission.abstractSk,
+      uploadedFiles: this.uploadedFiles,
+    } as Submission;
+    this.submissionForm = new SubmissionForm();
+    this.showInReadMode = true;
   }
 
   shortenFileName(fileName: string): string {
@@ -87,22 +94,18 @@ export class SubmissionComponent implements OnInit {
       category: this.submission.category,
       abstractEn: this.submission.abstractEn,
       abstractSk: this.submission.abstractSk,
-      coauthors: this.submission.coauthors || []
+      coauthors: this.submission.coauthors || [],
     });
   }
 
   getCategoryNameById(id: number): string {
-    const category = this.thesisCategories.find(category => category.value === id);
+    const category = this.thesisCategories.find((category) => category.value === id);
     return category ? category.display : 'Nedostupné';
   }
 
   private handleRoleBasedView(): void {
     if (this.roleService.isStudent()) {
-
-      console.log('Deadline:', this.uploadDeadline);
-      const deadlineDate = new Date(this.uploadDeadline);
-      const isInDeadline = new Date() < deadlineDate;
-
+      const isInDeadline = new Date() < new Date(this.uploadDeadline);
       this.showInReadMode = this.submission !== null;
       this.allowEditation = isInDeadline;
     }

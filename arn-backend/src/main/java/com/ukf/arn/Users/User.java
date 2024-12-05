@@ -1,16 +1,15 @@
 package com.ukf.arn.Users;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")

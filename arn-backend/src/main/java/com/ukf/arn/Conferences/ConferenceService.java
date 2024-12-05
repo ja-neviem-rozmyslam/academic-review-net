@@ -54,7 +54,6 @@ public class ConferenceService {
     }
 
     public ResponseEntity<?> getConferenceData(Long conferenceId) {
-        ConferenceDetail conferenceDetail = new ConferenceDetail();
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         if (conference == null) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
@@ -66,15 +65,20 @@ public class ConferenceService {
         }
 
         Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
-        SubmissionDto submissionDto = submission == null ? null :
-                new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>());
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference);
 
+        return ResponseEntity.ok(conferenceDetail);
+    }
+
+    private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference) {
+        SubmissionDto submissionDto = (submission != null) ? new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>()) : null;
+
+        ConferenceDetail conferenceDetail = new ConferenceDetail();
         conferenceDetail.setId(conference.getId());
         conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
         conferenceDetail.setReviewDeadline(conference.getReviewDeadline());
         conferenceDetail.setSubmission(submissionDto);
-
-        return ResponseEntity.ok(conferenceDetail);
+        return conferenceDetail;
     }
 
     public UUID getCurrentUserId() {

@@ -2,7 +2,6 @@ package com.ukf.arn.Submissions;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ukf.arn.Users.User;
-import com.ukf.arn.Users.UserDTO;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -38,25 +37,25 @@ public class Submission implements Serializable {
     @Column(name = "theses_categories_id")
     private Long thesesCategoriesId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "theses_authors",
             joinColumns = @JoinColumn(name = "thesis_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    @JsonManagedReference
-    private Set<User> authors = new HashSet<>();
+    private Set<User> authors;
 
     public Submission() {
     }
 
-    public Submission(String thesisTitle, String abstractSk, String abstractEn, String folderHash, Long conferencesId, Long thesesCategoriesId) {
+    public Submission(String thesisTitle, String abstractSk, String abstractEn, String folderHash, Long conferencesId, Long thesesCategoriesId, Set<User> authors) {
         this.thesisTitle = thesisTitle;
         this.abstractSk = abstractSk;
         this.abstractEn = abstractEn;
         this.folderHash = folderHash;
         this.conferencesId = conferencesId;
         this.thesesCategoriesId = thesesCategoriesId;
+        this.authors = authors;
     }
 
     public Long getId() {

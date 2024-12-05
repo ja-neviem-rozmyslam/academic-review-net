@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class SubmissionRequest {
+    private Long id;
     private String title;
     private String abstractSk;
     private String abstractEn;
@@ -21,6 +22,14 @@ public class SubmissionRequest {
         this.conferenceId = conferencesId;
         this.category = thesesCategoriesId;
         this.coauthors = coauthors;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<UUID> getCoauthors() {

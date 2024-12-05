@@ -26,7 +26,7 @@ export class SubmissionService {
     return this.http.get<any>(`${this.SUBMISSION_API_ENDPOINT}/${conferenceId}`);
   }
 
-  getThesesCategories(): Observable<any> { //TODO: move to store
+  getThesesCategories(): Observable<any> {
     return this.http.get<any[]>(`${this.SUBMISSION_API_ENDPOINT}/categories`).pipe(
       map(categories =>
         categories.map(category => ({

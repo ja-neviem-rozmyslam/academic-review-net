@@ -1,7 +1,6 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TABOPTIONS} from './entities/constants';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ConferenceDetail} from './entities/ConferenceDetail';
 import {ConferenceService} from '../conference-page/service/conference.service';
 import {DialogService} from '../../services/dialog.service';
 import {ThesisStore} from './store/thesis-store.service';
@@ -21,7 +20,8 @@ export class ConferencePageComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private thesisStore: ThesisStore,
-    private conferenceService: ConferenceService) {}
+    private conferenceService: ConferenceService) {
+  }
 
   ngOnInit(): void {
     const conferenceId = this.route.snapshot.params['id'];

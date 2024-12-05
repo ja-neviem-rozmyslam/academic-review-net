@@ -7,6 +7,7 @@ import {SelectOption} from '../arn-select/entities/SelectOption';
 import {EmailDomainService} from './services/email-domain.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {UtilityService} from '../../services/utility.service';
+import {FormValidationErrors} from '../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-registration-panel',
@@ -15,7 +16,7 @@ import {UtilityService} from '../../services/utility.service';
   providers: [EmailDomainService]
 })
 export class RegistrationPanelComponent implements OnInit {
-  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
+  formValidationErrors: FormValidationErrors;
   registrationInfo: Registration = new Registration();
   emailDomains: EmailDomain[];
   universitiesSelectOptions: SelectOption[];
