@@ -39,7 +39,7 @@ export class ConferencePageComponent implements OnInit {
       },
       error: (error) => {
         this.redirectToHome();
-        this.dialogService.openErrorDialog(`Problém s načítaním konferencie: ${error}`);
+        this.dialogService.openErrorDialog(`Problém s načítaním konferencie: ${error.error}`);
       }
     });
   }

@@ -2,7 +2,6 @@ package com.ukf.arn.Submissions;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 public class SubmissionDto {
     private Long id;
@@ -10,19 +9,17 @@ public class SubmissionDto {
     private Long category;
     private String abstractEn;
     private String abstractSk;
-    private List<UUID> coauthors;
     private List<File> uploadedFiles;
 
     public SubmissionDto() {
     }
 
-    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk, List<UUID> coauthors, List<File> uploadedFiles) {
+    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk, List<File> uploadedFiles) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.abstractEn = abstractEn;
         this.abstractSk = abstractSk;
-        this.coauthors = coauthors;
         this.uploadedFiles = uploadedFiles;
     }
 
@@ -64,14 +61,6 @@ public class SubmissionDto {
 
     public void setAbstractSk(String abstractSk) {
         this.abstractSk = abstractSk;
-    }
-
-    public List<UUID> getCoauthors() {
-        return coauthors;
-    }
-
-    public void setCoauthors(List<UUID> coauthors) {
-        this.coauthors = coauthors;
     }
 
     public List<File> getUploadedFiles() {

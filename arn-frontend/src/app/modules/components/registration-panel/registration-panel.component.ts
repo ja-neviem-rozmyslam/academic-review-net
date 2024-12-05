@@ -5,6 +5,8 @@ import {AuthService} from '../../services/auth.service';
 import {NavigationExtras, Router} from '@angular/router';
 import {SelectOption} from '../arn-select/entities/SelectOption';
 import {EmailDomainService} from './services/email-domain.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-registration-panel',
@@ -19,7 +21,8 @@ export class RegistrationPanelComponent implements OnInit {
   universitiesSelectOptions: SelectOption[];
   errorMessage: string;
 
-  constructor(private authService: AuthService, private router: Router, private emailDomainService: EmailDomainService) {
+  constructor(private authService: AuthService, private utilityService: UtilityService,
+              private router: Router, private emailDomainService: EmailDomainService) {
   }
 
   ngOnInit() {
@@ -65,13 +68,8 @@ export class RegistrationPanelComponent implements OnInit {
             }
           } as NavigationExtras);
         },
-        (error: any) => {
-          console.log(error);
-          if (error && typeof error.error === 'string') {
-            this.errorMessage = error.error;
-          } else {
-            this.errorMessage = 'Nastala chyba pri registrácii';
-          }
+        (error: HttpErrorResponse) => {
+          this.utilityService.handleResponseError(error);
         }
       );
     }

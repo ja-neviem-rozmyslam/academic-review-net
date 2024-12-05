@@ -6,6 +6,7 @@ import {Observable, Subscription} from 'rxjs';
 import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DialogService} from '../../services/dialog.service';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-login-panel',
@@ -25,7 +26,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   verificationStatus: boolean;
   verificationMessage: string;
 
-  constructor(private store: Store, private dialogService: DialogService) {
+  constructor(private store: Store, private utilityService: UtilityService) {
   }
 
   ngOnInit() {
@@ -72,12 +73,8 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
 
   private initErrorHandling() {
     this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
-      if (error && typeof error.error === 'string') {
-        this.errorMessage = error.error;
-      } else if (error) {
-        console.error(error);
-        this.dialogService.openErrorDialog(error.message);
-      }
+      this.errorMessage = this.utilityService.handleResponseError(error);
+      error = null;
     });
   }
 }

@@ -1,10 +1,19 @@
 package com.ukf.arn;
 
+import com.ukf.arn.Conferences.QConference;
+import com.ukf.arn.Submissions.QSubmission;
+import com.ukf.arn.Users.QUser;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ConstantsKatalog {
+    public static final QConference CONFERENCE = QConference.conference;
+    public static final QUser USER = QUser.user;
+    public static final QSubmission SUBMISSION = QSubmission.submission;
+
+
     public static final String TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS";
     public static final String TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
     public static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";

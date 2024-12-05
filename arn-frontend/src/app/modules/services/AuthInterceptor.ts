@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';
+import { throwError } from 'rxjs';
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -21,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           return this.handle401Error(req, next);
         } else {
-          return of(error);
+          return throwError(() => error);
         }
       })
     );

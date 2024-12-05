@@ -5,17 +5,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 import java.util.UUID;
+
+import static com.ukf.arn.ConstantsKatalog.SUBMISSION;
 
 @Repository
 public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCustom {
-    private final QSubmission SUBMISSION = QSubmission.submission;
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public Submission findByConferenceIdAndUserId(Long conferenceId, UUID userId) {

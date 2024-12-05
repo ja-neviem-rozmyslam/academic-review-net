@@ -10,8 +10,9 @@ public class ConferenceDTO {
     private boolean closed;
     private String reviewForm;
     private boolean joined;
+    private boolean hasPassword;
 
-    public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, String creationDate, String faculty, boolean closed, String review_form, boolean joined) {
+    public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, String creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
         this.id = id;
         this.conferenceName = conferenceName;
         this.uploadDeadline = uploadDeadline;
@@ -21,6 +22,7 @@ public class ConferenceDTO {
         this.closed = closed;
         this.reviewForm = review_form;
         this.joined = joined;
+        this.hasPassword = hasPassword;
     }
 
     public Long getId() {
@@ -57,5 +59,9 @@ public class ConferenceDTO {
 
     public boolean isJoined() {
         return joined;
+    }
+
+    public boolean isHasPassword() {
+        return hasPassword;
     }
 }

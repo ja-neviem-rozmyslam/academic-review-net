@@ -7,4 +7,5 @@ export interface Conference {
   reviewDeadline: string;
   creationDate: string;
   reviewForm: string;
+  hasPassword: boolean;
 }

@@ -1,10 +1,12 @@
 package com.ukf.arn.Conferences;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "conferences")
@@ -123,5 +125,15 @@ public class Conference implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @JsonIgnore
+    public boolean hasPassword() {
+        return password != null;
+    }
+
+    @JsonIgnore
+    public boolean isUserInConference(UUID userId) {
+        return users.stream().anyMatch(user -> user.getId().equals(userId));
     }
 }

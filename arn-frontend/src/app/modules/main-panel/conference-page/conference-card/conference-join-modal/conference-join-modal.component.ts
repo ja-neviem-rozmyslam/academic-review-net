@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {BaseModal} from '../../../../components/base-modal/entities/BaseModal';
 import {ConferenceService} from '../../service/conference.service';
 import {ConferenceStore} from '../../store/conferences-store.service';
+import {UtilityService} from '../../../../services/utility.service';
 
 @Component({
   selector: 'app-conference-join-modal',
@@ -13,7 +14,8 @@ export class ConferenceJoinModalComponent extends BaseModal {
   errorMessage: string = '';
 
   constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore,
-              @Inject('modalData') public data: {conferenceId: number}) {
+              private utilityService: UtilityService,
+              @Inject('modalData') public data: {conferenceId: number, hasPassword: boolean}) {
     super();
   }
 
@@ -24,8 +26,7 @@ export class ConferenceJoinModalComponent extends BaseModal {
         this.conferenceStore.updateConferenceJoinedStatus(this.data.conferenceId);
       },
       error: (error:any ) => {
-        console.error('Error joining conference:', error);
-        this.errorMessage = error;
+       this.errorMessage = this.utilityService.handleResponseError(error);
       }
     });
   }

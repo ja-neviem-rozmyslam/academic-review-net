@@ -1,13 +1,10 @@
 package com.ukf.arn.Conferences;
 
 import com.ukf.arn.Submissions.Submission;
-import com.ukf.arn.Submissions.SubmissionCategoryRepository;
 import com.ukf.arn.Submissions.SubmissionDto;
 import com.ukf.arn.Submissions.SubmissionRepository;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.config.SecurityConfig;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +26,7 @@ public class ConferenceService {
     }
 
     public ResponseEntity<?> getConferencesForUser(UUID userId) {
-        List<Conference> conferences = conferenceRepository.findAll();
+        List<Conference> conferences = conferenceRepository.findAllOrderByJoined(userId);
 
         return ResponseEntity.ok(conferences.stream()
                 .map(conference -> mapToDTO(conference, userId))
@@ -42,12 +39,12 @@ public class ConferenceService {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
         }
 
-        if (!conference.getPassword().equals(password)) {
+        if (conference.hasPassword() && !conference.getPassword().equals(password)) {
             return ResponseEntity.badRequest().body("Nesprávne heslo.");
         }
 
         User user = SecurityConfig.getLoggedInUser();
-        if (conferenceRepository.isUserJoined(conferenceId, user.getId())) {
+        if (conference.isUserInConference(user.getId())) {
             return ResponseEntity.badRequest().body("Už ste členom tejto konferencie.");
         }
 
@@ -64,14 +61,13 @@ public class ConferenceService {
         }
 
         User user = SecurityConfig.getLoggedInUser();
-        if (!conferenceRepository.isUserJoined(conferenceId, user.getId())) {
+        if (!conference.isUserInConference(user.getId())) {
             return ResponseEntity.badRequest().body("Nemáte prístup k tejto konferencii.");
         }
 
         Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
         SubmissionDto submissionDto = submission == null ? null :
-                new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(),
-                submission.getAuthors().stream().map(User::getId).toList(), new ArrayList<>());
+                new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>());
 
         conferenceDetail.setId(conference.getId());
         conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
@@ -88,7 +84,6 @@ public class ConferenceService {
     }
 
     private ConferenceDTO mapToDTO(Conference conference, UUID userId) {
-        boolean joined = conferenceRepository.isUserJoined(conference.getId(), userId);
         return new ConferenceDTO(
                 conference.getId(),
                 conference.getConferenceName(),
@@ -98,7 +93,8 @@ public class ConferenceService {
                 conference.getFaculty(),
                 conference.isClosed(),
                 conference.getReviewForm(),
-                joined
+                conference.isUserInConference(userId),
+                conference.getPassword() != null
         );
     }
 }
