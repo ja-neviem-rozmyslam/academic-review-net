@@ -26,11 +26,6 @@ public class SubmissionController {
         return submissionService.createSubmission(submissionRequest, uploadedFiles);
     }
 
-    @GetMapping("/{conferenceId}")
-    public ResponseEntity<?> getSubmission(@PathVariable Long conferenceId) {
-        return submissionService.getSubmission(conferenceId);
-    }
-
     @GetMapping("/categories")
     public List<SubmissionCategory> getCategories() {
         return submissionService.getCategories();

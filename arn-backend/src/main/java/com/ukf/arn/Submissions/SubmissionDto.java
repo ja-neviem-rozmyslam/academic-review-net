@@ -9,12 +9,12 @@ public class SubmissionDto {
     private Long category;
     private String abstractEn;
     private String abstractSk;
-    private List<File> uploadedFiles;
+    private List<String> uploadedFiles;
 
     public SubmissionDto() {
     }
 
-    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk, List<File> uploadedFiles) {
+    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk, List<String> uploadedFiles) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -63,11 +63,11 @@ public class SubmissionDto {
         this.abstractSk = abstractSk;
     }
 
-    public List<File> getUploadedFiles() {
+    public List<String> getUploadedFiles() {
         return uploadedFiles;
     }
 
-    public void setUploadedFiles(List<File> uploadedFiles) {
+    public void setUploadedFiles(List<String> uploadedFiles) {
         this.uploadedFiles = uploadedFiles;
     }
 }

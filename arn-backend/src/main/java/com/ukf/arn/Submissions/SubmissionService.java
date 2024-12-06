@@ -1,7 +1,8 @@
 package com.ukf.arn.Submissions;
 
+import com.ukf.arn.Conferences.Conference;
+import com.ukf.arn.Conferences.ConferenceRepository;
 import com.ukf.arn.Users.User;
-import com.ukf.arn.Users.UserDTO;
 import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import java.beans.Transient;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,11 +23,13 @@ public class SubmissionService {
 
     private final SubmissionRepository submissionRepository;
     private final SubmissionCategoryRepository submissionCategoryRepository;
+    private final ConferenceRepository conferenceRepository;
     private final UserRepository userRepository;
 
-    public SubmissionService(SubmissionRepository submissionRepository, UserRepository userRepository, SubmissionCategoryRepository submissionCategoryRepository) {
+    public SubmissionService(SubmissionRepository submissionRepository, UserRepository userRepository, ConferenceRepository conferenceRepository, SubmissionCategoryRepository submissionCategoryRepository) {
         this.submissionRepository = submissionRepository;
         this.submissionCategoryRepository = submissionCategoryRepository;
+        this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
     }
 
@@ -36,28 +38,16 @@ public class SubmissionService {
     }
 
     @Transactional
-    public ResponseEntity<?> getSubmission(Long conferenceId) {
-        UUID userId = SecurityConfig.getLoggedInUser().getId();
-
-        Submission submission = submissionRepository.findByConferencesIdAndAuthorsId(conferenceId, userId);
-        if (submission == null) {
-            return ResponseEntity.status(404).body("No submission found for this conference.");
-        }
-        SubmissionRequest submissionRequest = new SubmissionRequest(
-                submission.getThesisTitle(),
-                submission.getAbstractSk(),
-                submission.getAbstractEn(),
-                submission.getConferencesId(),
-                submission.getThesesCategoriesId(),
-                submission.getAuthors().stream().map(User::getId).toList()
-        );
-        return ResponseEntity.ok(submissionRequest);
-    }
-
-    @Transactional
     public ResponseEntity<?> createSubmission(SubmissionRequest submissionRequest, MultipartFile[] uploadedFiles) throws IOException {
         Submission submission;
         String folderHash = generateFolderHash();
+
+        Conference conference = conferenceRepository.findById(submissionRequest.getConferenceId())
+                .orElseThrow(() -> new IllegalArgumentException("Konferencia neexistuje."));
+
+        if (conference.isClosed() && conference.isUserInConference(SecurityConfig.getLoggedInUser().getId())) {
+            return ResponseEntity.badRequest().body("Konferencia je uzavretá.");
+        }
 
         if (submissionRequest.getId() != null) {
             submission = submissionRepository.findById(submissionRequest.getId()).orElseThrow();

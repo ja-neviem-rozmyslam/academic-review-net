@@ -22,10 +22,6 @@ export class SubmissionService {
     return this.http.post(`${this.SUBMISSION_API_ENDPOINT}/upload`, formData, { observe: 'response' });
   }
 
-  getSubmission(conferenceId: number): Observable<any> {
-    return this.http.get<any>(`${this.SUBMISSION_API_ENDPOINT}/${conferenceId}`);
-  }
-
   getThesesCategories(): Observable<any> {
     return this.http.get<any[]>(`${this.SUBMISSION_API_ENDPOINT}/categories`).pipe(
       map(categories =>

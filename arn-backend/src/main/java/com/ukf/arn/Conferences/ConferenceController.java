@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class ConferenceController {
     }
 
     @GetMapping("/{conferenceId}")
-    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId) {
+    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId) throws IOException {
         return conferenceService.getConferenceData(conferenceId);
     }
 

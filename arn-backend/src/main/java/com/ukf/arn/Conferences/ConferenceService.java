@@ -55,7 +55,7 @@ public class ConferenceService {
 
     public ResponseEntity<?> getConferenceData(Long conferenceId) {
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
-        if (conference == null) {
+        if (conference == null || conference.isClosed()) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
         }
 

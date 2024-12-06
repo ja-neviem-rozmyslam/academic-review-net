@@ -72,8 +72,7 @@ export class SubmissionComponent implements OnInit {
       title: savedSubmission.title,
       category: savedSubmission.category,
       abstractEn: savedSubmission.abstractEn,
-      abstractSk: savedSubmission.abstractSk,
-      uploadedFiles: this.uploadedFiles,
+      abstractSk: savedSubmission.abstractSk
     } as Submission;
     this.submissionForm = new SubmissionForm();
     this.showInReadMode = true;
@@ -90,6 +89,7 @@ export class SubmissionComponent implements OnInit {
   openEditForm(): void {
     this.showInReadMode = false;
     Object.assign(this.submissionForm, {
+      id: this.submission.id,
       title: this.submission.title,
       category: this.submission.category,
       abstractEn: this.submission.abstractEn,
