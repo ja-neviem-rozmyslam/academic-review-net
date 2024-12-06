@@ -17,4 +17,27 @@ public class UserDetailsDTO {
         this.submission = submission;
     }
 
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public List<ConferenceDTO> getConference() {
+        return conference;
+    }
+
+    public void setConference(List<ConferenceDTO> conference) {
+        this.conference = conference;
+    }
+
+    public List<SubmissionDto> getSubmission() {
+        return submission;
+    }
+
+    public void setSubmission(List<SubmissionDto> submission) {
+        this.submission = submission;
+    }
 }

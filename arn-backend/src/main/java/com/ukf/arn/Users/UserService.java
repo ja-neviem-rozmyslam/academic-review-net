@@ -24,7 +24,7 @@ public class UserService {
         this.submissionRepository = submissionRepository;
     }
 
-    public List<SubmissionDto> getUserDetails() {
+    public UserDetailsDTO getUserDetails() {
 
         User user = SecurityConfig.getLoggedInUser();
         UserDTO userDTO = new UserDTO();
@@ -68,6 +68,6 @@ public class UserService {
                 .collect(Collectors.toList());
 
         UserDetailsDTO userDetailsDTO = new UserDetailsDTO(userDTO, conferenceDTOs, submissionDtos);
-        return submissionDtos;
+        return userDetailsDTO;
     }
 }
