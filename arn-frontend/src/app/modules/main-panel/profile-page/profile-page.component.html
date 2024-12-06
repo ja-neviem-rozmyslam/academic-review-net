@@ -1,0 +1,44 @@
+<div *ngIf="isLoading">Loading data...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<!-- User Details -->
+<div *ngIf="userDetails?.user">
+  <h1>{{ userDetails.user.name }} {{ userDetails.user.surname }}</h1>
+  <p><strong>Email:</strong> {{ userDetails.user.email }}</p>
+  <p><strong>University:</strong> {{ userDetails.user.university }}</p>
+  <p><strong>Roles:</strong> {{ userDetails.user.roles.join(', ') }}</p>
+  <p><strong>Registration Date:</strong> {{ userDetails.user.registrationDate | date }}</p>
+</div>
+
+<!-- Conference Details -->
+<div *ngIf="userDetails?.conference?.length">
+  <h2>Conferences</h2>
+  <div *ngFor="let conference of userDetails.conference" class="conference-item">
+    <h3>{{ conference.conferenceName }}</h3>
+    <p><strong>Upload Deadline:</strong> {{ conference.uploadDeadline }}</p>
+    <p><strong>Review Deadline:</strong> {{ conference.reviewDeadline }}</p>
+    <p><strong>Creation Date:</strong> {{ conference.creationDate }}</p>
+    <p><strong>Faculty:</strong> {{ conference.faculty }}</p>
+    <p><strong>Closed:</strong> {{ conference.closed ? 'Yes' : 'No' }}</p>
+    <p><strong>Review Form:</strong> {{ conference.reviewForm }}</p>
+    <p><strong>Joined:</strong> {{ conference.joined ? 'Yes' : 'No' }}</p>
+    <p><strong>Password Protected:</strong> {{ conference.hasPassword ? 'Yes' : 'No' }}</p>
+  </div>
+</div>
+
+<!-- Submission Details -->
+<div *ngIf="userDetails?.submission?.length">
+  <h2>Submissions</h2>
+  <div *ngFor="let submission of userDetails.submission" class="submission-item">
+    <h3>{{ submission.title }}</h3>
+    <p><strong>Category:</strong> {{ submission.category }}</p>
+    <p><strong>Abstract (EN):</strong> {{ submission.abstractEn }}</p>
+    <p><strong>Abstract (SK):</strong> {{ submission.abstractSk }}</p>
+    <div *ngIf="submission.uploadedFiles?.length">
+      <p><strong>Uploaded Files:</strong></p>
+      <ul>
+        <li *ngFor="let file of submission.uploadedFiles">{{ file.name }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
