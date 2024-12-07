@@ -15,8 +15,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/get-profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-profile")
     public ResponseEntity<?> getUserData() {
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(userService.getUserDetails());
+        return ResponseEntity.ok(userService.getUserDetails());
     }
 }
