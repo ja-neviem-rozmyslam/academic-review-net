@@ -5,7 +5,6 @@ import {loginStart} from '../../store/auth-store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DialogService} from '../../services/dialog.service';
 import {UtilityService} from '../../services/utility.service';
 import {FormValidationErrors} from '../../objects/FormValidationErrors';
 

@@ -23,18 +23,11 @@ export class ConferencesListPageComponent implements OnInit {
   constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore) {}
 
   ngOnInit(): void {
+    this.conferenceStore.initConferences();
+
     this.filteredConferences$.subscribe(filtered => {
       this.totalPages = Math.ceil(filtered.length / this.pageSize);
       this.updateCurrentPageConferences(filtered);
-    });
-
-    this.conferenceService.getConferences().subscribe((conferences: Conference[]) => {
-      this.conferenceStore.updateConferences(conferences);
-      this.filteredConferences$ = this.conferences$;
-      this.filteredConferences$.subscribe(filtered => {
-        this.totalPages = Math.ceil(filtered.length / this.pageSize);
-        this.updateCurrentPageConferences(filtered);
-      });
     });
   }
 
@@ -50,6 +43,12 @@ export class ConferencesListPageComponent implements OnInit {
       this.totalPages = Math.ceil(filtered.length / this.pageSize);
       this.currentPage = 1;
       this.updateCurrentPageConferences(filtered);
+    });
+  }
+
+  loadNewConferences(): void {
+    this.conferenceService.getConferences().subscribe(conferences => {
+      this.conferenceStore.updateConferences(conferences);
     });
   }
 

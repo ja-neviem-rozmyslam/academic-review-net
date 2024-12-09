@@ -1,4 +1,6 @@
 import {Submission} from './Submission';
+import {ReviewBlock} from './Review';
+import {ReviewFormObject} from './ReviewFormObject';
 
 export interface ConferenceDetail {
   id: number;
@@ -7,6 +9,6 @@ export interface ConferenceDetail {
 
   submission?: Submission;
 
-  review?: string;
-  reviewForm: string;
+  review?: ReviewBlock[];
+  reviewForm: ReviewFormObject[];
 }

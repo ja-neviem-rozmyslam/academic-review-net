@@ -1,3 +1,5 @@
-export class Review {
-
+export class ReviewBlock {
+  id: string;
+  reviewedCategory: string;
+  reviewValue: string;
 }

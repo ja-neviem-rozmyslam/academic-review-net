@@ -16,6 +16,7 @@ export class SubmissionComponent implements OnInit {
   conferenceId: number;
   uploadDeadline: string;
   submission: Submission;
+
   invalidFileAmount = false;
   submissionForm: SubmissionForm = new SubmissionForm();
   uploadedFiles: File[] = [];
@@ -38,15 +39,6 @@ export class SubmissionComponent implements OnInit {
   loadThesisCategories(): void {
     this.submissionService.getThesesCategories().pipe(take(1)).subscribe((categories) => {
       this.thesisCategories = categories;
-    });
-  }
-
-  loadConferenceDetails(): void {
-    this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
-      this.conferenceId = conferenceDetail.id;
-      this.uploadDeadline = conferenceDetail.uploadDeadline;
-      this.submission = conferenceDetail.submission;
-      this.handleRoleBasedView();
     });
   }
 
@@ -82,8 +74,8 @@ export class SubmissionComponent implements OnInit {
     return fileName.length > 20 ? `${fileName.slice(0, 20)}...` : fileName;
   }
 
-  downloadFile(file: File): void {
-    console.log('Downloading file:', file.name);
+  downloadFile(file: string): void {
+    console.log('Downloading file:', file);
   }
 
   openEditForm(): void {
@@ -102,6 +94,16 @@ export class SubmissionComponent implements OnInit {
     const category = this.thesisCategories.find((category) => category.value === id);
     return category ? category.display : 'Nedostupné';
   }
+
+  private loadConferenceDetails(): void {
+    this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
+      this.conferenceId = conferenceDetail.id;
+      this.uploadDeadline = conferenceDetail.uploadDeadline;
+      this.submission = conferenceDetail.submission;
+      this.handleRoleBasedView();
+    });
+  }
+
 
   private handleRoleBasedView(): void {
     if (this.roleService.isStudent()) {

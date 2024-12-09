@@ -26,14 +26,15 @@
           } @else {
             <button type="button"
                     class="menu-item w-full p-2 text-base flex items-center justify-between"
-                    [attr.aria-controls]="'dropdown-' + item.path" [attr.data-collapse-toggle]="'dropdown-' + item.path">
+                    [attr.aria-controls]="'dropdown-' + item.path"
+                    (click)="toggleDropdown(item.path)">
               @if (item.icon) {
                 <ng-container *ngComponentOutlet="item.icon"></ng-container>
               }
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ item.title }}</span>
               <chevron-down-outline-icon></chevron-down-outline-icon>
             </button>
-            <ul id="dropdown-{{item.path}}" class="hidden py-2 space-y-2">
+            <ul id="dropdown-{{item.path}}" [class.hidden]="!isDropdownOpen(item.path)" class="py-2 space-y-2">
               @for (subItem of item.subItems; track subItem) {
                 <li>
                   <div

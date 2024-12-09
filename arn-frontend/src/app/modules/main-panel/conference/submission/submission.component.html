@@ -1,6 +1,6 @@
 <div class="card-base p-6 h-full">
   <ng-container *ngIf="conferenceId !== null; else loading">
-    <ng-container *ngIf="showInReadMode; then submissionReadComponent else submissionFormComponent"></ng-container>
+    <ng-container *ngIf="showInReadMode; then submissionReadTemplate else submissionFormTemplate"></ng-container>
   </ng-container>
 
   <ng-template #loading>
@@ -29,7 +29,7 @@
   </ng-template>
 </div>
 
-<ng-template #submissionReadComponent>
+<ng-template #submissionReadTemplate>
   <div class="space-y-6">
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace-r">Nadpis záverečnej práce</label>
@@ -66,7 +66,7 @@
             <div class="flex items-center gap-2">
               <button class="arn-button flex items-center gap-2" (click)="downloadFile(file)">
                 <document-arrow-down-outline-icon></document-arrow-down-outline-icon>
-                <span>{{ shortenFileName(file.name) }}</span>
+                <span>{{ shortenFileName(file) }}</span>
               </button>
             </div>
           </div>
@@ -82,7 +82,7 @@
   </div>
 </ng-template>
 
-<ng-template #submissionFormComponent>
+<ng-template #submissionFormTemplate>
   <form class="space-y-4" (ngSubmit)="onSubmit()" appFormValidation>
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
