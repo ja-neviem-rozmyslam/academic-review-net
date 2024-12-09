@@ -36,7 +36,7 @@ public class UserService {
         userDTO.setUniversity(user.getUniversity());
         userDTO.setRoles(user.getRoles());
 
-        List<Conference> conferences = conferenceRepository.findAllOrderByJoined(user.getId());
+        List<Conference> conferences = conferenceRepository.findAllByUsersIdOrderByUploadDeadline(user.getId());
         List<ConferenceDTO> conferenceDTOs = conferences.stream()
                 .map(conference -> new ConferenceDTO(
                         conference.getId(),
