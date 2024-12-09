@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfilePageService } from './service/profile-page.service';
+import {MENU_ITEMS} from '../home-page/enitites/MainMenu';
 
 @Component({
   selector: 'app-profile-page',
@@ -29,4 +30,6 @@ export class ProfilePageComponent implements OnInit {
       }
     });
   }
+
+  protected readonly MENU_ITEMS = MENU_ITEMS;
 }

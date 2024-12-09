@@ -1,13 +1,39 @@
 <div *ngIf="isLoading">Loading data...</div>
 <div *ngIf="error">{{ error }}</div>
 
-<!-- User Details -->
-<div *ngIf="userDetails?.user">
-  <h1>{{ userDetails.user.name }} {{ userDetails.user.surname }}</h1>
-  <p><strong>Email:</strong> {{ userDetails.user.email }}</p>
-  <p><strong>University:</strong> {{ userDetails.user.university }}</p>
-  <p><strong>Roles:</strong> {{ userDetails.user.roles.join(', ') }}</p>
-  <p><strong>Registration Date:</strong> {{ userDetails.user.registrationDate | date }}</p>
+<div class="grid grid-cols-[60%_40%] gap-1 sm:gap-3 lg:gap-3">
+  <div class="card-base p-5 border flex flex-col space-y-7 h-full">
+    <div class="flex flex-col space-y-1">
+      <div class="flex justify-between items-start">
+        <h1 class="text-lg font-bold">{{ userDetails.user.name }} {{ userDetails.user.surname }}</h1>
+      </div>
+      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
+      {{ userDetails.user.roles.join(', ') }}
+    </span>
+      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
+      {{ userDetails.user.email }}
+    </span>
+      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
+      {{ userDetails.user.university.name }}
+    </span>
+      <app-arn-button class="w-full" [buttonText]="'Zmeniť údaje'"
+                      [classes]="'bg-gray-800'"></app-arn-button>
+    </div>
+  </div>
+  <div class="card-base p-5 border flex flex-col space-y-7 h-full">
+    <div class="flex flex-col space-y-1">
+      <div *ngFor="let conference of userDetails.conference" class="conference-item">
+        <div class="text-lg font-bold flex justify-between items-start">
+          {{ conference.conferenceName }}
+        </div>
+        <div class="flex justify-between items-start">
+          {{ conference.uploadDeadline }}
+        </div>
+      </div>
+    </div>
+    <app-arn-button class="w-full" [buttonText]="'Zobraziť všetky práce'"
+                    [classes]="'bg-gray-800'"></app-arn-button>
+  </div>
 </div>
 
 <!-- Conference Details -->
