@@ -45,15 +45,12 @@ export const routes: Routes = [
       {
         path: 'conferences/:id',
         component: ConferencePageComponent
+      },
+      {
+        path: 'profile',
+        component: ProfilePageComponent
       }
     ]
-  },
-
-  {
-    path: 'profile',
-    component: ProfilePageComponent,
-    canActivate: [RoleGuard],
-    data: {roles: [UserRoles.STUDENT, UserRoles.REVIEWER]},
   },
 
   { path: '', component: LoginPanelComponent, canActivate: [AuthGuard] },
