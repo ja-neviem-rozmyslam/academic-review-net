@@ -1,18 +1,20 @@
 package com.ukf.arn.Conferences;
 
+import java.time.LocalDateTime;
+
 public class ConferenceDTO {
     private Long id;
     private String conferenceName;
     private String uploadDeadline;
     private String reviewDeadline;
-    private String creationDate;
+    private LocalDateTime creationDate;
     private String faculty;
     private boolean closed;
     private String reviewForm;
     private boolean joined;
     private boolean hasPassword;
 
-    public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, String creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
+    public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, LocalDateTime creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
         this.id = id;
         this.conferenceName = conferenceName;
         this.uploadDeadline = uploadDeadline;
@@ -41,7 +43,7 @@ public class ConferenceDTO {
         return reviewDeadline;
     }
 
-    public String getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

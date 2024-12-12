@@ -3,14 +3,14 @@ package com.ukf.arn.Submissions;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "theses_categories")
+@Table(name = "theses_types")
 public class SubmissionCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "category_name")
+    @Column(name = "type")
     String categoryName;
 
     public SubmissionCategory() {

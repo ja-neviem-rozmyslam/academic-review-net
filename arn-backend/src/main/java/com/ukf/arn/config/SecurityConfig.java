@@ -55,8 +55,7 @@ public class SecurityConfig {
     public static User getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            User user = (User) authentication.getPrincipal();
-            return user;
+            return (User) authentication.getPrincipal();
         }
         return null;
     }

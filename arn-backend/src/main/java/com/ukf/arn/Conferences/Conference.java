@@ -5,6 +5,7 @@ import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class Conference implements Serializable {
     private String reviewDeadline;
 
     @Column(name = "creation_date")
-    private String creationDate;
+    private LocalDateTime creationDate;
 
     private String faculty;
 
@@ -42,8 +43,8 @@ public class Conference implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "users_in_conferences",
-            joinColumns = @JoinColumn(name = "conferences_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id")
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> users;
 
@@ -87,11 +88,11 @@ public class Conference implements Serializable {
         this.reviewDeadline = reviewDeadline;
     }
 
-    public String getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

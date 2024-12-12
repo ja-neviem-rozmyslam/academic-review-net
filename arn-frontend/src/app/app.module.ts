@@ -40,6 +40,7 @@ import { SubmissionComponent } from './modules/main-panel/conference/submission/
 import { ReviewComponent } from './modules/main-panel/conference/review/review.component';
 import { ArnFileinputComponent } from './modules/components/arn-fileinput/arn-fileinput.component';
 import {ConferenceStore} from './modules/main-panel/conference-page/store/conferences-store.service';
+import { ProfilePageComponent } from './modules/main-panel/profile-page/profile-page.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import {ConferenceStore} from './modules/main-panel/conference-page/store/confer
     TabsComponent,
     SubmissionComponent,
     ReviewComponent,
-    ArnFileinputComponent
+    ArnFileinputComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,

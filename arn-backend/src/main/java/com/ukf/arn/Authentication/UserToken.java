@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_tokens")
+@Table(name = "tokens")
 public class UserToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,11 +38,6 @@ public class UserToken implements Serializable {
         this.user = user;
         this.expirationTime = expirationTime;
         this.tokenType = tokenType;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
     }
 
     public String getTokenType() {

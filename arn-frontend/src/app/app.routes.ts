@@ -12,6 +12,7 @@ import {UserRoles} from './modules/constants';
 import {LoginGuard} from './modules/guards/login.guard';
 import {ConferencesListPageComponent} from './modules/main-panel/conference-page/conferences-list-page.component';
 import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
+import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -44,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'conferences/:id',
         component: ConferencePageComponent
+      },
+      {
+        path: 'profile',
+        component: ProfilePageComponent
       }
     ]
   },

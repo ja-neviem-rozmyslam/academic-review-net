@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,9 +38,27 @@ public class SubmissionService {
     }
 
     @Transactional
+    public ResponseEntity<?> getSubmission(Long conferenceId) {
+        UUID userId = SecurityConfig.getLoggedInUser().getId();
+
+        Submission submission = submissionRepository.findByConferencesIdAndAuthorsId(conferenceId, userId);
+        if (submission == null) {
+            return ResponseEntity.status(404).body("No submission found for this conference.");
+        }
+        SubmissionRequest submissionRequest = new SubmissionRequest(
+                submission.getThesisTitle(),
+                submission.getAbstractSk(),
+                submission.getAbstractEn(),
+                submission.getConferencesId(),
+                submission.getThesesType(),
+                submission.getCoauthors()
+        );
+        return ResponseEntity.ok(submissionRequest);
+    }
+
+    @Transactional
     public ResponseEntity<?> createSubmission(SubmissionRequest submissionRequest, MultipartFile[] uploadedFiles) throws IOException {
         Submission submission;
-        String folderHash = generateFolderHash();
 
         Conference conference = conferenceRepository.findById(submissionRequest.getConferenceId())
                 .orElseThrow(() -> new IllegalArgumentException("Konferencia neexistuje."));
@@ -54,21 +72,22 @@ public class SubmissionService {
             submission.setThesisTitle(submissionRequest.getTitle());
             submission.setAbstractSk(submissionRequest.getAbstractSk());
             submission.setAbstractEn(submissionRequest.getAbstractEn());
-            submission.setAuthors(getAuthors(submissionRequest.getCoauthors()));
+            submission.setAuthor(SecurityConfig.getLoggedInUser());
+            submission.setCoauthors(submissionRequest.getCoauthors());
         } else {
             submission = new Submission(
                     submissionRequest.getTitle(),
                     submissionRequest.getAbstractSk(),
                     submissionRequest.getAbstractEn(),
-                    folderHash,
+                    SecurityConfig.getLoggedInUser(),
                     submissionRequest.getConferenceId(),
                     submissionRequest.getCategory(),
-                    getAuthors(submissionRequest.getCoauthors())
+                    submissionRequest.getCoauthors()
             );
         }
 
         String conferenceFolderPath = "conferences/" + submissionRequest.getConferenceId();
-        String userFolderPath = conferenceFolderPath + "/" + folderHash;
+        String userFolderPath = conferenceFolderPath + "/" + SecurityConfig.getLoggedInUser().getId().toString();
         createFolderIfNotExists(userFolderPath);
 
         saveFilesToFolder(uploadedFiles, userFolderPath);
@@ -78,7 +97,7 @@ public class SubmissionService {
         SubmissionDto submissionDto = new SubmissionDto(
                 savedSubmission.getId(),
                 savedSubmission.getThesisTitle(),
-                savedSubmission.getThesesCategoriesId(),
+                savedSubmission.getThesesType(),
                 savedSubmission.getAbstractEn(),
                 savedSubmission.getAbstractSk(),
                 null
@@ -94,11 +113,6 @@ public class SubmissionService {
         }
         authors.add(SecurityConfig.getLoggedInUser());
         return authors;
-    }
-
-    private String generateFolderHash() {
-        UUID id = SecurityConfig.getLoggedInUser().getId();
-        return id.toString();
     }
 
     private void createFolderIfNotExists(String folderPath) throws IOException {
