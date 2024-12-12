@@ -52,7 +52,7 @@ public class UserService {
                 ))
                 .collect(Collectors.toList());
 
-        List<Submission> submissions = submissionRepository.findByAuthorsId(user.getId());
+        List<Submission> submissions = submissionRepository.findByAuthorId(user.getId());
         List<SubmissionDto> submissionDtos;
 
 

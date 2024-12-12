@@ -2,6 +2,7 @@ package com.ukf.arn.Authentication;
 
 import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,7 +28,8 @@ public class UserToken implements Serializable {
     @Column(name = "expiration_time")
     private LocalDateTime expirationTime;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", insertable = false)
     private LocalDateTime createdAt;
 
     public UserToken() {
@@ -82,5 +84,9 @@ public class UserToken implements Serializable {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

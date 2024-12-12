@@ -20,10 +20,9 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
         return new JPAQuery<>(entityManager)
                 .select(SUBMISSION)
                 .from(SUBMISSION)
-                .leftJoin(SUBMISSION.authors).fetchJoin()  // Ensure authors are fetched
                 .where(SUBMISSION.conferencesId.eq(conferenceId)
-                        .and(SUBMISSION.authors.any().id.eq(userId)  // Works for authors
-                                .or(SUBMISSION.reviewerId.eq(userId))))  // Works for reviewerId
-                .fetchOne();
+                        .and(SUBMISSION.authorId.eq(userId))
+                        .or(SUBMISSION.reviewerId.eq(userId)))
+                .fetchFirst();
     }
 }

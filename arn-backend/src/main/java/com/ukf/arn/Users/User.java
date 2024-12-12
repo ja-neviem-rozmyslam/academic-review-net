@@ -2,6 +2,7 @@ package com.ukf.arn.Users;
 
 import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -31,7 +32,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "registration_date")
+    @CreationTimestamp
+    @Column(name = "registration_date", insertable=false)
     private LocalDateTime registrationDate;
 
     @ManyToOne
@@ -123,5 +125,9 @@ public class User implements Serializable {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

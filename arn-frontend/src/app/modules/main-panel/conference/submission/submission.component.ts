@@ -86,7 +86,7 @@ export class SubmissionComponent implements OnInit {
       category: this.submission.category,
       abstractEn: this.submission.abstractEn,
       abstractSk: this.submission.abstractSk,
-      coauthors: this.submission.coauthors || [],
+      coauthors: this.submission.coauthors || '',
     });
   }
 

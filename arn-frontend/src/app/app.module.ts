@@ -41,6 +41,7 @@ import { ReviewComponent } from './modules/main-panel/conference/review/review.c
 import { ArnFileinputComponent } from './modules/components/arn-fileinput/arn-fileinput.component';
 import {ConferenceStore} from './modules/main-panel/conference-page/store/conferences-store.service';
 import { ProfilePageComponent } from './modules/main-panel/profile-page/profile-page.component';
+import { PaginationComponent } from './modules/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ProfilePageComponent } from './modules/main-panel/profile-page/profile-
     SubmissionComponent,
     ReviewComponent,
     ArnFileinputComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

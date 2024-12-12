@@ -43,7 +43,7 @@
 
     <div class="arn-input">
       <label for="spolu-autori-r">Spoluautori</label>
-      <p id="spolu-autori-r">{{ submission?.coauthors?.join(', ') || 'Žiadni spoluautori' }}</p>
+      <p id="spolu-autori-r">{{ submission?.coauthors || 'Žiadni spoluautori' }}</p>
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">

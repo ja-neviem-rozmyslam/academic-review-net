@@ -20,8 +20,8 @@ export class ThesisStore extends ComponentStore<ThesisState> {
         uploadDeadline: '',
         reviewDeadline: '',
         submission: undefined,
-        review: '',
-        reviewForm: ''
+        review: [],
+        reviewForm: [],
       }
     });
   }

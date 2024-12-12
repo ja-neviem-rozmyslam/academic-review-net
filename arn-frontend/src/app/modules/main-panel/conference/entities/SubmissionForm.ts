@@ -4,7 +4,7 @@ export class SubmissionForm {
   category: number;
   abstractEn: string;
   abstractSk: string;
-  coauthors?: number[];
+  coauthors?: string;
   conferenceId?: number;
 
   constructor() {
@@ -12,6 +12,6 @@ export class SubmissionForm {
     this.category = 0;
     this.abstractEn = '';
     this.abstractSk = '';
-    this.coauthors = [];
+    this.coauthors = '';
   }
 }

@@ -20,6 +20,7 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
         return new JPAQuery<>(entityManager)
                 .select(CONFERENCE)
                 .from(CONFERENCE)
+                .where(CONFERENCE.closed.isFalse())
                 .orderBy(
                         new CaseBuilder()
                                 .when(CONFERENCE.users.any().id.eq(userId)).then(1)
@@ -27,6 +28,5 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
                         CONFERENCE.conferenceName.asc()
                 )
                 .fetch();
-
     }
 }

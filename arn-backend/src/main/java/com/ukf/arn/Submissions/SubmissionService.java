@@ -41,7 +41,7 @@ public class SubmissionService {
     public ResponseEntity<?> getSubmission(Long conferenceId) {
         UUID userId = SecurityConfig.getLoggedInUser().getId();
 
-        Submission submission = submissionRepository.findByConferencesIdAndAuthorsId(conferenceId, userId);
+        Submission submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, userId);
         if (submission == null) {
             return ResponseEntity.status(404).body("No submission found for this conference.");
         }
@@ -72,14 +72,14 @@ public class SubmissionService {
             submission.setThesisTitle(submissionRequest.getTitle());
             submission.setAbstractSk(submissionRequest.getAbstractSk());
             submission.setAbstractEn(submissionRequest.getAbstractEn());
-            submission.setAuthor(SecurityConfig.getLoggedInUser());
+            submission.setAuthorId(SecurityConfig.getLoggedInUser().getId());
             submission.setCoauthors(submissionRequest.getCoauthors());
         } else {
             submission = new Submission(
                     submissionRequest.getTitle(),
                     submissionRequest.getAbstractSk(),
                     submissionRequest.getAbstractEn(),
-                    SecurityConfig.getLoggedInUser(),
+                    SecurityConfig.getLoggedInUser().getId(),
                     submissionRequest.getConferenceId(),
                     submissionRequest.getCategory(),
                     submissionRequest.getCoauthors()

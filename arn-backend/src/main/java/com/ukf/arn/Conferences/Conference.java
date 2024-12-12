@@ -3,6 +3,8 @@ package com.ukf.arn.Conferences;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedBy;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,7 +32,8 @@ public class Conference implements Serializable {
     @Column(name = "review_deadline")
     private String reviewDeadline;
 
-    @Column(name = "creation_date")
+    @CreationTimestamp
+    @Column(name = "creation_date", insertable = false)
     private LocalDateTime creationDate;
 
     private String faculty;

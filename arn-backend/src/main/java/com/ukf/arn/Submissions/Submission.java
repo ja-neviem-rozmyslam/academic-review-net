@@ -2,6 +2,10 @@ package com.ukf.arn.Submissions;
 
 import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,6 +25,8 @@ public class Submission implements Serializable {
     @Column(name = "abstract_en")
     private String abstractEn;
 
+    @CreationTimestamp
+    @Column(name = "timestamp", insertable = false)
     private LocalDateTime timestamp;
 
     @Column(name = "conference_id")
@@ -31,9 +37,9 @@ public class Submission implements Serializable {
 
     private String review;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+    @Column(name = "author_id")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID authorId;
 
 
     @Column(name = "type_id")
@@ -45,11 +51,11 @@ public class Submission implements Serializable {
     public Submission() {
     }
 
-    public Submission(String thesisTitle, String abstractSk, String abstractEn, User author, Long conferencesId, Long thesesType, String coauthors) {
+    public Submission(String thesisTitle, String abstractSk, String abstractEn, UUID authorId, Long conferencesId, Long thesesType, String coauthors) {
         this.thesisTitle = thesisTitle;
         this.abstractSk = abstractSk;
         this.abstractEn = abstractEn;
-        this.author = author;
+        this.authorId = authorId;
         this.conferencesId = conferencesId;
         this.thesesType = thesesType;
         this.coauthors = coauthors;
@@ -87,12 +93,12 @@ public class Submission implements Serializable {
         this.abstractEn = abstractEn;
     }
 
-    public User getAuthor() {
-        return author;
+    public UUID getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAuthorId(UUID authorId) {
+        this.authorId = authorId;
     }
 
     public LocalDateTime getTimestamp() {

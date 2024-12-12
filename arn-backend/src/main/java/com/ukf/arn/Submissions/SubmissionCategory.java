@@ -3,7 +3,7 @@ package com.ukf.arn.Submissions;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "theses_types")
+@Table(name = "thesis_types")
 public class SubmissionCategory {
 
     @Id
