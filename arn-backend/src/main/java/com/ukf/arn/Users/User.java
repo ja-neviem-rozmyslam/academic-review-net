@@ -35,11 +35,11 @@ public class User implements Serializable {
     private LocalDateTime registrationDate;
 
     @ManyToOne
-    @JoinColumn(name = "universities_id")
+    @JoinColumn(name = "university_id")
     private University university;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role_ident")
     private List<String> roles = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class User implements Serializable {
     @PrePersist
     public void prePersist() {
         id = UUID.randomUUID();
-        registrationDate = LocalDateTime.now();
+        //registrationDate = LocalDateTime.now();
     }
 
     public UUID getId() {

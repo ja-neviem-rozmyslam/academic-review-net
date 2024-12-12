@@ -60,7 +60,7 @@ public class UserService {
                 .map(submission -> new SubmissionDto(
                         submission.getId(),
                         submission.getThesisTitle(),
-                        submission.getThesesCategoriesId(),
+                        submission.getThesesType(),
                         submission.getAbstractEn(),
                         submission.getAbstractSk(),
                         null

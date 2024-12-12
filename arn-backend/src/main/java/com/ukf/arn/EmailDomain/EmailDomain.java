@@ -13,7 +13,7 @@ public class EmailDomain {
     private String emailDomain;
 
     @ManyToOne
-    @JoinColumn(name = "universities_id")
+    @JoinColumn(name = "university_id")
     private University university;
 
     public Long getId() {

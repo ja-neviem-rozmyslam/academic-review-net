@@ -71,7 +71,7 @@ public class ConferenceService {
     }
 
     private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference) {
-        SubmissionDto submissionDto = (submission != null) ? new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesCategoriesId(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>()) : null;
+        SubmissionDto submissionDto = (submission != null) ? new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesType(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>()) : null;
 
         ConferenceDetail conferenceDetail = new ConferenceDetail();
         conferenceDetail.setId(conference.getId());

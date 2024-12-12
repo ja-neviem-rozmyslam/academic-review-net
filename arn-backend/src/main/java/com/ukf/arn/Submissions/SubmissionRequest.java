@@ -10,12 +10,12 @@ public class SubmissionRequest {
     private String abstractEn;
     private Long conferenceId;
     private Long category;
-    private List<UUID> coauthors;
+    private String coauthors;
 
     public SubmissionRequest() {
     }
 
-    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferencesId, Long thesesCategoriesId, List<UUID> coauthors) {
+    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferencesId, Long thesesCategoriesId, String coauthors) {
         this.title = thesisTitle;
         this.abstractSk = abstractSk;
         this.abstractEn = abstractEn;
@@ -32,11 +32,11 @@ public class SubmissionRequest {
         this.id = id;
     }
 
-    public List<UUID> getCoauthors() {
+    public String getCoauthors() {
         return coauthors;
     }
 
-    public void setCoauthors(List<UUID> coauthors) {
+    public void setCoauthors(String coauthors) {
         this.coauthors = coauthors;
     }
 
