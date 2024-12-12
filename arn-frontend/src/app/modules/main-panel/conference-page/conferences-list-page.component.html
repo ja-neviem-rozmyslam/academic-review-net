@@ -12,8 +12,4 @@
   }
 </div>
 
-<div class="pagination-controls">
-  <button (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
-  <span>Page {{ currentPage }}</span>
-  <button (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
-</div>
+<app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems" (pageChange)="onPageChange($event)"></app-pagination>

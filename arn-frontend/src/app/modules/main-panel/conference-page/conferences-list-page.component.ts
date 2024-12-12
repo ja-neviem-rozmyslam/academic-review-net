@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Conference } from './entities/Conference';
-import { ConferenceService } from './service/conference.service';
-import { ConferenceStore } from './store/conferences-store.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {Conference} from './entities/Conference';
+import {ConferenceService} from './service/conference.service';
+import {ConferenceStore} from './store/conferences-store.service';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-conference-page',
@@ -18,15 +18,16 @@ export class ConferencesListPageComponent implements OnInit {
   searchTerm: string = '';
   currentPage: number = 1;
   pageSize: number = 6;
-  totalPages: number = 1;
+  totalItems: number;
 
-  constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore) {}
+  constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore) {
+  }
 
   ngOnInit(): void {
     this.conferenceStore.initConferences();
 
     this.filteredConferences$.subscribe(filtered => {
-      this.totalPages = Math.ceil(filtered.length / this.pageSize);
+      this.totalItems = filtered.length;
       this.updateCurrentPageConferences(filtered);
     });
   }
@@ -40,7 +41,7 @@ export class ConferencesListPageComponent implements OnInit {
       )
     );
     this.filteredConferences$.subscribe(filtered => {
-      this.totalPages = Math.ceil(filtered.length / this.pageSize);
+      this.totalItems = filtered.length;
       this.currentPage = 1;
       this.updateCurrentPageConferences(filtered);
     });
@@ -58,21 +59,10 @@ export class ConferencesListPageComponent implements OnInit {
     this.currentPageConferences = conferences.slice(startIndex, endIndex);
   }
 
-  goToNextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.filteredConferences$.subscribe(filtered => {
-        this.updateCurrentPageConferences(filtered);
-      });
-    }
-  }
-
-  goToPreviousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.filteredConferences$.subscribe(filtered => {
-        this.updateCurrentPageConferences(filtered);
-      });
-    }
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.filteredConferences$.subscribe(filtered => {
+      this.updateCurrentPageConferences(filtered);
+    });
   }
 }
