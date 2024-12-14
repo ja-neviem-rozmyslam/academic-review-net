@@ -21,8 +21,8 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .select(SUBMISSION)
                 .from(SUBMISSION)
                 .where(SUBMISSION.conferencesId.eq(conferenceId)
-                        .and(SUBMISSION.authorId.eq(userId))
-                        .or(SUBMISSION.reviewerId.eq(userId)))
+                        .and(SUBMISSION.authorId.eq(userId)
+                                .or(SUBMISSION.reviewerId.eq(userId))))
                 .fetchFirst();
     }
 }

@@ -19,8 +19,8 @@ public class ConferenceController {
     }
 
     @GetMapping("/{conferenceId}")
-    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId) throws IOException {
-        return conferenceService.getConferenceData(conferenceId);
+    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId, @RequestParam boolean includeCoAuthors) throws IOException {
+        return conferenceService.getConferenceData(conferenceId, includeCoAuthors);
     }
 
     @PostMapping("/join/{conferenceId}")

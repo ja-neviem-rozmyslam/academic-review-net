@@ -1,4 +1,4 @@
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example" *ngIf="totalPages > 1">
   <ul class="inline-flex -space-x-px text-sm">
     <li>
       <span (click)="goToPreviousPage()"

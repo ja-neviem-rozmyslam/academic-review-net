@@ -15,8 +15,6 @@ export class UtilityService {
       return error.error;
     } else if (error?.status === 500) {
       this.dialogService.openErrorDialog('Nastala chyba pri komunikácii so serverom');
-    } else if (error) {
-      this.dialogService.openErrorDialog(error.message);
     }
     return null;
   }

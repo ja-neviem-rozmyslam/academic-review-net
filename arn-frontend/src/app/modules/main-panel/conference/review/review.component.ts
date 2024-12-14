@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {RoleService} from '../../../services/role.service';
 import {ReviewFormObject} from '../entities/ReviewFormObject';
 import {reviewRatingOptions} from '../entities/constants';
-import {ThesisStore} from '../store/thesis-store.service';
 import {ReviewBlock} from '../entities/Review';
 
 @Component({
@@ -11,7 +10,6 @@ import {ReviewBlock} from '../entities/Review';
   styleUrl: './review.component.less'
 })
 export class ReviewComponent implements OnInit {
-  conferenceId: number;
   reviewDeadline: string;
   review: ReviewBlock[];
 
@@ -40,21 +38,11 @@ export class ReviewComponent implements OnInit {
     }
   ];
 
-  constructor(private roleService: RoleService, private thesisStore: ThesisStore) {
+  constructor(private roleService: RoleService) {
   }
 
   ngOnInit(): void {
     this.handleRoleBasedView();
-    this.loadConferenceDetails();
-  }
-
-  loadConferenceDetails(): void {
-    this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
-      this.conferenceId = conferenceDetail.id;
-      this.reviewDeadline = conferenceDetail.reviewDeadline;
-      this.review = conferenceDetail.review;
-      this.handleRoleBasedView();
-    });
   }
 
 

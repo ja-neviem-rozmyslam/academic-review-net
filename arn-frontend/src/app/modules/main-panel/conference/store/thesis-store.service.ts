@@ -7,10 +7,16 @@ import {ConferenceDetail} from '../entities/ConferenceDetail';
 export class ThesisStore extends ComponentStore<ThesisState> {
   readonly conferenceDetail$ = this.select((state) => state.conferenceDetail);
   readonly submission$ = this.select(this.conferenceDetail$, (conferenceDetail) => conferenceDetail.submission);
+  readonly thesisCategories$ = this.select((state) => state.thesisCategories);
 
   readonly setConferenceDetail = this.updater((state, conferenceDetail: ConferenceDetail) => ({
     ...state,
     conferenceDetail,
+  }));
+
+  readonly setThesisCategories = this.updater((state, thesisCategories: any) => ({
+    ...state,
+    thesisCategories,
   }));
 
   constructor() {
@@ -22,7 +28,8 @@ export class ThesisStore extends ComponentStore<ThesisState> {
         submission: undefined,
         review: [],
         reviewForm: [],
-      }
+      },
+      thesisCategories: []
     });
   }
 }

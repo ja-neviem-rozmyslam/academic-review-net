@@ -20,7 +20,9 @@ export class ConferenceService {
     return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
   }
 
-  getConferenceData(conferenceId: number): Observable<any> {
-    return this.http.get(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`);
+  getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<any> {
+    return this.http.get(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`, {
+      params: { includeCoAuthors: includeCoAuthors.toString() }
+    });
   }
 }

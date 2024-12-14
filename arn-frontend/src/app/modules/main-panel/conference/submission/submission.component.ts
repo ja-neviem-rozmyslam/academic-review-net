@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {SubmissionService} from '../services/submission.service';
-import {SubmissionForm} from '../entities/SubmissionForm';
-import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
-import {RoleService} from '../../../services/role.service';
-import {take} from 'rxjs';
-import {ThesisStore} from '../store/thesis-store.service';
-import {Submission} from '../entities/Submission';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { SubmissionService } from '../services/submission.service';
+import { SubmissionForm } from '../entities/SubmissionForm';
+import { SelectOption } from '../../../components/arn-select/entities/SelectOption';
+import { Submission } from '../entities/Submission';
+import { ConferenceService } from '../../conference-page/service/conference.service';
+import { ConferenceDetail } from '../entities/ConferenceDetail';
+import {UserRoles} from '../../../constants';
 
 @Component({
   selector: 'app-submission',
@@ -13,39 +13,34 @@ import {Submission} from '../entities/Submission';
   styleUrls: ['./submission.component.less'],
 })
 export class SubmissionComponent implements OnInit {
-  conferenceId: number;
-  uploadDeadline: string;
-  submission: Submission;
+  @Input() thesisCategories: SelectOption[] = [];
+  @Input() conferenceDetail: ConferenceDetail;
+  @Input() roleInConference: string;
+  @Input() submissionOptions: any;
 
-  invalidFileAmount = false;
+  @ViewChild('submissionReadTemplate', { static: true }) submissionReadTemplate: TemplateRef<any>;
+  @ViewChild('submissionFormTemplate', { static: true }) submissionFormTemplate: TemplateRef<any>;
+  @ViewChild('noSubmissionTemplate', { static: true }) noSubmissionTemplate: TemplateRef<any>;
+
   submissionForm: SubmissionForm = new SubmissionForm();
+  invalidFileAmount = false;
   uploadedFiles: File[] = [];
-  thesisCategories: SelectOption[] = [];
-  showInReadMode = true;
-  allowEditation = false;
+  showInReadMode: boolean;
 
   constructor(
     private submissionService: SubmissionService,
-    private roleService: RoleService,
-    protected thesisStore: ThesisStore
-  ) {
-  }
+    private conferenceService: ConferenceService
+  ) {}
 
   ngOnInit(): void {
-    this.loadThesisCategories();
-    this.loadConferenceDetails();
-  }
-
-  loadThesisCategories(): void {
-    this.submissionService.getThesesCategories().pipe(take(1)).subscribe((categories) => {
-      this.thesisCategories = categories;
-    });
+    this.showInReadMode = this.submissionOptions.isUploaded;
+    this.uploadedFiles = [new File([''], 'file1dasdasdasdasdasdas.pdf'), new File([''], 'file2ddddddddd.doc')];
   }
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
     if (!this.invalidFileAmount) {
-      this.submissionForm.conferenceId = this.conferenceId;
+      this.submissionForm.conferenceId = this.conferenceDetail.id;
       this.uploadSubmission();
     }
   }
@@ -58,36 +53,35 @@ export class SubmissionComponent implements OnInit {
   }
 
   handleSubmissionSuccess(savedSubmission: Submission): void {
-    console.log('Submission saved:', savedSubmission);
-    this.submission = {
-      id: savedSubmission.id,
-      title: savedSubmission.title,
-      category: savedSubmission.category,
-      abstractEn: savedSubmission.abstractEn,
-      abstractSk: savedSubmission.abstractSk
-    } as Submission;
+    this.conferenceDetail.submission = savedSubmission;
     this.submissionForm = new SubmissionForm();
     this.showInReadMode = true;
   }
 
   shortenFileName(fileName: string): string {
-    return fileName.length > 20 ? `${fileName.slice(0, 20)}...` : fileName;
+    if (fileName.length <= 20) {
+      return fileName;
+    }
+    const extension = fileName.slice(fileName.lastIndexOf('.'));
+    const namePart = fileName.slice(0, 16 - extension.length);
+    return `${namePart}...${extension}`;
   }
 
-  downloadFile(file: string): void {
+  downloadFile(file: File): void {
     console.log('Downloading file:', file);
   }
 
   openEditForm(): void {
-    this.showInReadMode = false;
-    Object.assign(this.submissionForm, {
-      id: this.submission.id,
-      title: this.submission.title,
-      category: this.submission.category,
-      abstractEn: this.submission.abstractEn,
-      abstractSk: this.submission.abstractSk,
-      coauthors: this.submission.coauthors || '',
+    this.conferenceService.getConferenceData(this.conferenceDetail.id, true).subscribe((response: {
+      submission: Submission
+    }) => {
+      this.submissionForm = response.submission;
+      this.showInReadMode = false;
     });
+  }
+
+  closeEditForm(): void {
+    this.showInReadMode = true;
   }
 
   getCategoryNameById(id: number): string {
@@ -95,21 +89,22 @@ export class SubmissionComponent implements OnInit {
     return category ? category.display : 'Nedostupné';
   }
 
-  private loadConferenceDetails(): void {
-    this.thesisStore.conferenceDetail$.subscribe((conferenceDetail) => {
-      this.conferenceId = conferenceDetail.id;
-      this.uploadDeadline = conferenceDetail.uploadDeadline;
-      this.submission = conferenceDetail.submission;
-      this.handleRoleBasedView();
-    });
-  }
-
-
-  private handleRoleBasedView(): void {
-    if (this.roleService.isStudent()) {
-      const isInDeadline = new Date() < new Date(this.uploadDeadline);
-      this.showInReadMode = this.submission !== null;
-      this.allowEditation = isInDeadline;
+  getTemplate(): any {
+    if (this.roleInConference === UserRoles.STUDENT) {
+      if (this.showInReadMode) {
+        return this.submissionReadTemplate;
+      } else if (!this.showInReadMode && this.submissionOptions.isBeforeDeadline) {
+        return this.submissionFormTemplate;
+      } else {
+        return this.noSubmissionTemplate;
+      }
+    } else if (this.roleInConference === UserRoles.REVIEWER) {
+      if (this.showInReadMode) {
+        return this.submissionReadTemplate;
+      } else {
+        return this.noSubmissionTemplate;
+      }
     }
+    return null;
   }
 }

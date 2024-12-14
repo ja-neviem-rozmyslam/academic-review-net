@@ -1,5 +1,6 @@
 package com.ukf.arn.Conferences;
 
+import com.ukf.arn.ConstantsKatalog;
 import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Submissions.SubmissionDto;
 import com.ukf.arn.Submissions.SubmissionRepository;
@@ -11,14 +12,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static com.ukf.arn.ConstantsKatalog.Role.REVIEWER;
 
 @Service
 public class ConferenceService {
 
-    private ConferenceRepository conferenceRepository;
-    private SubmissionRepository submissionRepository;
+    private final ConferenceRepository conferenceRepository;
+    private final SubmissionRepository submissionRepository;
 
     public ConferenceService(ConferenceRepository conferenceRepository, SubmissionRepository submissionRepository) {
         this.conferenceRepository = conferenceRepository;
@@ -26,7 +30,9 @@ public class ConferenceService {
     }
 
     public ResponseEntity<?> getConferencesForUser(UUID userId) {
-        List<Conference> conferences = conferenceRepository.findAllOrderByJoined(userId);
+        boolean isReviewer = SecurityConfig.getLoggedInUser().getRoles().size() == 1
+                && SecurityConfig.getLoggedInUser().getRoles().contains(REVIEWER.getCode());
+        List<Conference> conferences = conferenceRepository.findAllOrderByJoined(userId, isReviewer);
 
         return ResponseEntity.ok(conferences.stream()
                 .map(conference -> mapToDTO(conference, userId))
@@ -53,7 +59,7 @@ public class ConferenceService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getConferenceData(Long conferenceId) {
+    public ResponseEntity<?> getConferenceData(Long conferenceId, boolean includeCoAuthors) {
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         if (conference == null || conference.isClosed()) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
@@ -65,13 +71,25 @@ public class ConferenceService {
         }
 
         Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
-        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference);
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission != null ? submission : null, conference, includeCoAuthors);
 
         return ResponseEntity.ok(conferenceDetail);
     }
 
-    private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference) {
-        SubmissionDto submissionDto = (submission != null) ? new SubmissionDto(submission.getId(), submission.getThesisTitle(), submission.getThesesType(), submission.getAbstractEn(), submission.getAbstractSk(), new ArrayList<>()) : null;
+    private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference, boolean includeCoAuthors) {
+        SubmissionDto submissionDto = null;
+
+        if (submission != null){
+            submissionDto = new SubmissionDto();
+            submissionDto.setId(submission.getId());
+            submissionDto.setTitle(submission.getThesisTitle());
+            submissionDto.setCategory(submission.getThesesType());
+            submissionDto.setAbstractEn(submission.getAbstractEn());
+            submissionDto.setAbstractSk(submission.getAbstractSk());
+            if (includeCoAuthors) {
+                submissionDto.setCoauthors(submission.getCoauthors());
+            }
+        }
 
         ConferenceDetail conferenceDetail = new ConferenceDetail();
         conferenceDetail.setId(conference.getId());

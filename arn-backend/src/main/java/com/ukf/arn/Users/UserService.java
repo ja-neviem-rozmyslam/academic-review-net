@@ -62,8 +62,7 @@ public class UserService {
                         submission.getThesisTitle(),
                         submission.getThesesType(),
                         submission.getAbstractEn(),
-                        submission.getAbstractSk(),
-                        null
+                        submission.getAbstractSk()
                 ))
                 .collect(Collectors.toList());
 

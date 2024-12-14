@@ -32,15 +32,15 @@ public class Submission implements Serializable {
     @Column(name = "conference_id")
     private Long conferencesId;
 
-    @Column(name = "reviewer_id")
-    private UUID reviewerId;
-
     private String review;
 
     @Column(name = "author_id")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID authorId;
 
+    @Column(name = "reviewer_id")
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID reviewerId;
 
     @Column(name = "type_id")
     private Long thesesType;

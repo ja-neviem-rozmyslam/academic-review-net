@@ -7,20 +7,20 @@ public class SubmissionDto {
     private Long id;
     private String title;
     private Long category;
+    private String coauthors;
     private String abstractEn;
     private String abstractSk;
-    private List<String> uploadedFiles;
 
     public SubmissionDto() {
     }
 
-    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk, List<String> uploadedFiles) {
+    public SubmissionDto(Long id, String title, Long category, String abstractEn, String abstractSk) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.abstractEn = abstractEn;
         this.abstractSk = abstractSk;
-        this.uploadedFiles = uploadedFiles;
+        this.coauthors = "";
     }
 
     public Long getId() {
@@ -63,11 +63,11 @@ public class SubmissionDto {
         this.abstractSk = abstractSk;
     }
 
-    public List<String> getUploadedFiles() {
-        return uploadedFiles;
+    public String getCoauthors() {
+        return coauthors;
     }
 
-    public void setUploadedFiles(List<String> uploadedFiles) {
-        this.uploadedFiles = uploadedFiles;
+    public void setCoauthors(String coauthors) {
+        this.coauthors = coauthors;
     }
 }

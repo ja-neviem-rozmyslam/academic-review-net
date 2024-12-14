@@ -17,14 +17,22 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
   });
 
   readonly updateConferenceJoinedStatus = this.updater((state, conferenceId: number) => {
-    const updatedConferences = state.conferences.map(conference =>
-      conference.id === conferenceId ? {...conference, joined: true} : conference
-    );
+    const updatedConferences = state.conferences
+      .map(conference =>
+        conference.id === conferenceId ? { ...conference, joined: true } : conference
+      )
+      .sort((a, b) => {
+        if (a.joined && !b.joined) return -1;
+        if (!a.joined && b.joined) return 1;
+        return a.conferenceName.localeCompare(b.conferenceName);
+      });
+
     return {
       ...state,
       conferences: updatedConferences
     };
   });
+
 
   readonly initConferences = this.effect((trigger$) =>
     trigger$.pipe(

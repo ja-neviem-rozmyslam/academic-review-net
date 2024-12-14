@@ -16,17 +16,23 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Conference> findAllOrderByJoined(UUID userId) {
-        return new JPAQuery<>(entityManager)
+    public List<Conference> findAllOrderByJoined(UUID userId, boolean isReviewer) {
+        JPAQuery<Conference> query = new JPAQuery<>(entityManager)
                 .select(CONFERENCE)
                 .from(CONFERENCE)
-                .where(CONFERENCE.closed.isFalse())
-                .orderBy(
-                        new CaseBuilder()
-                                .when(CONFERENCE.users.any().id.eq(userId)).then(1)
-                                .otherwise(0).desc(),
-                        CONFERENCE.conferenceName.asc()
-                )
-                .fetch();
+                .where(CONFERENCE.closed.isFalse());
+
+        if (isReviewer) {
+            query.where(CONFERENCE.users.any().id.eq(userId));
+        }
+
+        query.orderBy(
+                new CaseBuilder()
+                        .when(CONFERENCE.users.any().id.eq(userId)).then(1)
+                        .otherwise(0).desc(),
+                CONFERENCE.conferenceName.asc()
+        );
+
+        return query.fetch();
     }
 }

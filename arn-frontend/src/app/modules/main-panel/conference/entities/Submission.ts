@@ -5,5 +5,4 @@ export interface Submission {
   abstractEn: string;
   abstractSk: string;
   coauthors?: string;
-  uploadedFiles?: string[];
 }

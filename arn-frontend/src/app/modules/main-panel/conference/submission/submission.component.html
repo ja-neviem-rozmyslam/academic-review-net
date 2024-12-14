@@ -1,89 +1,52 @@
-<div class="card-base p-6 h-full">
-  <ng-container *ngIf="conferenceId !== null; else loading">
-    <ng-container *ngIf="showInReadMode; then submissionReadTemplate else submissionFormTemplate"></ng-container>
-  </ng-container>
+<ng-container *ngTemplateOutlet="getTemplate()"></ng-container>
 
-  <ng-template #loading>
-    <div class="skeleton-loader">
-      <div class="arn-input">
-        <div class="skeleton skeleton-text"></div>
-      </div>
-      <div class="arn-input">
-        <div class="skeleton skeleton-text"></div>
-      </div>
-      <div class="arn-input">
-        <div class="skeleton skeleton-text"></div>
-      </div>
-      <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
-        <div class="arn-input sm:w-1/2">
-          <div class="skeleton skeleton-text"></div>
-        </div>
-        <div class="arn-input sm:w-1/2">
-          <div class="skeleton skeleton-text"></div>
-        </div>
-      </div>
-      <div class="flex-grow w-full h-36">
-        <div class="skeleton skeleton-text"></div>
-      </div>
+<ng-template #noSubmissionTemplate>
+  <div class="flex-grow">
+    <div class="flex flex-col items-center justify-center h-full">
+      <p class="text-2xl font-semibold">
+        {{ roleInConference === 'S' ? 'Termín na odovzdanie záverečnej práce uplynul' : 'Študent ešte neodovzdal záverečnú prácu' }}
+      </p>
     </div>
-  </ng-template>
-</div>
+  </div>
+</ng-template>
 
 <ng-template #submissionReadTemplate>
-  <div class="space-y-6">
-    <div class="arn-input">
-      <label for="nadpis-zaverecnej-prace-r">Nadpis záverečnej práce</label>
-      <p id="nadpis-zaverecnej-prace-r">{{ submission?.title || 'Nedostupné' }}</p>
+  <div class="flex-grow">
+    <div class="space-y-2">
+      <h1 class="font-semibold text-3xl">{{ conferenceDetail?.submission.title }}</h1>
+      <p class="text-xl">{{ getCategoryNameById(conferenceDetail?.submission.category) }}</p>
     </div>
 
-    <div class="arn-input">
-      <label for="typ-zaverecnej-prace-r">Typ záverečnej práce</label>
-      <p id="typ-zaverecnej-prace-r">{{ getCategoryNameById(submission?.category) }}</p>
-    </div>
-
-    <div class="arn-input">
-      <label for="spolu-autori-r">Spoluautori</label>
-      <p id="spolu-autori-r">{{ submission?.coauthors || 'Žiadni spoluautori' }}</p>
-    </div>
-
-    <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
-      <div class="arn-input sm:w-1/2">
-        <label for="abstrakt-anglicky-r">Abstrakt (Anglický)</label>
-        <p id="abstrakt-anglicky-r">{{ submission?.abstractEn || 'Nedostupné' }}</p>
+    <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full mt-8">
+      <div class="sm:w-1/2">
+        <p class="font-bold mb-2">Abstrakt (Anglický)</p>
+        <p class="text-lg">{{ conferenceDetail?.submission.abstractEn }}</p>
       </div>
 
-      <div class="arn-input sm:w-1/2">
-        <label for="abstrakt-slovensky-r">Abstrakt (Slovenský)</label>
-        <p id="abstrakt-slovensky-r">{{ submission?.abstractSk || 'Nedostupné' }}</p>
+      <div class="sm:w-1/2">
+        <p class="font-bold mb-2">Abstrakt (Slovenský)</p>
+        <p class="text-lg">{{ conferenceDetail?.submission.abstractSk }}</p>
       </div>
     </div>
 
-    <div class="flex flex-col gap-4 w-full">
-      <div class="flex-grow w-full h-36">
-        <p>Súbory:</p>
-        <div *ngIf="submission?.uploadedFiles?.length; else noFiles">
-          <div *ngFor="let file of submission?.uploadedFiles">
-            <div class="flex items-center gap-2">
-              <button class="arn-button flex items-center gap-2" (click)="downloadFile(file)">
-                <document-arrow-down-outline-icon></document-arrow-down-outline-icon>
-                <span>{{ shortenFileName(file) }}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <ng-template #noFiles>
-          <p>Žiadne súbory nahraté.</p>
-        </ng-template>
+    <div class="flex flex-col sm:flex-row gap-4 mt-20 mb-10" *ngIf="uploadedFiles">
+      <div *ngFor="let file of uploadedFiles"
+           class="flex items-center gap-4 p-4 bg-gray-200 rounded-2xl cursor-pointer w-full sm:w-80"
+           (click)="downloadFile(file)">
+        <document-arrow-down-outline-icon size="30"></document-arrow-down-outline-icon>
+        <span class="text-lg font-medium text-gray-800 truncate">{{ shortenFileName(file.name) }}</span>
       </div>
     </div>
-    <div class="flex w-full mt-4" *ngIf="allowEditation">
-      <app-arn-button [buttonText]="'Upraviť Prácu'" [classes]="'h-full'" (buttonClick)="openEditForm()"></app-arn-button>
+
+    <div class="flex w-full mt-4" *ngIf="submissionOptions.isBeforeDeadline">
+      <app-arn-button [buttonText]="'Upraviť Prácu'" [classes]="'h-full'"
+                      (buttonClick)="openEditForm()"></app-arn-button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #submissionFormTemplate>
-  <form class="space-y-4" (ngSubmit)="onSubmit()" appFormValidation>
+  <form class="space-y-4 flex-grow" (ngSubmit)="onSubmit()" appFormValidation>
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
       <input
@@ -91,7 +54,7 @@
         id="nadpis-zaverecnej-prace"
         name="title"
         placeholder="Vložte nadpis"
-        [(ngModel)]="submissionForm.title" required />
+        [(ngModel)]="submissionForm.title" required/>
     </div>
 
     <div class="arn-input">
@@ -107,9 +70,12 @@
 
     <div class="arn-input">
       <label for="spolu-autori">Spoluautori (Dobrovoľné)</label>
-      <app-arn-select
+      <input
+        type="text"
         id="spolu-autori"
-        [placeholder]="'Vyberte spolu autorov'"></app-arn-select>
+        name="coauthors"
+        placeholder="Vypíšte spoluautorov"
+        [(ngModel)]="submissionForm.coauthors" required/>
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
@@ -147,8 +113,14 @@
       </div>
     </div>
 
-    <div class="flex w-full mt-4">
+    <div class="flex w-full mt-4 gap-3">
       <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button *ngIf="conferenceDetail?.submission !== null"
+                      type="button"
+                      [buttonText]="'Zrušiť'"
+                      [classes]="'h-full'"
+                      [customColor]="'#da3c3c'"
+                      (buttonClick)="closeEditForm()"></app-arn-button>
     </div>
   </form>
 </ng-template>

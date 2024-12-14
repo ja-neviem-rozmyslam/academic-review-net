@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
-import {loginStart} from '../../store/auth-store/auth.actions';
+import {loginStart, resetError} from '../../store/auth-store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -73,8 +73,10 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
 
   private initErrorHandling() {
     this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
-      this.errorMessage = this.utilityService.handleResponseError(error);
-      error = null;
+      if(error) {
+        this.errorMessage = this.utilityService.handleResponseError(error);
+        this.store.dispatch(resetError());
+      }
     });
   }
 }

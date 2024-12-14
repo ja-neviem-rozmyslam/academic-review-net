@@ -17,3 +17,7 @@ export const loginFailure = createAction(
   '[Auth] Login Failure',
   props<{ error: HttpErrorResponse }>()
 );
+
+export const resetError = createAction(
+  '[Auth] Reset Error'
+);

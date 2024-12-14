@@ -99,8 +99,7 @@ public class SubmissionService {
                 savedSubmission.getThesisTitle(),
                 savedSubmission.getThesesType(),
                 savedSubmission.getAbstractEn(),
-                savedSubmission.getAbstractSk(),
-                null
+                savedSubmission.getAbstractSk()
         );
 
         return ResponseEntity.ok(submissionDto);
