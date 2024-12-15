@@ -34,7 +34,7 @@
            class="flex items-center gap-4 p-4 bg-gray-200 rounded-2xl cursor-pointer w-full sm:w-80"
            (click)="downloadFile(file)">
         <document-arrow-down-outline-icon size="30"></document-arrow-down-outline-icon>
-        <span class="text-lg font-medium text-gray-800 truncate">{{ shortenFileName(file.name) }}</span>
+        <span class="text-lg font-medium text-gray-800 truncate">{{ (file.name) }}</span>
       </div>
     </div>
 

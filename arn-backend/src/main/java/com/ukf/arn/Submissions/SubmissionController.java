@@ -1,6 +1,8 @@
 package com.ukf.arn.Submissions;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,4 +33,16 @@ public class SubmissionController {
         return submissionService.getCategories();
     }
 
+    @GetMapping("/files/{submissionId}")
+    public ResponseEntity<?> getFiles(@PathVariable Long submissionId) {
+        return submissionService.getFiles(submissionId);
+    }
+
+    @GetMapping("/files/{submissionId}/{filename}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long submissionId, @PathVariable String filename) {
+        Resource resource = submissionService.getFileAsResource(submissionId, filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 }

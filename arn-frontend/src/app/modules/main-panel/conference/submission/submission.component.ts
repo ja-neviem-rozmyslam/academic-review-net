@@ -6,6 +6,7 @@ import { Submission } from '../entities/Submission';
 import { ConferenceService } from '../../conference-page/service/conference.service';
 import { ConferenceDetail } from '../entities/ConferenceDetail';
 import {UserRoles} from '../../../constants';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-submission',
@@ -34,7 +35,9 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit(): void {
     this.showInReadMode = this.submissionOptions.isUploaded;
-    this.uploadedFiles = [new File([''], 'file1dasdasdasdasdasdas.pdf'), new File([''], 'file2ddddddddd.doc')];
+    if (this.showInReadMode) {
+      this.retrieveFiles(this.conferenceDetail.submission.id);
+    }
   }
 
   onSubmit(): void {
@@ -68,7 +71,28 @@ export class SubmissionComponent implements OnInit {
   }
 
   downloadFile(file: File): void {
-    console.log('Downloading file:', file);
+    this.submissionService.downloadFile(this.conferenceDetail.submission.id, file.name).subscribe(
+      (blob) => {
+        saveAs(blob, file.name);
+      },
+      (error) => console.error('Error downloading file:', error)
+    );
+  }
+
+  retrieveFiles(submissionId: number): void {
+    this.submissionService.getSubmissionFiles(submissionId).subscribe(
+      (filePaths: string[]) => {
+        this.uploadedFiles = filePaths.map((path) => {
+          const fileName = path.split('\\').pop();
+          return new File([], fileName);
+        });
+        console.log('Files retrieved:', this.uploadedFiles);
+      },
+      (error) => {
+        console.error('Error retrieving files:', error);
+        this.uploadedFiles = [];
+      }
+    );
   }
 
   openEditForm(): void {
@@ -108,3 +132,4 @@ export class SubmissionComponent implements OnInit {
     return null;
   }
 }
+

@@ -5,6 +5,8 @@ import com.ukf.arn.Conferences.ConferenceRepository;
 import com.ukf.arn.Users.User;
 import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,10 +123,37 @@ public class SubmissionService {
         }
     }
 
+    public ResponseEntity<?> getFiles(Long submissionId) {
+        Submission submission = submissionRepository.findById(submissionId).orElseThrow();
+        String conferenceFolderPath = "conferences/" + submission.getConferencesId();
+        String userFolderPath = conferenceFolderPath + "/" + submission.getAuthorId().toString();
+        Path path = Paths.get(userFolderPath);
+        if (!Files.exists(path)) {
+            return ResponseEntity.status(404).body("No files found for this submission.");
+        }
+        return ResponseEntity.ok(path.toFile().listFiles());
+    }
+
     private void saveFilesToFolder(MultipartFile[] files, String folderPath) throws IOException {
         for (MultipartFile file : files) {
             Path destination = Paths.get(folderPath, file.getOriginalFilename());
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public Resource getFileAsResource(Long submissionId, String filename) {
+        try {
+            Submission submission = submissionRepository.findById(submissionId).orElseThrow(() -> new RuntimeException("Submission not found"));
+            String userFolderPath = "conferences/" + submission.getConferencesId() + "/" + submission.getAuthorId().toString();
+            Path filePath = Paths.get(userFolderPath, filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new RuntimeException("File not found " + filename);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("File not found " + filename, e);
         }
     }
 }

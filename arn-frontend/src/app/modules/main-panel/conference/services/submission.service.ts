@@ -22,6 +22,16 @@ export class SubmissionService {
     return this.http.post(`${this.SUBMISSION_API_ENDPOINT}/upload`, formData, { observe: 'response' });
   }
 
+  getSubmissionFiles(submissionId: number): Observable<string[]> {
+    return this.http.get<string[]>(`/api/submissions/files/${submissionId}`);
+  }
+
+  downloadFile(submissionId: number, filename: string): Observable<Blob> {
+    return this.http.get(`${this.SUBMISSION_API_ENDPOINT}/files/${submissionId}/${filename}`, {
+      responseType: 'blob',
+    });
+  }
+
   getThesesCategories(): Observable<any> {
     return this.http.get<any[]>(`${this.SUBMISSION_API_ENDPOINT}/categories`).pipe(
       map(categories =>
