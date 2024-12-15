@@ -31,11 +31,12 @@ export function getMenuItems(userRoles: string[]): MenuItem[] {
   if (userRoles.includes(UserRoles.STUDENT)) {
     thesesMenuItem.subItems.push(
       {
-        path: '',
+        path: 'my-theses',
         title: 'Moje Aktívne Práce',
       },
       {
-        path: '',
+        path: 'my-theses',
+        queryParams: {closed: 'true'},
         title: 'Moje Dokončené Práce',
       }
     );
@@ -44,11 +45,13 @@ export function getMenuItems(userRoles: string[]): MenuItem[] {
   if (userRoles.includes(UserRoles.REVIEWER)) {
     thesesMenuItem.subItems.push(
       {
-        path: '',
+        path: 'my-theses',
+        queryParams: {type: 'review'},
         title: 'Moje Pridelené Práce',
       },
       {
-        path: '',
+        path: 'my-theses',
+        queryParams: {type: 'review' , closed: 'true'},
         title: 'Moje Posúdené Práce',
       }
     );

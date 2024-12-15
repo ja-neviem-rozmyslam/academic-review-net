@@ -1,6 +1,5 @@
 package com.ukf.arn.Conferences;
 
-import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Submissions.SubmissionDto;
 
 public class ConferenceDetail {
@@ -8,6 +7,7 @@ public class ConferenceDetail {
     private String uploadDeadline;
     private String reviewDeadline;
     private SubmissionDto submission;
+    private String submissionRole;
     private String review;
     private String reviewForm;
 
@@ -61,5 +61,13 @@ public class ConferenceDetail {
 
     public void setReviewForm(String reviewForm) {
         this.reviewForm = reviewForm;
+    }
+
+    public String getSubmissionRole() {
+        return submissionRole;
+    }
+
+    public void setSubmissionRole(String submissionRole) {
+        this.submissionRole = submissionRole;
     }
 }

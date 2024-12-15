@@ -1,8 +1,5 @@
 package com.ukf.arn.Submissions;
 
-import java.io.File;
-import java.util.List;
-
 public class SubmissionDto {
     private Long id;
     private String title;
@@ -10,6 +7,7 @@ public class SubmissionDto {
     private String coauthors;
     private String abstractEn;
     private String abstractSk;
+    private Long conferenceId;
 
     public SubmissionDto() {
     }
@@ -69,5 +67,13 @@ public class SubmissionDto {
 
     public void setCoauthors(String coauthors) {
         this.coauthors = coauthors;
+    }
+
+    public Long getConferenceId() {
+        return conferenceId;
+    }
+
+    public void setConferenceId(Long conferenceId) {
+        this.conferenceId = conferenceId;
     }
 }

@@ -3,12 +3,10 @@ import {TABOPTIONS} from './entities/constants';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ConferenceService} from '../conference-page/service/conference.service';
 import {DialogService} from '../../services/dialog.service';
-import {SubmissionService} from './services/submission.service';
-import {take} from 'rxjs';
 import {ConferenceDetail} from './entities/ConferenceDetail';
-import {SelectOption} from '../../components/arn-select/entities/SelectOption';
 import {RoleService} from '../../services/role.service';
 import {UserRoles} from '../../constants';
+import {ConferenceStore} from '../conference-page/store/conferences-store.service';
 
 @Component({
   selector: 'app-thesis-page',
@@ -19,8 +17,7 @@ export class ConferencePageComponent implements OnInit {
   tabOptions = TABOPTIONS;
   selectedOption = TABOPTIONS[0].value;
 
-  thesisCategories: SelectOption[] = [];
-
+  thesisCategories$ = this.conferenceStore.thesisCategories$;
   conferenceDetail: ConferenceDetail;
   isConferenceLoaded = false;
 
@@ -39,8 +36,8 @@ export class ConferencePageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService,
-    private submissionService: SubmissionService,
     private roleService: RoleService,
+    private conferenceStore: ConferenceStore,
     private conferenceService: ConferenceService) {
   }
 
@@ -65,27 +62,23 @@ export class ConferencePageComponent implements OnInit {
         this.dialogService.openErrorDialog(`Problém s načítaním konferencie: ${error.error}`);
       }
     });
-    this.submissionService.getThesesCategories().pipe(take(1)).subscribe((categories) => {
-      this.thesisCategories = categories;
-    });
   }
 
   private handleRoleBasedView(): void {
     const isUploaded = this.conferenceDetail.submission !== null;
-    if (this.roleService.isStudent()) {
+    if (this.roleService.isStudent() && this.conferenceDetail.submissionRole === UserRoles.STUDENT) {
       this.roleInConference = UserRoles.STUDENT;
       this.submissionOptions.isUploaded = isUploaded;
       this.submissionOptions.isBeforeDeadline = new Date() < new Date(this.conferenceDetail.uploadDeadline);
-    } else if (this.roleService.isReviewer()) {
+    } else if (this.roleService.isReviewer() && this.conferenceDetail.submissionRole === UserRoles.REVIEWER) {
       this.roleInConference = UserRoles.REVIEWER;
       this.submissionOptions.isUploaded = isUploaded;
     } else {
+      if (this.roleService.isReviewer()) {
+        this.dialogService.openInfoDialog('Informácia', 'Nebola vám pridelená žiadna záverečná práca na posúdenie.');
+      }
       this.redirectToHome();
     }
-  }
-
-  private handleSubmissionView(): void {
-
   }
 
   private redirectToHome(): void {

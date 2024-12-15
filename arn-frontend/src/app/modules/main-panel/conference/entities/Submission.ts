@@ -5,4 +5,5 @@ export interface Submission {
   abstractEn: string;
   abstractSk: string;
   coauthors?: string;
+  conferenceId: number;
 }

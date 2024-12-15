@@ -49,6 +49,8 @@ import {ArnFileinputComponent} from './modules/components/arn-fileinput/arn-file
 import {ConferenceStore} from './modules/main-panel/conference-page/store/conferences-store.service';
 import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
 import {PaginationComponent} from './modules/components/pagination/pagination.component';
+import { MyThesesComponent } from './modules/main-panel/my-theses/my-theses.component';
+import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/thesis-card.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import {PaginationComponent} from './modules/components/pagination/pagination.co
     ReviewComponent,
     ArnFileinputComponent,
     PaginationComponent,
-    ProfilePageComponent],
+    ProfilePageComponent,
+    MyThesesComponent,
+    ThesisCardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

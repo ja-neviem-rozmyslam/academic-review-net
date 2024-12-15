@@ -4,6 +4,7 @@ import {ConferenceService} from './service/conference.service';
 import {ConferenceStore} from './store/conferences-store.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {SubmissionService} from '../conference/services/submission.service';
 
 @Component({
   selector: 'app-conference-page',
@@ -20,11 +21,14 @@ export class ConferencesListPageComponent implements OnInit {
   pageSize: number = 6;
   totalItems: number;
 
-  constructor(private conferenceService: ConferenceService, private conferenceStore: ConferenceStore) {
+  constructor(private conferenceService: ConferenceService,
+              private submissionService: SubmissionService,
+              private conferenceStore: ConferenceStore) {
   }
 
   ngOnInit(): void {
     this.conferenceStore.initConferences();
+    this.conferenceStore.initThesisCategories();
 
     this.filteredConferences$.subscribe(filtered => {
       this.totalItems = filtered.length;
