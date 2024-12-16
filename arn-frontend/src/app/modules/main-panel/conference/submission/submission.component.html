@@ -115,12 +115,11 @@
 
     <div class="flex w-full mt-4 gap-3">
       <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
-      <app-arn-button *ngIf="conferenceDetail?.submission !== null"
-                      type="button"
+      <app-arn-button type="button"
                       [buttonText]="'Zrušiť'"
                       [classes]="'h-full'"
                       [customColor]="'#da3c3c'"
-                      (buttonClick)="closeEditForm()"></app-arn-button>
+                      (buttonClick)="showInReadMode = true"></app-arn-button>
     </div>
   </form>
 </ng-template>

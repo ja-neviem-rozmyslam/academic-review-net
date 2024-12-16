@@ -11,9 +11,34 @@ import {ReviewBlock} from '../entities/Review';
 })
 export class ReviewComponent implements OnInit {
   reviewDeadline: string;
-  review: ReviewBlock[];
+  review: ReviewBlock[] = [
+    {
+      id: '1',
+      reviewedCategory: 'category1',
+      reviewValue: 'AHOJ ahoj ahoj',
+      isSelectable: false,
+    },
+    {
+      id: '2',
+      reviewedCategory: 'category2',
+      reviewValue: 'randoamdoaniubfa',
+      isSelectable: false,
+    },
+    {
+      id: '3',
+      reviewedCategory: 'category3',
+      reviewValue: '4',
+      isSelectable: true,
+    },
+    {
+      id: '4',
+      reviewedCategory: 'category3',
+      reviewValue: '2',
+      isSelectable: true,
+    }
+  ];
 
-  showInReadMode = false;
+  showInReadMode = true;
   allowEditation = true;
   reviewFormValues: Record<string, any> = {};
 
@@ -45,6 +70,9 @@ export class ReviewComponent implements OnInit {
     this.handleRoleBasedView();
   }
 
+  getDisplayValue(reviewValue: string): string {
+    return this.reviewRatingOptions.find(opt => opt.value === reviewValue)?.display || reviewValue;
+  }
 
   private handleRoleBasedView(): void {
     if (this.roleService.isReviewer()) {
@@ -55,4 +83,6 @@ export class ReviewComponent implements OnInit {
   }
 
   protected readonly reviewRatingOptions = reviewRatingOptions;
+
+
 }

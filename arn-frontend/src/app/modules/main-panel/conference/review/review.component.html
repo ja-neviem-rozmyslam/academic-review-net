@@ -22,12 +22,30 @@
         [options]="reviewRatingOptions"
         required/>
     </div>
-    <div class="flex w-full mt-4">
+    <div class="flex w-full mt-4 gap-3">
       <app-arn-button type="submit" [buttonText]="'Odoslať posudok'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button type="button"
+                      [buttonText]="'Zrušiť'"
+                      [classes]="'h-full'"
+                      [customColor]="'#da3c3c'"
+                      (buttonClick)="showInReadMode = true"></app-arn-button>
     </div>
   </form>
 </ng-template>
 
 <ng-template #reviewReadTemplate>
-
+  <div class="space-y-4">
+    <div class="arn-input" *ngFor="let field of review">
+      <p>
+        {{ field.reviewedCategory }}
+      </p>
+      <p>
+        {{ field.isSelectable ? getDisplayValue(field.reviewValue): field.reviewValue }}
+      </p>
+    </div>
+    <div class="flex w-full mt-4" *ngIf="true">
+      <app-arn-button [buttonText]="'Upraviť Posudok'" [classes]="'h-full'"
+                      (buttonClick)="showInReadMode = false"></app-arn-button>
+    </div>
+  </div>
 </ng-template>

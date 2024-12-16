@@ -104,10 +104,6 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  closeEditForm(): void {
-    this.showInReadMode = true;
-  }
-
   getCategoryNameById(id: number): string {
     const category = this.thesisCategories.find((category) => category.value === id);
     return category ? category.display : 'Nedostupné';
