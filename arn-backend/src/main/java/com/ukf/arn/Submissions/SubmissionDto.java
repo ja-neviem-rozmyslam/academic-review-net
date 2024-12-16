@@ -1,5 +1,7 @@
 package com.ukf.arn.Submissions;
 
+import java.time.LocalDateTime;
+
 public class SubmissionDto {
     private Long id;
     private String title;
@@ -8,6 +10,7 @@ public class SubmissionDto {
     private String abstractEn;
     private String abstractSk;
     private Long conferenceId;
+    private LocalDateTime timestamp;
 
     public SubmissionDto() {
     }
@@ -75,5 +78,13 @@ public class SubmissionDto {
 
     public void setConferenceId(Long conferenceId) {
         this.conferenceId = conferenceId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

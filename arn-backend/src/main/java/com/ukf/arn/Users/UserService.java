@@ -57,13 +57,18 @@ public class UserService {
 
 
         submissionDtos = submissions.stream()
-                .map(submission -> new SubmissionDto(
-                        submission.getId(),
-                        submission.getThesisTitle(),
-                        submission.getThesesType(),
-                        submission.getAbstractEn(),
-                        submission.getAbstractSk()
-                ))
+                .map(submission -> {
+                    SubmissionDto dto = new SubmissionDto(
+                            submission.getId(),
+                            submission.getThesisTitle(),
+                            submission.getThesesType(),
+                            submission.getAbstractEn(),
+                            submission.getAbstractSk()
+                    );
+                    dto.setConferenceId(submission.getConferencesId());
+                    dto.setTimestamp(submission.getTimestamp());
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         UserDetailsDTO userDetailsDTO = new UserDetailsDTO(userDTO, conferenceDTOs, submissionDtos);

@@ -1,53 +1,71 @@
 <div *ngIf="isLoading">Loading data...</div>
 <div *ngIf="error">{{ error }}</div>
 
-<div class="grid grid-cols-[60%_40%] gap-1 sm:gap-3 lg:gap-3">
-  <div class="card-base p-5 border flex flex-col space-y-7 h-full">
-    <div class="flex flex-col space-y-1">
-      <h1 class="text-3xl font-bold">Osobné údaje</h1>
-      <div class="flex justify-between items-start">
-        <h1 class="text-lg font-bold">{{ userDetails.user.name }} {{ userDetails.user.surname }}</h1>
-      </div>
-      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
-      {{ userDetails.user.roles.join(', ') }}
-    </span>
-      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
-      {{ userDetails.user.email }}
-    </span>
-      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
-      {{ userDetails.user.university.name }}
-    </span>
-      <app-arn-button class="w-full" [buttonText]="'Zmeniť údaje'"
-                      [classes]="'bg-gray-800'"></app-arn-button>
-    </div>
-  </div>
-  <div class="card-base p-5 border flex flex-col space-y-7 h-full">
-    <div class="flex flex-col space-y-1">
-      <h1 class="text-3xl font-bold">Nadchádzajúce udalosti</h1>
-      <div *ngFor="let conference of userDetails.conference | slice:0:2" class="conference-item">
-        <div class="text-lg font-bold flex justify-between items-start">
-          {{ conference.conferenceName }}
-        </div>
-        <div class="flex justify-between items-start">
-          {{ conference.uploadDeadline }}
+<div *ngIf="userDetails">
+  <div class="flex flex-wrap gap-4">
+    <div class="w-full xl:flex-[2] min-w-0 card-base p-5 border flex flex-col space-y-7">
+      <h2 class="text-3xl font-bold">Osobné informácie</h2>
+      <div class="flex items-center space-x-4">
+        <div class="w-20 h-20 rounded-full bg-gray-300"></div>
+        <div>
+          <h3 class="text-lg font-bold">{{ userDetails.user.name }} {{ userDetails.user.surname }}</h3>
+          <span class="text-xs bg-gray-100 px-3 py-1 rounded-full font-medium">
+          {{ userDetails.user.roles.join(', ') }}
+        </span>
         </div>
       </div>
+      <div class="text-sm space-y-2">
+        <div><i class="fas fa-envelope"></i> {{ userDetails.user.email }}</div>
+        <div><i class="fas fa-university"></i> {{ userDetails.user.university.name }}</div>
+      </div>
+      <app-arn-button
+        class="w-full"
+        [buttonText]="'Upraviť profil'"
+        (buttonClick)="console.log('Edit profile')"
+        [classes]="'bg-gray-800'">
+      </app-arn-button>
     </div>
-    <app-arn-button class="w-full" [buttonText]="'Zobraziť všetky práce'"
-                    [classes]="'bg-gray-800'"></app-arn-button>
-  </div>
-</div>
 
-<div class="card-base p-5 border flex flex-col space-y-7 h-full">
-  <div class="flex flex-col space-y-1">
-    <h1 class="text-3xl font-bold">Odovzdané práce</h1>
-    <div *ngFor="let submission of userDetails.submission" class="conference-item">
-      <div class="text-lg font-bold flex justify-between items-start">
-        {{ submission.title }}
+    <div class="w-full xl:flex-[1] min-w-0 card-base p-5 border flex flex-col space-y-4">
+      <h2 class="text-3xl font-bold">Nadchádzajúce konferencie</h2>
+      <div class="flex-grow">
+        <div *ngFor="let conference of userDetails.conference.slice(0,2)" class="item" (click)="navigateToConferencePage(conference.id)">
+          <div class="p-3 flex justify-between items-center">
+            <div>
+              <h3 class="text-lg font-bold">{{ conference.conferenceName }}</h3>
+              <p class="text-xs text-gray-500">Deadline: {{ conference.uploadDeadline | date:'dd.MM.yyyy' }}</p>
+            </div>
+            <span
+              [ngClass]="getSubmissionByConferenceId(conference.id) ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'"
+              class="text-xs px-2 py-1 rounded-full font-medium">
+          {{ getSubmissionByConferenceId(conference.id) ? 'Odovzdané' : 'Neodovzdané' }}
+        </span>
+          </div>
+        </div>
       </div>
-      <div class="flex justify-between items-start">
-        {{ submission.category }}
+      <div class="mt-auto">
+        <app-arn-button
+          class="w-full"
+          [buttonText]="'Zobraziť všetky konferencie'"
+          (buttonClick)="navigateToMyTheses()"
+          [classes]="'bg-gray-800'">
+        </app-arn-button>
       </div>
+    </div>
+  </div>
+
+
+
+  <div class="card-base p-5 border flex flex-col mt-4">
+    <h2 class="text-3xl font-bold mb-4">Moje odovzdané práce</h2>
+    <div *ngFor="let submission of userDetails.submission" class="p-3 flex justify-between items-center item" (click)="navigateToConferencePage(submission.conferenceId)">
+      <div>
+        <h3 class="text-lg font-bold">{{ submission.title }}</h3>
+        <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
+      </div>
+      <span class="text-xs px-2 py-1 rounded-full font-medium border">
+          Čaká na hodnotenie
+      </span>
     </div>
   </div>
 </div>
