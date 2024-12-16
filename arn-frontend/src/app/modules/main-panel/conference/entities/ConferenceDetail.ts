@@ -9,6 +9,7 @@ export interface ConferenceDetail {
 
   submission?: Submission;
 
+  submissionRole: string;
   review?: ReviewBlock[];
   reviewForm: ReviewFormObject[];
 }

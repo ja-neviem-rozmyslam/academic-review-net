@@ -9,7 +9,7 @@
       <app-submission [conferenceDetail]="conferenceDetail"
                       [submissionOptions]="submissionOptions"
                       [roleInConference]="roleInConference"
-                      [thesisCategories]="thesisCategories"/>
+                      [thesisCategories]="thesisCategories$ | async"/>
     }
     @if (selectedOption === 'REVIEW') {
       <app-review/>

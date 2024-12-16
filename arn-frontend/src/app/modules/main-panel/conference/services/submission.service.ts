@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubmissionForm } from '../entities/SubmissionForm';
 import {map} from 'rxjs/operators';
+import {MyThesis} from '../../my-theses/entities/MyThesis';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,17 @@ export class SubmissionService {
     return this.http.get(`${this.SUBMISSION_API_ENDPOINT}/files/${submissionId}/${filename}`, {
       responseType: 'blob',
     });
+  }
+
+  getUserSubmissions(submissionsForReview: boolean): Observable<MyThesis[]> {
+    return this.http.get<any[]>(`${this.SUBMISSION_API_ENDPOINT}/userSubmissions`, {
+      params: { submissionsForReview: submissionsForReview.toString() }
+    }).pipe(
+      map(response => response.map(item => ({
+        ...item.submission,
+        isClosed: item.isClosed
+      })))
+    );
   }
 
   getThesesCategories(): Observable<any> {

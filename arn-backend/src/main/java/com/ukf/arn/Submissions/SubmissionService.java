@@ -1,5 +1,6 @@
 package com.ukf.arn.Submissions;
 
+import com.querydsl.core.Tuple;
 import com.ukf.arn.Conferences.Conference;
 import com.ukf.arn.Conferences.ConferenceRepository;
 import com.ukf.arn.Users.User;
@@ -7,6 +8,7 @@ import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+
+import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
+import static com.ukf.arn.ConstantsKatalog.SUBMISSION;
 
 @Service
 public class SubmissionService {
@@ -107,13 +112,32 @@ public class SubmissionService {
         return ResponseEntity.ok(submissionDto);
     }
 
-    private Set<User> getAuthors(List<UUID> coauthors) {
-        Set<User> authors = new HashSet<>();
-        if (!coauthors.isEmpty()) {
-            userRepository.findAllById(coauthors).forEach(authors::add);
+    public ResponseEntity<?> findAllSubmissionsByUser(boolean submissionsForReview) {
+        UUID userId = SecurityConfig.getLoggedInUser().getId();
+        List<Tuple> results = submissionRepository.findUserSubmissions(userId, submissionsForReview);
+
+        List<Map<String, Object>> submissionsWithStatus = new ArrayList<>();
+        for (Tuple result : results) {
+            Submission submission = result.get(SUBMISSION);
+            boolean isClosed = result.get(CONFERENCE.closed);
+            Long conferenceId = result.get(CONFERENCE.id);
+
+            SubmissionDto submissionDto = new SubmissionDto();
+            submissionDto.setConferenceId(conferenceId);
+            if (submission != null) {
+                submissionDto.setId(submission.getId());
+                submissionDto.setTitle(submission.getThesisTitle());
+                submissionDto.setCategory(submission.getThesesType());
+            }
+
+            Map<String, Object> submissionWithStatus = new HashMap<>();
+            submissionWithStatus.put("submission", submissionDto);
+            submissionWithStatus.put("isClosed", isClosed);
+
+            submissionsWithStatus.add(submissionWithStatus);
         }
-        authors.add(SecurityConfig.getLoggedInUser());
-        return authors;
+
+        return ResponseEntity.ok(submissionsWithStatus);
     }
 
     private void createFolderIfNotExists(String folderPath) throws IOException {

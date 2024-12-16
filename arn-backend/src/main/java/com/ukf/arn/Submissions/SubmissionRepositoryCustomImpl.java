@@ -1,13 +1,15 @@
 package com.ukf.arn.Submissions;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
-import static com.ukf.arn.ConstantsKatalog.SUBMISSION;
+import static com.ukf.arn.ConstantsKatalog.*;
 
 @Repository
 public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCustom {
@@ -24,5 +26,18 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         .and(SUBMISSION.authorId.eq(userId)
                                 .or(SUBMISSION.reviewerId.eq(userId))))
                 .fetchFirst();
+    }
+
+    @Override
+    public List<Tuple> findUserSubmissions(UUID userId, boolean forReview) {
+        return new JPAQuery<Tuple>(entityManager)
+                .select(SUBMISSION, CONFERENCE.closed, CONFERENCE.id)
+                .from(CONFERENCE)
+                .leftJoin(CONFERENCE.users, USER)
+                .leftJoin(SUBMISSION)
+                .on(SUBMISSION.conferencesId.eq(CONFERENCE.id)
+                        .and(forReview ? SUBMISSION.reviewerId.eq(userId) : SUBMISSION.authorId.eq(userId)))
+                .where(USER.id.eq(userId))
+                .fetch();
     }
 }

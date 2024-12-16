@@ -1,0 +1,10 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-6">
+
+  @for (thesis of theses$ | async; track thesis) {
+    <app-thesis-card [thesis]="thesis" [thesisCategories]="thesisCategories$ | async"
+                     class="h-full flex flex-col"></app-thesis-card>
+  }
+</div>
+
+<!--<app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems"-->
+<!--                (pageChange)="onPageChange($event)"></app-pagination>-->

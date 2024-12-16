@@ -1,6 +1,5 @@
 package com.ukf.arn.Conferences;
 
-import com.ukf.arn.ConstantsKatalog;
 import com.ukf.arn.Submissions.Submission;
 import com.ukf.arn.Submissions.SubmissionDto;
 import com.ukf.arn.Submissions.SubmissionRepository;
@@ -11,12 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static com.ukf.arn.ConstantsKatalog.Role.REVIEWER;
+import static com.ukf.arn.ConstantsKatalog.Role.STUDENT;
 
 @Service
 public class ConferenceService {
@@ -61,7 +59,7 @@ public class ConferenceService {
 
     public ResponseEntity<?> getConferenceData(Long conferenceId, boolean includeCoAuthors) {
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
-        if (conference == null || conference.isClosed()) {
+        if (conference == null) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
         }
 
@@ -91,11 +89,15 @@ public class ConferenceService {
             }
         }
 
+        String userRole = (submission != null
+                && SecurityConfig.getLoggedInUser().getId().equals(submission.getReviewerId())) ? REVIEWER.getCode() : STUDENT.getCode();
+
         ConferenceDetail conferenceDetail = new ConferenceDetail();
         conferenceDetail.setId(conference.getId());
         conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
         conferenceDetail.setReviewDeadline(conference.getReviewDeadline());
         conferenceDetail.setSubmission(submissionDto);
+        conferenceDetail.setSubmissionRole(userRole);
         return conferenceDetail;
     }
 

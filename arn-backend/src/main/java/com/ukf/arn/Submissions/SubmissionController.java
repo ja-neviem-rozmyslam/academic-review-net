@@ -28,6 +28,11 @@ public class SubmissionController {
         return submissionService.createSubmission(submissionRequest, uploadedFiles);
     }
 
+    @GetMapping("/userSubmissions")
+    public ResponseEntity<?> getUserSubmissions(@RequestParam boolean submissionsForReview) {
+        return submissionService.findAllSubmissionsByUser(submissionsForReview);
+    }
+
     @GetMapping("/categories")
     public List<SubmissionCategory> getCategories() {
         return submissionService.getCategories();
