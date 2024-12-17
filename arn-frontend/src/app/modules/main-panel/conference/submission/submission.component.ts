@@ -61,13 +61,13 @@ export class SubmissionComponent implements OnInit {
     this.showInReadMode = true;
   }
 
-  shortenFileName(fileName: string): string {
+  getFileShortName(fileName: string): string {
     if (fileName.length <= 20) {
       return fileName;
     }
     const extension = fileName.slice(fileName.lastIndexOf('.'));
-    const namePart = fileName.slice(0, 16 - extension.length);
-    return `${namePart}...${extension}`;
+    const namePart = fileName.slice(0, 20 - extension.length);
+    return `${namePart}... ${extension}`;
   }
 
   downloadFile(file: File): void {
@@ -86,7 +86,6 @@ export class SubmissionComponent implements OnInit {
           const fileName = path.split('\\').pop();
           return new File([], fileName);
         });
-        console.log('Files retrieved:', this.uploadedFiles);
       },
       (error) => {
         console.error('Error retrieving files:', error);
@@ -96,10 +95,8 @@ export class SubmissionComponent implements OnInit {
   }
 
   openEditForm(): void {
-    this.conferenceService.getConferenceData(this.conferenceDetail.id, true).subscribe((response: {
-      submission: Submission
-    }) => {
-      this.submissionForm = response.submission;
+    this.submissionService.getSubmission(this.conferenceDetail.submission.id).subscribe((submissionResponse) => {
+      this.submissionForm = submissionResponse;
       this.showInReadMode = false;
     });
   }

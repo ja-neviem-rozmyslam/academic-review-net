@@ -28,9 +28,11 @@ export class ConferencePageComponent implements OnInit {
     isBeforeDeadline: false,
   };
   reviewOptions = {
-    showInReadMode: false,
-    allowEditation: false,
+    isReviewed: false,
+    isBeforeDeadline: false,
   }
+
+  infoTabContent: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +52,32 @@ export class ConferencePageComponent implements OnInit {
     this.loadConferenceData(conferenceId);
   }
 
+  getInfoTabContent(dateTime: string, prefix: string): string {
+    if (dateTime === null) {
+      return null;
+    }
+
+    const timeDifference = new Date(dateTime).getTime() - new Date().getTime();
+    if (timeDifference < 0) {
+      return null;
+    }
+
+    const minutes = Math.floor(timeDifference / 60000);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${prefix} ${days} dní`;
+    } else if (hours > 0) {
+      return `${prefix} ${hours} hodín`;
+    } else if (minutes > 0) {
+      return `${prefix} ${minutes} minút`;
+    } else {
+      return `${prefix} < 1 minúta`;
+    }
+  }
+
+
   private loadConferenceData(conferenceId: number): void {
     this.conferenceService.getConferenceData(conferenceId).subscribe({
       next: (conferenceDetail: ConferenceDetail) => {
@@ -66,13 +94,22 @@ export class ConferencePageComponent implements OnInit {
 
   private handleRoleBasedView(): void {
     const isUploaded = this.conferenceDetail.submission !== null;
+    const isReviewed = this.conferenceDetail.review !== null;
     if (this.roleService.isStudent() && this.conferenceDetail.submissionRole === UserRoles.STUDENT) {
       this.roleInConference = UserRoles.STUDENT;
       this.submissionOptions.isUploaded = isUploaded;
       this.submissionOptions.isBeforeDeadline = new Date() < new Date(this.conferenceDetail.uploadDeadline);
+      this.infoTabContent = this.getInfoTabContent(this.conferenceDetail.uploadDeadline, 'Na odovzdanie práce zostáva');
+
+      this.reviewOptions.isReviewed = isReviewed;
+
     } else if (this.roleService.isReviewer() && this.conferenceDetail.submissionRole === UserRoles.REVIEWER) {
       this.roleInConference = UserRoles.REVIEWER;
       this.submissionOptions.isUploaded = isUploaded;
+      this.infoTabContent = this.getInfoTabContent(this.conferenceDetail.reviewDeadline, 'Na napísanie posudku zostáva');
+
+      this.reviewOptions.isReviewed = isReviewed;
+      this.reviewOptions.isBeforeDeadline = new Date() < new Date(this.conferenceDetail.reviewDeadline);
     } else {
       if (this.roleService.isReviewer()) {
         this.dialogService.openInfoDialog('Informácia', 'Nebola vám pridelená žiadna záverečná práca na posúdenie.');

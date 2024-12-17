@@ -1,18 +1,30 @@
-<app-tabs
-  [tabs]="tabOptions"
-  [activeTab]="selectedOption"
-  (tabChanged)="selectedOption = $event"/>
+<div class="flex flex-col md:flex-row gap-3 md:gap-10">
+  <app-tabs
+    class="h-full"
+    [tabs]="tabOptions"
+    [activeTab]="selectedOption"
+    (tabChanged)="selectedOption = $event">
+  </app-tabs>
+
+  <div
+    class="inline-flex items-center text-md px-6 py-3 font-medium bg-blue-100 rounded-[.8rem] gap-1.5 h-full"
+    *ngIf="infoTabContent">
+    {{ infoTabContent }}
+  </div>
+</div>
 
 <div class="card-base p-6 h-full mt-4">
   <ng-container *ngIf="isConferenceLoaded; else loading">
     @if (selectedOption === 'DETAILS') {
-      <app-submission [conferenceDetail]="conferenceDetail"
+      <app-submission [thesisCategories]="thesisCategories$ | async"
+                      [conferenceDetail]="conferenceDetail"
                       [submissionOptions]="submissionOptions"
-                      [roleInConference]="roleInConference"
-                      [thesisCategories]="thesisCategories$ | async"/>
+                      [roleInConference]="roleInConference"/>
     }
     @if (selectedOption === 'REVIEW') {
-      <app-review/>
+      <app-review [conferenceDetail]="conferenceDetail"
+                  [reviewOptions]="reviewOptions"
+                  [roleInConference]="roleInConference"/>
     }
   </ng-container>
 

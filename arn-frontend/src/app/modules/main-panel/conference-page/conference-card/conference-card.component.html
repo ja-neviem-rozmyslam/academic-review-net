@@ -12,8 +12,8 @@
   </div>
 
   <div class="text-sm space-y-1 ml-1 text-gray-700 flex-grow">
-    <p><strong class="mr-1">Začiatok</strong> {{ conference.creationDate }}</p>
-    <p><strong class="mr-1">Termín odovzdania</strong>{{ conference.uploadDeadline }}</p>
+    <p><strong class="mr-1">Začiatok</strong> {{ conference.creationDate | date:'dd.MM.yyyy'  }}</p>
+    <p><strong class="mr-1">Termín odovzdania</strong>{{ conference.uploadDeadline | date:'dd.MM.yyyy'  }}</p>
   </div>
 
   <div>

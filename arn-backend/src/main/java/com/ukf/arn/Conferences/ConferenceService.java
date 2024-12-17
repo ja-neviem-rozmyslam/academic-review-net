@@ -75,6 +75,7 @@ public class ConferenceService {
     }
 
     private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference, boolean includeCoAuthors) {
+        ConferenceDetail conferenceDetail = new ConferenceDetail();
         SubmissionDto submissionDto = null;
 
         if (submission != null){
@@ -87,15 +88,16 @@ public class ConferenceService {
             if (includeCoAuthors) {
                 submissionDto.setCoauthors(submission.getCoauthors());
             }
+            conferenceDetail.setReview(submission.getReview());
         }
 
         String userRole = (submission != null
                 && SecurityConfig.getLoggedInUser().getId().equals(submission.getReviewerId())) ? REVIEWER.getCode() : STUDENT.getCode();
 
-        ConferenceDetail conferenceDetail = new ConferenceDetail();
         conferenceDetail.setId(conference.getId());
         conferenceDetail.setUploadDeadline(conference.getUploadDeadline());
         conferenceDetail.setReviewDeadline(conference.getReviewDeadline());
+        conferenceDetail.setReviewForm(conference.getReviewForm());
         conferenceDetail.setSubmission(submissionDto);
         conferenceDetail.setSubmissionRole(userRole);
         return conferenceDetail;

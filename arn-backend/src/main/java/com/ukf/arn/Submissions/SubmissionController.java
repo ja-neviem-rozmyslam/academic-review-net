@@ -33,6 +33,11 @@ public class SubmissionController {
         return submissionService.findAllSubmissionsByUser(submissionsForReview);
     }
 
+    @GetMapping("/submission/{submissionId}")
+    public ResponseEntity<?> getSubmission(@PathVariable Long submissionId) {
+        return submissionService.getSubmission(submissionId);
+    }
+
     @GetMapping("/categories")
     public List<SubmissionCategory> getCategories() {
         return submissionService.getCategories();

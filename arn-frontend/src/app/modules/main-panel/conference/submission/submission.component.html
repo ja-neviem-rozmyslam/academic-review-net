@@ -34,7 +34,7 @@
            class="flex items-center gap-4 p-4 bg-gray-200 rounded-2xl cursor-pointer w-full sm:w-80"
            (click)="downloadFile(file)">
         <document-arrow-down-outline-icon size="30"></document-arrow-down-outline-icon>
-        <span class="text-lg font-medium text-gray-800 truncate">{{ (file.name) }}</span>
+        <span class="text-lg font-medium text-gray-800 truncate">{{ getFileShortName(file.name) }}</span>
       </div>
     </div>
 
@@ -115,7 +115,8 @@
 
     <div class="flex w-full mt-4 gap-3">
       <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
-      <app-arn-button type="button"
+      <app-arn-button *ngIf="submissionOptions.isUploaded"
+                      type="button"
                       [buttonText]="'Zrušiť'"
                       [classes]="'h-full'"
                       [customColor]="'#da3c3c'"

@@ -45,10 +45,9 @@ public class SubmissionService {
     }
 
     @Transactional
-    public ResponseEntity<?> getSubmission(Long conferenceId) {
-        UUID userId = SecurityConfig.getLoggedInUser().getId();
+    public ResponseEntity<?> getSubmission(Long submissionId) {
 
-        Submission submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, userId);
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
         if (submission == null) {
             return ResponseEntity.status(404).body("No submission found for this conference.");
         }

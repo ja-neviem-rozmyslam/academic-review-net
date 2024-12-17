@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { SubmissionForm } from '../entities/SubmissionForm';
 import {map} from 'rxjs/operators';
 import {MyThesis} from '../../my-theses/entities/MyThesis';
+import {Submission} from '../entities/Submission';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class SubmissionService {
     return this.http.get(`${this.SUBMISSION_API_ENDPOINT}/files/${submissionId}/${filename}`, {
       responseType: 'blob',
     });
+  }
+
+  getSubmission(submissionId: number): Observable<Submission> {
+    return this.http.get<Submission>(`${this.SUBMISSION_API_ENDPOINT}/submission/${submissionId}`);
   }
 
   getUserSubmissions(submissionsForReview: boolean): Observable<MyThesis[]> {
