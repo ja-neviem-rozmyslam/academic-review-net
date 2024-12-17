@@ -1,5 +1,7 @@
 package com.ukf.arn.Submissions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import com.ukf.arn.Conferences.Conference;
 import com.ukf.arn.Conferences.ConferenceRepository;
@@ -44,9 +46,7 @@ public class SubmissionService {
         return submissionCategoryRepository.findAll();
     }
 
-    @Transactional
     public ResponseEntity<?> getSubmission(Long submissionId) {
-
         Submission submission = submissionRepository.findById(submissionId).orElse(null);
         if (submission == null) {
             return ResponseEntity.status(404).body("No submission found for this conference.");
@@ -109,6 +109,38 @@ public class SubmissionService {
         );
 
         return ResponseEntity.ok(submissionDto);
+    }
+
+    public ResponseEntity<?> saveReview(Long submissionId, List<ReviewBlock> reviewBlocks) {
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
+        if (submission != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String reviewBlocksJson = objectMapper.writeValueAsString(reviewBlocks);
+                submission.setReview(reviewBlocksJson);
+                submissionRepository.save(submission);
+                return ResponseEntity.ok(reviewBlocks);
+            } catch (JsonProcessingException e) {
+                return ResponseEntity.status(500).body("Error parsing review to JSON.");
+            }
+        } else {
+            return ResponseEntity.status(404).body("Submission not found.");
+        }
+    }
+
+    public ResponseEntity<?> getReview(Long submissionId) {
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
+        if (submission != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                List<ReviewBlock> reviewBlocks = objectMapper.readValue(submission.getReview(), objectMapper.getTypeFactory().constructCollectionType(List.class, ReviewBlock.class));
+                return ResponseEntity.ok(reviewBlocks);
+            } catch (JsonProcessingException e) {
+                return ResponseEntity.status(500).body("Error parsing review from JSON.");
+            }
+        } else {
+            return ResponseEntity.status(404).body("Submission not found.");
+        }
     }
 
     public ResponseEntity<?> findAllSubmissionsByUser(boolean submissionsForReview) {

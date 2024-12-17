@@ -28,6 +28,16 @@ public class SubmissionController {
         return submissionService.createSubmission(submissionRequest, uploadedFiles);
     }
 
+    @PostMapping("/reviews/{submissionId}")
+    public ResponseEntity<?> saveReview(@PathVariable Long submissionId, @RequestBody List<ReviewBlock> reviewBlocks) {
+        return submissionService.saveReview(submissionId, reviewBlocks);
+    }
+
+    @GetMapping("/reviews/{submissionId}")
+    public ResponseEntity<?> getReview(@PathVariable Long submissionId) {
+        return submissionService.getReview(submissionId);
+    }
+
     @GetMapping("/userSubmissions")
     public ResponseEntity<?> getUserSubmissions(@RequestParam boolean submissionsForReview) {
         return submissionService.findAllSubmissionsByUser(submissionsForReview);

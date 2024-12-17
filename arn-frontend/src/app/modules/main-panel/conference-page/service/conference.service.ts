@@ -30,6 +30,9 @@ export class ConferenceService {
         if (typeof conferenceDetail.reviewForm === 'string') {
           conferenceDetail.reviewForm = JSON.parse(conferenceDetail.reviewForm);
         }
+        if (typeof conferenceDetail.review === 'string') {
+          conferenceDetail.review = JSON.parse(conferenceDetail.review);
+        }
         return conferenceDetail;
       })
     );

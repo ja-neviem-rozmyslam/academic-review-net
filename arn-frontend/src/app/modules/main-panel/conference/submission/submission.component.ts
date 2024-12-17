@@ -47,8 +47,8 @@ export class SubmissionComponent implements OnInit {
   }
 
   uploadSubmission(): void {
-    this.submissionService.uploadSubmission(this.submissionForm, this.uploadedFiles).subscribe(
-      (result) => this.handleSubmissionSuccess(result.body),
+    this.submissionService.saveSubmission(this.submissionForm, this.uploadedFiles).subscribe(
+      (result) => this.handleSubmissionSuccess(result as Submission),
       (error) => console.error('Upload error:', error)
     );
   }

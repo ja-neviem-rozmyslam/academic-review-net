@@ -56,9 +56,9 @@
         {{ field.isSelectable ? getDisplayValue(field.reviewValue): field.reviewValue }}
       </p>
     </div>
-    <div class="flex w-full mt-4" *ngIf="true">
+    <div class="flex w-full mt-4" *ngIf="reviewOptions.isBeforeDeadline">
       <app-arn-button [buttonText]="'Upraviť Posudok'" [classes]="'h-full'"
-                      (buttonClick)="showInReadMode = false"></app-arn-button>
+                      (buttonClick)="openEditForm()"></app-arn-button>
     </div>
   </div>
 </ng-template>
