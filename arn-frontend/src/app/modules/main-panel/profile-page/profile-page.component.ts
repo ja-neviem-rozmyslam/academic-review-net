@@ -3,6 +3,8 @@ import { ProfilePageService } from './service/profile-page.service';
 import console from "node:console";
 import {Router} from '@angular/router';
 import {TABOPTIONS} from './entities/constants';
+import {DialogService} from '../../services/dialog.service';
+import {ProfileSettingsComponent} from './profile-settings/profile-settings.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,7 +18,7 @@ export class ProfilePageComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
 
-  constructor(private profilePageService: ProfilePageService, private router: Router) {}
+  constructor(private profilePageService: ProfilePageService, private router: Router, private dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.fetchUserDetails();
@@ -44,6 +46,13 @@ export class ProfilePageComponent implements OnInit {
         this.error = 'Failed to load user details. Please try again later.';
         this.isLoading = false;
       }
+    });
+  }
+
+  openSettings(): void {
+    this.dialogService.openCustomModal(ProfileSettingsComponent, {
+      placement: 'center',
+      backdrop: 'dynamic'
     });
   }
 

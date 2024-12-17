@@ -51,6 +51,7 @@ import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-pa
 import {PaginationComponent} from './modules/components/pagination/pagination.component';
 import { MyThesesComponent } from './modules/main-panel/my-theses/my-theses.component';
 import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/thesis-card.component';
+import { ProfileSettingsComponent } from './modules/main-panel/profile-page/profile-settings/profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/
     PaginationComponent,
     ProfilePageComponent,
     MyThesesComponent,
-    ThesisCardComponent],
+    ThesisCardComponent,
+    ProfileSettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
