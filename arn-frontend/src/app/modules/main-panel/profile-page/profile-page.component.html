@@ -54,6 +54,14 @@
     </div>
   </div>
 
+  <div class="card-base p-5 border flex flex-col mt-4">
+    <app-tabs
+      [tabs]="tabOptions"
+      [activeTab]="selectedOption"
+      (tabChanged)="selectedOption = $event"
+      style="width: 100% !important;"
+    ></app-tabs>
+  </div>
 
 
   <div class="card-base p-5 border flex flex-col mt-4">

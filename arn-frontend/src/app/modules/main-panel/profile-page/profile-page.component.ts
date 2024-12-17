@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfilePageService } from './service/profile-page.service';
 import console from "node:console";
 import {Router} from '@angular/router';
+import {TABOPTIONS} from './entities/constants';
 
 @Component({
   selector: 'app-profile-page',
@@ -9,6 +10,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./profile-page.component.less']
 })
 export class ProfilePageComponent implements OnInit {
+  tabOptions = TABOPTIONS;
+  selectedOption = TABOPTIONS[0].value;
   userDetails: any;
   isLoading: boolean = true;
   error: string | null = null;
