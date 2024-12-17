@@ -1,0 +1,45 @@
+<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalWidthClass]="'max-w-xl'">
+  <div class="w-full p-4">
+
+    <h2 class="text-lg font-semibold mb-4">Upraviť profil</h2>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">
+        Nové meno:
+        <input
+          type="text"
+          placeholder="Zadajte nové meno"
+          class="w-full p-2 border border-gray-300 rounded"
+        />
+      </label>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">
+        Nové heslo:
+        <input
+          type="password"
+          placeholder="Zadajte nové heslo"
+          class="w-full p-2 border border-gray-300 rounded"
+        />
+      </label>
+    </div>
+
+
+    <div class="flex justify-between items-center mt-4">
+      <!-- Left Button -->
+      <app-arn-button
+        [buttonText]="'Odoslať'"
+        (buttonClick)="console.log('OK')"
+        [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
+      </app-arn-button>
+
+      <!-- Right Button -->
+      <app-arn-button
+        [buttonText]="'Zrušiť'"
+        (buttonClick)="closeModal()"
+        [classes]="'bg-gray-200 text-gray-700 hover:bg-gray-300'">
+      </app-arn-button>
+    </div>
+  </div>
+</app-base-modal>
