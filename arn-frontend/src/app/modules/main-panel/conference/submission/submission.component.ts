@@ -1,12 +1,11 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { SubmissionService } from '../services/submission.service';
-import { SubmissionForm } from '../entities/SubmissionForm';
-import { SelectOption } from '../../../components/arn-select/entities/SelectOption';
-import { Submission } from '../entities/Submission';
-import { ConferenceService } from '../../conference-page/service/conference.service';
-import { ConferenceDetail } from '../entities/ConferenceDetail';
+import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {SubmissionService} from '../services/submission.service';
+import {SubmissionForm} from '../entities/SubmissionForm';
+import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
+import {Submission} from '../entities/Submission';
+import {ConferenceDetail} from '../entities/ConferenceDetail';
 import {UserRoles} from '../../../constants';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-submission',
@@ -19,9 +18,9 @@ export class SubmissionComponent implements OnInit {
   @Input() roleInConference: string;
   @Input() submissionOptions: any;
 
-  @ViewChild('submissionReadTemplate', { static: true }) submissionReadTemplate: TemplateRef<any>;
-  @ViewChild('submissionFormTemplate', { static: true }) submissionFormTemplate: TemplateRef<any>;
-  @ViewChild('noSubmissionTemplate', { static: true }) noSubmissionTemplate: TemplateRef<any>;
+  @ViewChild('submissionReadTemplate', {static: true}) submissionReadTemplate: TemplateRef<any>;
+  @ViewChild('submissionFormTemplate', {static: true}) submissionFormTemplate: TemplateRef<any>;
+  @ViewChild('noSubmissionTemplate', {static: true}) noSubmissionTemplate: TemplateRef<any>;
 
   submissionForm: SubmissionForm = new SubmissionForm();
   invalidFileAmount = false;
@@ -29,9 +28,8 @@ export class SubmissionComponent implements OnInit {
   showInReadMode: boolean;
 
   constructor(
-    private submissionService: SubmissionService,
-    private conferenceService: ConferenceService
-  ) {}
+    private submissionService: SubmissionService) {
+  }
 
   ngOnInit(): void {
     this.showInReadMode = this.submissionOptions.isUploaded;

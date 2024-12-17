@@ -1,17 +1,27 @@
 <div>
-  <h1 class="text-4xl font-bold font-bold text-gray-800 mb-8 uppercase">Tu vyplňte váš posudok</h1>
   <ng-container *ngTemplateOutlet="getTemplate()"></ng-container>
 </div>
 
+<ng-template #noReviewTemplate>
+  <div class="flex-grow">
+    <div class="flex flex-col items-center justify-center h-full">
+      <p class="text-2xl font-semibold">
+        {{ roleInConference === 'R' ? 'Termín na posúdenie práce uplynul' : 'Recenzent vám ešte neohodnotil prácu' }}
+      </p>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #reviewFormTemplate>
+  <h1 class="text-2xl font-bold font-bold text-gray-800 mb-8 uppercase">Tu vyplňte váš posudok</h1>
   <form class="space-y-4" (ngSubmit)="onSubmit()" appFormValidation>
     <div class="arn-input" *ngFor="let field of conferenceDetail.reviewForm">
       <label [for]="field.id">{{ field.reviewedCategory }}</label>
       <textarea
         *ngIf="field.isTextField"
-        id="{{field.id}}"
+        [id]="field.id"
         [(ngModel)]="reviewFormValues[field.id]"
-        name="{{field.id}}"
+        [name]="field.id"
         rows="3"
         placeholder="Napíšte hodnotenie..."
         required></textarea>
@@ -38,7 +48,7 @@
 
 <ng-template #reviewReadTemplate>
   <div class="space-y-4">
-    <div class="arn-input" *ngFor="let field of review">
+    <div class="arn-input" *ngFor="let field of conferenceDetail.review">
       <p>
         {{ field.reviewedCategory }}
       </p>
