@@ -59,6 +59,7 @@ public class SubmissionService {
                 submission.getThesesType(),
                 submission.getCoauthors()
         );
+        submissionRequest.setId(submission.getId());
         return ResponseEntity.ok(submissionRequest);
     }
 
