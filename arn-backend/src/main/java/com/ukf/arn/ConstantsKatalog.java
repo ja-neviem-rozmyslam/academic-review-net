@@ -18,6 +18,10 @@ public class ConstantsKatalog {
     public static final String TOKEN_NOT_FOUND = "TOKEN_NOT_FOUND";
     public static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
 
+    // Define color constants
+    public static final String PRIMARY_COLOR = "#171920"; // Main text and button background color
+    public static final String FOOTER_TEXT_COLOR = "#b8c2cc"; // Footer text color
+
     public enum Role {
         STUDENT("S", "Študent"),
         REVIEWER("R", "Recenzent"),
@@ -49,5 +53,3 @@ public class ConstantsKatalog {
         }
     }
 }
-
-
