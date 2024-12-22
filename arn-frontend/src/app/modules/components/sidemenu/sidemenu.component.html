@@ -16,7 +16,7 @@
       @for (item of menuItems; track item) {
         <li>
           @if (!hasSubItems(item)) {
-            <div [routerLink]="item.path"
+            <div [routerLink]="item.path" [queryParams]="item.queryParams"
                  class="menu-item flex items-center p-2">
               @if (item.icon) {
                 <ng-container *ngComponentOutlet="item.icon"></ng-container>
@@ -26,19 +26,20 @@
           } @else {
             <button type="button"
                     class="menu-item w-full p-2 text-base flex items-center justify-between"
-                    [attr.aria-controls]="'dropdown-' + item.path" [attr.data-collapse-toggle]="'dropdown-' + item.path">
+                    [attr.aria-controls]="'dropdown-' + item.path"
+                    (click)="toggleDropdown(item.path)">
               @if (item.icon) {
                 <ng-container *ngComponentOutlet="item.icon"></ng-container>
               }
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ item.title }}</span>
               <chevron-down-outline-icon></chevron-down-outline-icon>
             </button>
-            <ul id="dropdown-{{item.path}}" class="hidden py-2 space-y-2">
+            <ul id="dropdown-{{item.path}}" [class.hidden]="!isDropdownOpen(item.path)" class="py-2 space-y-2">
               @for (subItem of item.subItems; track subItem) {
                 <li>
                   <div
                     class="pl-11 menu-item font-normal py-2"
-                    [routerLink]="subItem.path">
+                    [routerLink]="subItem.path" [queryParams]="subItem.queryParams">
                     {{ subItem.title }}
                   </div>
                 </li>

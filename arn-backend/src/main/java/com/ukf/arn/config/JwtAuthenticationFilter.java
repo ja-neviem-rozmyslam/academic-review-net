@@ -1,7 +1,7 @@
 package com.ukf.arn.config;
 
 import com.ukf.arn.Authentication.AuthService;
-import com.ukf.arn.Users.User;
+import com.ukf.arn.Entities.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +24,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private AuthService authService;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/api/auth") || path.startsWith("/api/email-domains") || path.startsWith("/api/password-reset");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

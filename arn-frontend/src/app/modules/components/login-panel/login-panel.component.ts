@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Login} from './enitites/Login';
 import {Store} from '@ngrx/store';
-import {loginStart} from '../../store/auth-store/auth.actions';
+import {loginStart, resetError} from '../../store/auth-store/auth.actions';
 import {Observable, Subscription} from 'rxjs';
 import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DialogService} from '../../services/dialog.service';
+import {UtilityService} from '../../services/utility.service';
+import {FormValidationErrors} from '../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-login-panel',
@@ -15,7 +16,7 @@ import {DialogService} from '../../services/dialog.service';
 export class LoginPanelComponent implements OnInit, OnDestroy {
   private storageIdentifier: string = 'arn-remembered-email';
   private errorSubscription: Subscription;
-  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
+  formValidationErrors: FormValidationErrors;
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
@@ -25,7 +26,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   verificationStatus: boolean;
   verificationMessage: string;
 
-  constructor(private store: Store, private dialogService: DialogService) {
+  constructor(private store: Store, private utilityService: UtilityService) {
   }
 
   ngOnInit() {
@@ -72,11 +73,9 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
 
   private initErrorHandling() {
     this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
-      if (error && typeof error.error === 'string') {
-        this.errorMessage = error.error;
-      } else if (error) {
-        console.error(error);
-        this.dialogService.openErrorDialog(error.message);
+      if(error) {
+        this.errorMessage = this.utilityService.handleResponseError(error);
+        this.store.dispatch(resetError());
       }
     });
   }

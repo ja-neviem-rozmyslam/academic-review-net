@@ -1,5 +1,7 @@
 package com.ukf.arn.Authentication;
 
+import com.ukf.arn.Authentication.Objects.LoginRequest;
+import com.ukf.arn.Authentication.Objects.RegistrationRequest;
 import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

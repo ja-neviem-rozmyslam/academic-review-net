@@ -9,6 +9,7 @@ import {ModalSettings} from './entities/ModalSettings';
 })
 export class BaseModalComponent {
   @Input({ required: true }) modal: Modal;
+  @Input() modalWidthClass: string = 'max-w-2xl';
   @Input() modalSettings: ModalSettings = new ModalSettings();
   @Output() acceptCallback = new EventEmitter();
   @Output() cancelCallback = new EventEmitter();

@@ -1,10 +1,11 @@
 export interface Conference {
   id: number;
-  name: string;
+  conferenceName: string;
   faculty: string;
-  isFavorite: boolean;
+  joined: boolean;
   uploadDeadline: string;
   reviewDeadline: string;
   creationDate: string;
   reviewForm: string;
+  hasPassword: boolean;
 }

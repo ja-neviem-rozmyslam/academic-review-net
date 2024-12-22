@@ -1,0 +1,52 @@
+<div *ngIf="multiple; else singleSelect" class="flex flex-col h-full">
+  <div class="flex items-center justify-center flex-grow w-full h-full">
+    <label for="dropzone-file" [ngClass]="invalid ? 'border-red-500' : 'border-gray-300'"
+           class="flex items-center justify-between w-full h-full p-3 border-[1px] border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 element-transition">
+      <div class="flex items-center space-x-2">
+        <cloud-arrow-up-outline-icon size="48" class="text-gray-500"></cloud-arrow-up-outline-icon>
+        <div *ngIf="selectedFiles.length === 0">
+          <p class="text-sm text-gray-500">
+            <span class="font-semibold">Kliknite pre nahranie</span> alebo potiahnite a pustite
+          </p>
+          @if (placeholder) {
+            <p class="text-sm text-gray-500">{{ placeholder }}</p>
+          }
+        </div>
+
+        <div *ngIf="selectedFiles.length > 0" class="flex flex-wrap gap-2">
+          @for (file of selectedFiles; track file) {
+            <span class="relative flex items-center space-x-2 bg-gray-100 rounded-full px-3 py-2 file-item hover:bg-gray-200 element-transition">
+              <document-text-outline-icon size="24" stroke="2" class="text-gray-600"/>
+              <span class="text-gray-700" [title]="file.name">{{ truncateFileName(file.name) }}</span>
+
+              <x-mark-outline-icon size="24" stroke="2" (click)="removeFile(file, $event)"
+                                   class="text-red-500 hover:text-red-700 cursor-pointer element-transition"/>
+            </span>
+          }
+        </div>
+      </div>
+      <input id="dropzone-file" type="file" class="hidden" (change)="onMultipleFilesChange($event)"
+             [multiple]="multiple" [accept]="acceptedFormats" [disabled]="selectedFiles.length >= fileLimit"/>
+    </label>
+  </div>
+
+  <p class="text-sm text-gray-500 mt-2">
+    {{ selectedFiles.length }}/{{ fileLimit }} súborov vybraných
+  </p>
+</div>
+
+<ng-template #singleSelect>
+  <div class="flex items-center space-x-4">
+    <label for="upload-docx"
+           class="flex items-center space-x-2 bg-gray-50 text-gray-500 border-2 border-gray-300 border-dashed rounded-lg px-4 py-2 cursor-pointer hover:bg-gray-200 element-transition">
+      <paper-clip-outline-icon size="22" stroke="2"/>
+      @if (fileName) {
+        <span>{{ fileName }}</span>
+      } @else {
+        <span>{{ placeholder }}</span>
+      }
+      <input type="file" id="upload-docx" class="hidden" (change)="onFileChange($event)" [multiple]="multiple"
+             [accept]="acceptedFormats" [required]="required"/>
+    </label>
+  </div>
+</ng-template>

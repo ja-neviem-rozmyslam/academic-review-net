@@ -1,12 +1,12 @@
 :host {
   .button-base {
     @apply focus:outline-none focus:ring-0 font-medium rounded-xl text-sm px-5 py-2.5 text-center;
-    @apply element-transition;
+    @apply element-transition hover:opacity-90;
     &.default-color {
-      @apply text-white bg-primary hover:bg-secondary;
+      @apply text-white bg-primary;
     }
     &.negative-color {
-      @apply text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-secondary;
+      @apply text-gray-900 bg-white border border-gray-200 hover:text-secondary;
     }
     &:disabled {
     @apply cursor-auto opacity-60;

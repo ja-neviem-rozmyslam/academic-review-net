@@ -1,44 +1,48 @@
 import {Component, OnInit} from '@angular/core';
 import {Registration} from './entities/Registration';
-import {SelectOption} from '../arn-select/entities/SelectOption';
 import {EmailDomain} from './entities/EmailDomain';
 import {AuthService} from '../../services/auth.service';
 import {NavigationExtras, Router} from '@angular/router';
+import {SelectOption} from '../arn-select/entities/SelectOption';
+import {EmailDomainService} from './services/email-domain.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UtilityService} from '../../services/utility.service';
+import {FormValidationErrors} from '../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-registration-panel',
   templateUrl: './registration-panel.component.html',
-  styleUrl: './registration-panel.component.less'
+  styleUrl: './registration-panel.component.less',
+  providers: [EmailDomainService]
 })
 export class RegistrationPanelComponent implements OnInit {
-  formValidationErrors: { emptyFields: string[], invalidEmails: string[] };
+  formValidationErrors: FormValidationErrors;
   registrationInfo: Registration = new Registration();
-  universities: SelectOption[];
   emailDomains: EmailDomain[];
+  universitiesSelectOptions: SelectOption[];
   errorMessage: string;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private utilityService: UtilityService,
+              private router: Router, private emailDomainService: EmailDomainService) {
   }
 
   ngOnInit() {
-    this.universities = [
-      {value: 1, display: 'Univerzita Konštantína Filozofa v Nitre'},
-      {value: 2, display: 'Univerzita Komenského v Bratislave'},
-      {value: 3, display: 'Technická univerzita v Košiciach'}
-    ];
-    this.emailDomains = [
-      {domain: 'ukf.sk', universityId: 1},
-      {domain: 'uniba.sk', universityId: 2},
-      {domain: 'tuke.sk', universityId: 3}
-    ];
+    this.emailDomainService.getAllDomains().pipe().subscribe((domains: EmailDomain[]) => {
+      this.emailDomains = domains;
+      this.universitiesSelectOptions = this.emailDomains.map(university => ({
+        value: university.universityId,
+        display: university.universityName,
+        selectObject: university
+      }));
+    });
   }
 
   findRelevantUniversity() {
     const domain = this.registrationInfo.email.split('@')[1] || '';
-    const matchingDomain = this.emailDomains.find(emailDomain => domain.includes(emailDomain.domain));
+    const matchingUniversity = this.universitiesSelectOptions.find(option => domain.includes(option.selectObject.domain));
 
-    if (matchingDomain) {
-      this.registrationInfo.universityId = matchingDomain.universityId;
+    if (matchingUniversity) {
+      this.registrationInfo.universityId = Number(matchingUniversity.value);
     }
   }
 
@@ -65,13 +69,8 @@ export class RegistrationPanelComponent implements OnInit {
             }
           } as NavigationExtras);
         },
-        (error: any) => {
-          console.log(error);
-          if (error && typeof error.error === 'string') {
-            this.errorMessage = error.error;
-          } else {
-            this.errorMessage = 'Nastala chyba pri registrácii';
-          }
+        (error: HttpErrorResponse) => {
+          this.utilityService.handleResponseError(error);
         }
       );
     }

@@ -3,6 +3,7 @@
     {{ placeholder }}
   </div>
   <select class="input-base w-full appearance-none cursor-pointer"
+          [name]="name"
           [(ngModel)]="selectedOption"
           (ngModelChange)="selectedOptionChange.emit($event)"
           (focusin)="showPlaceholder = false"

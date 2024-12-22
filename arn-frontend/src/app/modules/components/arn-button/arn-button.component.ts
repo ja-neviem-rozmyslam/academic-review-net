@@ -9,6 +9,7 @@ export class ArnButtonComponent {
   @Input({ required: true }) buttonText: string;
   @Input() negativeColor: boolean = false;
   @Input() classes: string = '';
+  @Input() customColor: string = '';
   @Input() disabled: boolean = false;
   @Output() buttonClick = new EventEmitter<void>();
 

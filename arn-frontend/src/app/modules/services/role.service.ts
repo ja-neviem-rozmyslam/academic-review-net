@@ -11,7 +11,7 @@ export class RoleService {
     localStorage.setItem(this.rolesKey, JSON.stringify(roles));
   }
 
-  private getRoles(): string[] | null {
+  getRoles(): string[] | null {
     const roles = localStorage.getItem(this.rolesKey);
     return roles ? JSON.parse(roles) : null;
   }
