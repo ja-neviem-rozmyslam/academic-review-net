@@ -10,7 +10,10 @@ import {AuthGuard} from './modules/guards/auth.guard';
 import {RoleGuard} from './modules/guards/role.guard';
 import {UserRoles} from './modules/constants';
 import {LoginGuard} from './modules/guards/login.guard';
-import {ConferencePageComponent} from './modules/main-panel/conference-page/conference-page.component';
+import {ConferencesListPageComponent} from './modules/main-panel/conference-page/conferences-list-page.component';
+import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
+import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
+import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -38,7 +41,19 @@ export const routes: Routes = [
       },
       {
         path: 'conferences',
-        component: ConferencePageComponent,
+        component: ConferencesListPageComponent
+      },
+      {
+        path: 'conferences/:id',
+        component: ConferencePageComponent
+      },
+      {
+        path: 'my-theses',
+        component: MyThesesComponent
+      },
+      {
+        path: 'profile',
+        component: ProfilePageComponent
       }
     ]
   },

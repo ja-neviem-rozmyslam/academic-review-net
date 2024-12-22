@@ -1,4 +1,5 @@
 export interface EmailDomain {
-  domain: string;
   universityId: number;
+  universityName: string;
+  domain: string;
 }

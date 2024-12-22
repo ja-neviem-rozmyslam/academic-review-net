@@ -1,0 +1,16 @@
+<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalWidthClass]="'max-w-xl'">
+  <div class="w-full">
+    <h3 class="text-2xl uppercase font-public-sans font-black opacity-60 text-black tracking-tighter mb-4">
+      <span *ngIf="data.hasPassword">Zadajte heslo na prihlásenie sa do konferencie</span>
+      <span *ngIf="!data.hasPassword">Ste si istý že sa chcete prihlásiť do konferencie?</span>
+    </h3>
+    <div *ngIf="data.hasPassword">
+      <input type="password" class="input-base" placeholder="Heslo" [(ngModel)]="password">
+      <p class="text-red-500 text-sm h-0.5 mt-2">{{ errorMessage }}</p>
+    </div>
+    <div class="flex justify-end mt-6">
+      <app-arn-button [buttonText]="'Prihlásiť sa'" (buttonClick)="requestJoin()"
+                      [classes]="'bg-gray-800'"></app-arn-button>
+    </div>
+  </div>
+</app-base-modal>

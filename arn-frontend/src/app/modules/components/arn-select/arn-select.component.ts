@@ -8,6 +8,7 @@ import { SelectOption } from './entities/SelectOption';
 })
 export class ArnSelectComponent implements OnInit, OnChanges {
   @Input() placeholder: string;
+  @Input() name: string;
   @Input() options: SelectOption[];
   @Input() required: boolean;
   @Input() disabled: boolean;

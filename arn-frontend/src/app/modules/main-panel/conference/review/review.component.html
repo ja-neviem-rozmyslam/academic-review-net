@@ -1,0 +1,68 @@
+<div>
+  <ng-container *ngTemplateOutlet="getTemplate()"></ng-container>
+</div>
+
+<ng-template #noReviewTemplate>
+  <div class="flex-grow">
+    <div class="flex flex-col items-center justify-center h-full">
+      <p class="text-2xl font-semibold">
+        @if (roleInConference === 'R') {
+          Termín na posúdenie práce uplynul
+        } @else {
+          Posudok bude sprístupnený {{ conferenceDetail.reviewDeadline | date:'dd.MM.yyyy' }}
+        }
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #reviewFormTemplate>
+  <h1 class="text-2xl font-bold font-bold text-gray-800 mb-8 uppercase">Tu vyplňte váš posudok</h1>
+  <form class="space-y-4" (ngSubmit)="onSubmit()" appFormValidation>
+    <div class="arn-input" *ngFor="let field of conferenceDetail.reviewForm">
+      <label [for]="field.id">{{ field.reviewedCategory }}</label>
+      <textarea
+        *ngIf="field.isTextField"
+        [id]="field.id"
+        [(ngModel)]="reviewFormValues[field.id]"
+        [name]="field.id"
+        rows="3"
+        placeholder="Napíšte hodnotenie..."
+        required></textarea>
+      <app-arn-select
+        *ngIf="field.isSelectionField"
+        [id]="field.id"
+        [name]="field.id"
+        [placeholder]="'Vyberte možnosť'"
+        [(selectedOption)]="reviewFormValues[field.id]"
+        [options]="reviewRatingOptions"
+        required/>
+    </div>
+    <div class="flex w-full mt-4 gap-3">
+      <app-arn-button type="submit" [buttonText]="'Odoslať posudok'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button *ngIf = "reviewOptions.isReviewed"
+                      type="button"
+                      [buttonText]="'Zrušiť'"
+                      [classes]="'h-full'"
+                      [customColor]="'#da3c3c'"
+                      (buttonClick)="showInReadMode = true"></app-arn-button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #reviewReadTemplate>
+  <div class="space-y-4">
+    <div class="arn-input" *ngFor="let field of conferenceDetail.review">
+      <p>
+        {{ field.reviewedCategory }}
+      </p>
+      <p>
+        {{ field.isSelectable ? getDisplayValue(field.reviewValue): field.reviewValue }}
+      </p>
+    </div>
+    <div class="flex w-full mt-4" *ngIf="reviewOptions.isBeforeDeadline">
+      <app-arn-button [buttonText]="'Upraviť Posudok'" [classes]="'h-full'"
+                      (buttonClick)="openEditForm()"></app-arn-button>
+    </div>
+  </div>
+</ng-template>

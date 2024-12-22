@@ -10,3 +10,10 @@ export const UserRoles = {
   ADMIN: 'A',
   SUPERADMIN: 'SA'
 }
+
+export const UserPrettyNames = {
+  [UserRoles.STUDENT]: 'Študent',
+  [UserRoles.REVIEWER]: 'Recenzent',
+  [UserRoles.ADMIN]: 'Administrátor',
+  [UserRoles.SUPERADMIN]: 'Super Administrátor'
+}

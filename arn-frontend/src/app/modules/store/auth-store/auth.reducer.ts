@@ -17,7 +17,13 @@ const authReducer = createReducer(
     AuthActions.loginFailure, (state, {error}): AuthState => ({
       ...state,
       error: error
+    })),
+  on(
+    AuthActions.resetError, (state): AuthState => ({
+      ...state,
+      error: null
     }))
 );
+
 
 export const reducer = (state: AuthState | undefined, action: Action) => authReducer(state, action);

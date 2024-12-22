@@ -1,12 +1,16 @@
 package com.ukf.arn.Authentication;
 
+import com.ukf.arn.Authentication.Objects.LoginRequest;
+import com.ukf.arn.Authentication.Objects.RegistrationRequest;
+import com.ukf.arn.Authentication.Repository.UserTokenRepository;
 import com.ukf.arn.ConstantsKatalog;
+import com.ukf.arn.Entities.UserToken;
 import com.ukf.arn.LoginAttemptService.LoginAttemptService;
 import com.ukf.arn.MailService.MailService;
-import com.ukf.arn.Universities.University;
+import com.ukf.arn.Entities.University;
 import com.ukf.arn.Universities.UniversityService;
-import com.ukf.arn.Users.User;
-import com.ukf.arn.Users.UserDTO;
+import com.ukf.arn.Entities.User;
+import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -124,7 +128,7 @@ public class AuthService {
 
         loginAttemptService.loginSucceeded(ip);
 
-        UserDTO loggedInUser = new UserDTO(
+        UserDto loggedInUser = new UserDto(
                 userObj.getId(),
                 userObj.getName(),
                 userObj.getSurname(),
