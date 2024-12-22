@@ -48,7 +48,7 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
   readonly initThesisCategories = this.effect((trigger$) =>
     trigger$.pipe(
       withLatestFrom(this.thesisCategories$),
-      switchMap(([_, thesisCategories]) => {
+      switchMap(([, thesisCategories]) => {
         if (thesisCategories.length === 0) {
           return this.submissionService.getThesesCategories().pipe(
             tap((categories) => {
@@ -76,7 +76,7 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
   readonly initConferences = this.effect((trigger$) =>
     trigger$.pipe(
       withLatestFrom(this.conferences$),
-      switchMap(([_, existingConferences]) => {
+      switchMap(([, existingConferences]) => {
         if (existingConferences.length === 0) {
           return this.conferenceService.getConferences().pipe(
             tap((newConferences) => {
