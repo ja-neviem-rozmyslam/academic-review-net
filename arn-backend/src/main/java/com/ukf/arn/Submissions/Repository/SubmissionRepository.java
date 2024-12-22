@@ -1,5 +1,6 @@
-package com.ukf.arn.Submissions;
+package com.ukf.arn.Submissions.Repository;
 
+import com.ukf.arn.Entities.Submission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

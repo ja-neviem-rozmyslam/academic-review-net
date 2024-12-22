@@ -1,6 +1,5 @@
-package com.ukf.arn.EmailDomain;
+package com.ukf.arn.Entities;
 
-import com.ukf.arn.Universities.University;
 import jakarta.persistence.*;
 
 @Entity

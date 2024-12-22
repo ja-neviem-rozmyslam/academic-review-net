@@ -41,8 +41,6 @@ export class ProfilePageComponent implements OnInit {
       next: (data) => {
         this.userDetails = data;
         this.isLoading = false;
-        this.userDetails.user.roles = ['S', 'R'];
-
       },
       error: () => {
         this.error = 'Failed to load user details. Please try again later.';

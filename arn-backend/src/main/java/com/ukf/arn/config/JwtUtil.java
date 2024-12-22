@@ -1,6 +1,6 @@
 package com.ukf.arn.config;
 
-import com.ukf.arn.Users.User;
+import com.ukf.arn.Entities.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;

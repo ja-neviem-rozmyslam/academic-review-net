@@ -1,12 +1,12 @@
-package com.ukf.arn.Users;
+package com.ukf.arn.Users.Objects;
 
-import com.ukf.arn.Universities.University;
+import com.ukf.arn.Entities.University;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class UserDTO {
+public class UserDto {
 
     private UUID id;
     private String name;
@@ -17,10 +17,10 @@ public class UserDTO {
     private List<String> roles;
     private String token;
 
-    public UserDTO() {
+    public UserDto() {
     }
 
-    public UserDTO(UUID id, String name, String surname, String email, LocalDateTime registrationDate, University university, List<String> roles) {
+    public UserDto(UUID id, String name, String surname, String email, LocalDateTime registrationDate, University university, List<String> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;

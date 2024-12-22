@@ -1,6 +1,7 @@
-package com.ukf.arn.Submissions;
+package com.ukf.arn.Submissions.Repository;
 
 import com.querydsl.core.Tuple;
+import com.ukf.arn.Entities.Submission;
 
 import java.util.List;
 import java.util.UUID;

@@ -3,19 +3,23 @@ package com.ukf.arn.Submissions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
-import com.ukf.arn.Conferences.Conference;
-import com.ukf.arn.Conferences.ConferenceRepository;
-import com.ukf.arn.Users.User;
+import com.ukf.arn.Conferences.Repository.ConferenceRepository;
+import com.ukf.arn.Entities.Conference;
+import com.ukf.arn.Entities.Submission;
+import com.ukf.arn.Entities.SubmissionCategory;
+import com.ukf.arn.Submissions.Objects.ReviewBlock;
+import com.ukf.arn.Submissions.Objects.SubmissionDto;
+import com.ukf.arn.Submissions.Objects.SubmissionRequest;
+import com.ukf.arn.Submissions.Repository.SubmissionCategoryRepository;
+import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Users.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.nio.file.Files;

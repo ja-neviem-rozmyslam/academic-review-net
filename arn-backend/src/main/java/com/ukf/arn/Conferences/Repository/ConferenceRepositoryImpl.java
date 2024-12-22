@@ -1,7 +1,8 @@
-package com.ukf.arn.Conferences;
+package com.ukf.arn.Conferences.Repository;
 
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.ukf.arn.Entities.Conference;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 

@@ -1,7 +1,8 @@
-package com.ukf.arn.Submissions;
+package com.ukf.arn.Submissions.Repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.ukf.arn.Entities.Submission;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

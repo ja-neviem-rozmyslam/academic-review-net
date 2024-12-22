@@ -1,8 +1,8 @@
 package com.ukf.arn;
 
-import com.ukf.arn.Conferences.QConference;
-import com.ukf.arn.Submissions.QSubmission;
-import com.ukf.arn.Users.QUser;
+import com.ukf.arn.Entities.QConference;
+import com.ukf.arn.Entities.QSubmission;
+import com.ukf.arn.Entities.QUser;
 
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -6,7 +6,11 @@
   <div class="flex-grow">
     <div class="flex flex-col items-center justify-center h-full">
       <p class="text-2xl font-semibold">
-        {{ roleInConference === 'R' ? 'Termín na posúdenie práce uplynul' : 'Recenzent vám ešte neohodnotil prácu' }}
+        @if (roleInConference === 'R') {
+          Termín na posúdenie práce uplynul
+        } @else {
+          Posudok bude sprístupnený {{ conferenceDetail.reviewDeadline | date:'dd.MM.yyyy' }}
+        }
       </p>
     </div>
   </div>

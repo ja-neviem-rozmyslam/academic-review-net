@@ -1,6 +1,5 @@
-package com.ukf.arn.Submissions;
+package com.ukf.arn.Entities;
 
-import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;

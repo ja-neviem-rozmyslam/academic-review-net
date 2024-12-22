@@ -14,10 +14,10 @@ public class EmailDomainService {
         this.emailDomainRepository = emailDomainRepository;
     }
 
-    public List<EmailDomainDTO> getEmailDomains() {
+    public List<EmailDomainDto> getEmailDomains() {
         return emailDomainRepository.findAll().stream()
                 .map(emailDomain -> {
-                    EmailDomainDTO emailDomainDTO = new EmailDomainDTO(
+                    EmailDomainDto emailDomainDTO = new EmailDomainDto(
                             emailDomain.getUniversity().getId(),
                             emailDomain.getUniversity().getName(),
                             emailDomain.getDomain()

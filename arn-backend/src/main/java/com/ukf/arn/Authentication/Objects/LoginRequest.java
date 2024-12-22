@@ -1,4 +1,4 @@
-package com.ukf.arn.Authentication;
+package com.ukf.arn.Authentication.Objects;
 
 public class LoginRequest {
     private String email;

@@ -74,7 +74,7 @@ export class ReviewComponent implements OnInit {
         return this.noReviewTemplate;
       }
     } else if (this.roleInConference === UserRoles.STUDENT) {
-      if (this.showInReadMode) {
+      if (this.showInReadMode && !this.reviewOptions.isBeforeDeadline) {
         return this.reviewReadTemplate;
       } else {
         return this.noReviewTemplate;

@@ -1,7 +1,4 @@
-package com.ukf.arn.Submissions;
-
-import java.util.List;
-import java.util.UUID;
+package com.ukf.arn.Submissions.Objects;
 
 public class SubmissionRequest {
     private Long id;

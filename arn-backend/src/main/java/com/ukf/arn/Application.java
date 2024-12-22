@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.ukf.arn")
+@EntityScan(basePackages = "com.ukf.arn.Entities")
 public class Application {
 
 	public static void main(String[] args) {

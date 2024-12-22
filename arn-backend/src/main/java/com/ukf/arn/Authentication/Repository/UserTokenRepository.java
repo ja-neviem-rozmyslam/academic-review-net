@@ -1,6 +1,7 @@
-package com.ukf.arn.Authentication;
+package com.ukf.arn.Authentication.Repository;
 
-import com.ukf.arn.Users.User;
+import com.ukf.arn.Entities.User;
+import com.ukf.arn.Entities.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

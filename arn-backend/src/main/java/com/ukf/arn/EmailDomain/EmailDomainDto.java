@@ -1,14 +1,14 @@
 package com.ukf.arn.EmailDomain;
 
-public class EmailDomainDTO {
+public class EmailDomainDto {
     private Long universityId;
     private String universityName;
     private String domain;
 
-    public EmailDomainDTO() {
+    public EmailDomainDto() {
     }
 
-    public EmailDomainDTO(Long universityId, String universityName, String domain) {
+    public EmailDomainDto(Long universityId, String universityName, String domain) {
         this.universityId = universityId;
         this.universityName = universityName;
         this.domain = domain;

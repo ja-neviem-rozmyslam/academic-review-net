@@ -1,6 +1,5 @@
-package com.ukf.arn.Authentication;
+package com.ukf.arn.Entities;
 
-import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 

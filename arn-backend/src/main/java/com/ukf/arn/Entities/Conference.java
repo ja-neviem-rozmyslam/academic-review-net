@@ -1,10 +1,8 @@
-package com.ukf.arn.Conferences;
+package com.ukf.arn.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ukf.arn.Users.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedBy;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

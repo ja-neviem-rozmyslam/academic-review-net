@@ -1,6 +1,6 @@
-package com.ukf.arn.Conferences;
+package com.ukf.arn.Conferences.Objects;
 
-import com.ukf.arn.Submissions.SubmissionDto;
+import com.ukf.arn.Submissions.Objects.SubmissionDto;
 
 public class ConferenceDetail {
     private Long id;

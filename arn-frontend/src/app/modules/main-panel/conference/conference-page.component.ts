@@ -102,6 +102,7 @@ export class ConferencePageComponent implements OnInit {
       this.infoTabContent = this.getInfoTabContent(this.conferenceDetail.uploadDeadline, 'Na odovzdanie práce zostáva');
 
       this.reviewOptions.isReviewed = isReviewed;
+      this.reviewOptions.isBeforeDeadline = new Date() < new Date(this.conferenceDetail.reviewDeadline);
 
     } else if (this.roleService.isReviewer() && this.conferenceDetail.submissionRole === UserRoles.REVIEWER) {
       this.roleInConference = UserRoles.REVIEWER;

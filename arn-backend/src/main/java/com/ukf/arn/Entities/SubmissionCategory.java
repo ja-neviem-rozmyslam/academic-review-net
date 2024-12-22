@@ -1,4 +1,4 @@
-package com.ukf.arn.Submissions;
+package com.ukf.arn.Entities;
 
 import jakarta.persistence.*;
 

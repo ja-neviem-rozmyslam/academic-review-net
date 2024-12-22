@@ -1,11 +1,14 @@
 package com.ukf.arn.Users;
 
-import com.ukf.arn.Conferences.Conference;
-import com.ukf.arn.Conferences.ConferenceDTO;
-import com.ukf.arn.Conferences.ConferenceRepository;
-import com.ukf.arn.Submissions.Submission;
-import com.ukf.arn.Submissions.SubmissionDto;
-import com.ukf.arn.Submissions.SubmissionRepository;
+import com.ukf.arn.Entities.Conference;
+import com.ukf.arn.Conferences.Objects.ConferenceDto;
+import com.ukf.arn.Conferences.Repository.ConferenceRepository;
+import com.ukf.arn.Entities.User;
+import com.ukf.arn.Entities.Submission;
+import com.ukf.arn.Submissions.Objects.SubmissionDto;
+import com.ukf.arn.Submissions.Repository.SubmissionRepository;
+import com.ukf.arn.Users.Objects.UserDto;
+import com.ukf.arn.Users.Objects.UserDetailsDto;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +27,10 @@ public class UserService {
         this.submissionRepository = submissionRepository;
     }
 
-    public UserDetailsDTO getUserDetails() {
+    public UserDetailsDto getUserDetails() {
 
         User user = SecurityConfig.getLoggedInUser();
-        UserDTO userDTO = new UserDTO();
+        UserDto userDTO = new UserDto();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
@@ -37,8 +40,8 @@ public class UserService {
         userDTO.setRoles(user.getRoles());
 
         List<Conference> conferences = conferenceRepository.findAllByUsersIdOrderByUploadDeadline(user.getId());
-        List<ConferenceDTO> conferenceDTOs = conferences.stream()
-                .map(conference -> new ConferenceDTO(
+        List<ConferenceDto> conferenceDTOs = conferences.stream()
+                .map(conference -> new ConferenceDto(
                         conference.getId(),
                         conference.getConferenceName(),
                         conference.getUploadDeadline(),
@@ -71,7 +74,7 @@ public class UserService {
                 })
                 .collect(Collectors.toList());
 
-        UserDetailsDTO userDetailsDTO = new UserDetailsDTO(userDTO, conferenceDTOs, submissionDtos);
+        UserDetailsDto userDetailsDTO = new UserDetailsDto(userDTO, conferenceDTOs, submissionDtos);
         return userDetailsDTO;
     }
 }

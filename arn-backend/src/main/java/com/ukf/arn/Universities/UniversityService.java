@@ -1,5 +1,6 @@
 package com.ukf.arn.Universities;
 
+import com.ukf.arn.Entities.University;
 import org.springframework.stereotype.Service;
 
 @Service

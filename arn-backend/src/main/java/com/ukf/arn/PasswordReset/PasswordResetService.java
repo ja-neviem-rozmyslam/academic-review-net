@@ -1,9 +1,9 @@
 package com.ukf.arn.PasswordReset;
 
-import com.ukf.arn.Authentication.UserToken;
-import com.ukf.arn.Authentication.UserTokenRepository;
+import com.ukf.arn.Entities.UserToken;
+import com.ukf.arn.Authentication.Repository.UserTokenRepository;
 import com.ukf.arn.MailService.MailService;
-import com.ukf.arn.Users.User;
+import com.ukf.arn.Entities.User;
 import com.ukf.arn.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

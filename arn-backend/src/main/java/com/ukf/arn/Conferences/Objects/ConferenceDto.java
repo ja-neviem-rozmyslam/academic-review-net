@@ -1,8 +1,8 @@
-package com.ukf.arn.Conferences;
+package com.ukf.arn.Conferences.Objects;
 
 import java.time.LocalDateTime;
 
-public class ConferenceDTO {
+public class ConferenceDto {
     private Long id;
     private String conferenceName;
     private String uploadDeadline;
@@ -14,7 +14,7 @@ public class ConferenceDTO {
     private boolean joined;
     private boolean hasPassword;
 
-    public ConferenceDTO(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, LocalDateTime creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
+    public ConferenceDto(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, LocalDateTime creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
         this.id = id;
         this.conferenceName = conferenceName;
         this.uploadDeadline = uploadDeadline;
