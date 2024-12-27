@@ -5,7 +5,7 @@ import com.ukf.arn.Authentication.Objects.RegistrationRequest;
 import com.ukf.arn.Authentication.Repository.UserTokenRepository;
 import com.ukf.arn.ConstantsKatalog;
 import com.ukf.arn.Entities.UserToken;
-import com.ukf.arn.LoginAttemptService.LoginAttemptService;
+import com.ukf.arn.Services.LoginAttemptService;
 import com.ukf.arn.MailService.MailService;
 import com.ukf.arn.Entities.University;
 import com.ukf.arn.Universities.UniversityService;
