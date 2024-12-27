@@ -4,6 +4,8 @@ import com.ukf.arn.Entities.User;
 import com.ukf.arn.Entities.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
@@ -13,4 +15,7 @@ public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
 
     void deleteByUserAndTokenType(User user, String tokenType);
 
+    List<UserToken> findByExpirationTimeBefore(LocalDateTime now);
+
+    void deleteAllByExpirationTimeBefore(LocalDateTime now);
 }
