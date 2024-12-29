@@ -1,5 +1,6 @@
 package com.ukf.arn.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -10,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.ukf.arn.ConstantsKatalog.Role.ADMIN;
+import static com.ukf.arn.ConstantsKatalog.Role.SUPERADMIN;
 
 @Entity
 @Table(name = "users")
@@ -60,6 +64,11 @@ public class User implements Serializable {
     public void prePersist() {
         id = UUID.randomUUID();
         //registrationDate = LocalDateTime.now();
+    }
+
+    @JsonIgnore
+    public boolean isAdmin() {
+        return roles.contains(ADMIN) || roles.contains(SUPERADMIN);
     }
 
     public UUID getId() {

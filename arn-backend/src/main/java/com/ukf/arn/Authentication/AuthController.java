@@ -26,8 +26,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public ResponseEntity<?> login(
+            @RequestParam(required = false) boolean isAdminLogin,
+            @RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest, isAdminLogin);
     }
 
     @PostMapping("/registration")
