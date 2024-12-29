@@ -24,6 +24,16 @@ export class ProfilePageComponent implements OnInit {
     this.fetchUserDetails();
   }
 
+  updateTabAvailability() {
+    const roles = this.userDetails.user.roles;
+
+    const isStudent = roles.includes('S');
+    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').disabled = !isStudent;
+
+    const isReviewer = roles.includes('R');
+    this.tabOptions.find(tab => tab.value === 'REVIEWS').disabled = !isReviewer;
+  }
+
   getSubmissionByConferenceId(conferenceId: number) {
     return this.userDetails.submission.find(submission => submission.conferenceId === conferenceId);
   }
@@ -41,6 +51,7 @@ export class ProfilePageComponent implements OnInit {
       next: (data) => {
         this.userDetails = data;
         this.isLoading = false;
+        this.updateTabAvailability();
       },
       error: () => {
         this.error = 'Failed to load user details. Please try again later.';
