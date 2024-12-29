@@ -74,7 +74,21 @@ public class UserService {
                 })
                 .collect(Collectors.toList());
 
-        UserDetailsDto userDetailsDTO = new UserDetailsDto(userDTO, conferenceDTOs, submissionDtos);
+        List<Submission> submissionsToReview = submissionRepository.findByReviewerId(user.getId());
+        List<SubmissionDto> submissionDtosToReview;
+
+        submissionDtosToReview = submissionsToReview.stream()
+                .map(submission -> {
+                    SubmissionDto dto = new SubmissionDto();
+                    dto.setConferenceId(submission.getConferencesId());
+                    dto.setId(submission.getId());
+                    dto.setTitle(submission.getThesisTitle());
+                    dto.setTimestamp(submission.getTimestamp());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        UserDetailsDto userDetailsDTO = new UserDetailsDto(userDTO, conferenceDTOs, submissionDtos, submissionDtosToReview);
         return userDetailsDTO;
     }
 }
