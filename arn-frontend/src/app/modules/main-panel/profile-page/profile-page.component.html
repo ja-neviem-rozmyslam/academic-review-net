@@ -79,7 +79,19 @@
     </div>
   }
   @if (selectedOption === 'REVIEWS') {
-    <!-- TODO: reviewer card -->
+    <div class="card-base p-5 border flex flex-col">
+      <h2 class="text-3xl font-bold mb-4">Práce na hodnotenie</h2>
+      <div *ngFor="let submission of userDetails.submissionsToReview" class="p-3 flex justify-between items-center item"
+           (click)="navigateToConferencePage(submission.conferenceId)">
+        <div>
+          <h3 class="text-lg font-bold">{{ submission.title }}</h3>
+          <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
+        </div>
+        <span class="text-xs px-2 py-1 rounded-full font-medium border">
+          Čaká na hodnotenie
+      </span>
+      </div>
+    </div>
   }
 
 </div>
