@@ -7,6 +7,7 @@ import {selectError} from '../../store/auth-store/auth.selector';
 import {HttpErrorResponse} from '@angular/common/http';
 import {UtilityService} from '../../services/utility.service';
 import {FormValidationErrors} from '../../objects/FormValidationErrors';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-login-panel',
@@ -22,23 +23,30 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   rememberMe: boolean = false;
   errorMessage: string;
 
+  isAdminLogin: boolean = false;
+
   showAlert: boolean = false;
   verificationStatus: boolean;
   verificationMessage: string;
 
-  constructor(private store: Store, private utilityService: UtilityService) {
+  constructor(private store: Store,
+              private utilityService: UtilityService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    const state = history.state as { status?: string, message?: string };
-    if (state.status && state.message) {
-      this.showAlert = true;
-      this.verificationStatus = state.status === 'success';
-      this.verificationMessage = state.message;
-      history.replaceState({}, '');
-    }
+    this.isAdminLogin = !!this.route.snapshot.data['isAdminLogin'];
     this.initErrorHandling();
-    this.loadSavedEmail();
+    if (!this.isAdminLogin) {
+      const state = history.state as { status?: string, message?: string };
+      if (state.status && state.message) {
+        this.showAlert = true;
+        this.verificationStatus = state.status === 'success';
+        this.verificationMessage = state.message;
+        history.replaceState({}, '');
+      }
+      this.loadSavedEmail();
+    }
   }
 
   onSubmit() {
@@ -57,7 +65,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
         localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
         localStorage.removeItem(this.storageIdentifier);
-      this.store.dispatch(loginStart({loginInfo: {...this.loginInfo}}));
+      this.store.dispatch(loginStart({ loginInfo: { ...this.loginInfo }, isAdminLogin: this.isAdminLogin }));
     }
   }
 

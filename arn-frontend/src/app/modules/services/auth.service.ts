@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {Login} from '../components/login-panel/enitites/Login';
 import {Registration} from '../components/registration-panel/entities/Registration';
@@ -15,12 +15,15 @@ export class AuthService {
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
-  login(loginInfo: Login): Observable<any> {
+  login(loginInfo: Login, isAdminLogin: boolean): Observable<any> {
+    const params = new HttpParams().set('isAdminLogin', isAdminLogin.toString());
+
     return this.http.post<LoginResponse>(`${this.USER_API_ENDPOINT}/login`, loginInfo, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      observe: 'response'
+      observe: 'response',
+      params: params
     }).pipe(
       map(response => {
         const authToken = response.headers.get('Authorization');

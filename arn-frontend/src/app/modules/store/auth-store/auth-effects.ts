@@ -17,15 +17,15 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthAction.loginStart),
       switchMap((action) =>
-        this.loginService.login(action.loginInfo).pipe(
+        this.loginService.login(action.loginInfo, action.isAdminLogin).pipe(
           map(user => AuthAction.loginSuccess({ user })),
           catchError((error: HttpErrorResponse) => {
-            return of(AuthAction.loginFailure({ error }))
-          }
+            return of(AuthAction.loginFailure({ error }));
+          })
         )
       )
     )
-  ));
+  );
 
   loginSuccess$ = createEffect(() =>
       this.actions$.pipe(
