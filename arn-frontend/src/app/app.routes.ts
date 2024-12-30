@@ -17,6 +17,7 @@ import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.compon
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
+  { path: 'login/admin', component: LoginPanelComponent, canActivate: [LoginGuard], data: { isAdminLogin: true } },
   { path: 'registration', component: RegistrationPanelComponent, canActivate: [LoginGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'password-change', component: PasswordChangeComponent },

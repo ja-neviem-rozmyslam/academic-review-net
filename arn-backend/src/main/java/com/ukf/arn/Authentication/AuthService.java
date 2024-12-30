@@ -106,7 +106,7 @@ public class AuthService {
     }
 
 
-    public ResponseEntity<?> login(LoginRequest loginRequest) {
+    public ResponseEntity<?> login(LoginRequest loginRequest, boolean isAdminLogin) {
         String ip = getClientIP();
 
         if (loginAttemptService.isBlocked(ip)) {
@@ -120,6 +120,9 @@ public class AuthService {
         }
         if (!userObj.isVerified()) {
             return ResponseEntity.badRequest().body("Používateľ nie je overený");
+        }
+        if (isAdminLogin && !userObj.isAdmin()) {
+            return ResponseEntity.badRequest().body("Používateľ nie je administrátor");
         }
         if (!passwordEncoder.matches(loginRequest.getPassword(), userObj.getPassword())) {
             loginAttemptService.loginFailed(ip);

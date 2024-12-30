@@ -5,7 +5,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 
 export const loginStart = createAction(
   '[Auth] Login',
-  props<{ loginInfo: Login }>()
+  props<{ loginInfo: Login; isAdminLogin: boolean }>()
 );
 
 export const loginSuccess = createAction(
