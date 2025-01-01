@@ -50,7 +50,7 @@
 </ng-template>
 
 <ng-template #submissionFormTemplate>
-  <form class="space-y-4 flex-grow" (ngSubmit)="onSubmit()" appFormValidation>
+  <form class="space-y-4 flex-grow" (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event">
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
       <input
