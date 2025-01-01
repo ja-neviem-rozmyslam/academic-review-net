@@ -1,40 +1,51 @@
 <app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalWidthClass]="'max-w-xl'">
-  <div class="w-full p-4">
+  <div class="w-full">
 
     <h2 class="text-lg font-semibold mb-4">Upraviť profil</h2>
 
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">
-        Nové meno:
-        <input
-          type="text"
-          placeholder="Zadajte nové meno"
-          class="w-full p-2 border border-gray-300 rounded"
-        />
-      </label>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Meno:
+          <input
+            type="text"
+            placeholder="Zadajte meno"
+            [value]="userDetails.user.name"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
+
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Priezvisko:
+          <input
+            type="text"
+            placeholder="Zadajte priezvisko"
+            [value]="userDetails.user.surname"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
     </div>
 
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">
-        Nové heslo:
-        <input
-          type="password"
-          placeholder="Zadajte nové heslo"
-          class="w-full p-2 border border-gray-300 rounded"
-        />
-      </label>
+
+
+    <div class="mb-4 arn-input">
+      <app-arn-button [buttonText]="'Resetovať heslo'" [classes]="'w-full'"
+                      (buttonClick)="sendPasswordReset();"></app-arn-button>
+      <p class="text-sm text-gray-500">Po kliknutí vám pošleme email s odkazom na resetovanie hesla.</p>
     </div>
+
+
 
 
     <div class="flex justify-between items-center mt-4">
-      <!-- Left Button -->
       <app-arn-button
-        [buttonText]="'Odoslať'"
-        (buttonClick)="console.log('OK')"
+        [buttonText]="'Aktualizovať údaje'"
         [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
       </app-arn-button>
 
-      <!-- Right Button -->
       <app-arn-button
         [buttonText]="'Zrušiť'"
         (buttonClick)="closeModal()"

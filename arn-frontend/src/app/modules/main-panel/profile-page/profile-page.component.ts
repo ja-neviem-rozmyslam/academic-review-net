@@ -63,8 +63,8 @@ export class ProfilePageComponent implements OnInit {
   openSettings(): void {
     this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
-      backdrop: 'dynamic'
-    });
+      backdrop: 'dynamic',
+    }, this.userDetails);
   }
 
   protected readonly UserPrettyNames = UserPrettyNames;
