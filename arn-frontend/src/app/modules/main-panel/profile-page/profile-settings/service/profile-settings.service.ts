@@ -6,11 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProfileSettingsService {
-  private PROFILE_API_ENDPOINT = '';
 
   constructor(private http: HttpClient) {}
 
   sendPasswordReset(email: string): Observable<any> {
     return this.http.post(`/api/password-reset/request`, { email });
+  }
+
+  updateProfile(userDetails: any): Observable<any> {
+    return this.http.post(`/api/users/update-profile`, userDetails);
   }
 }

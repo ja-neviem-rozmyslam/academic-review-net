@@ -61,10 +61,14 @@ export class ProfilePageComponent implements OnInit {
   }
 
   openSettings(): void {
-    this.dialogService.openCustomModal(ProfileSettingsComponent, {
+    const modalRef = this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
       backdrop: 'dynamic',
     }, this.userDetails);
+
+    modalRef.instance.profileUpdated.subscribe(() => {
+      this.fetchUserDetails();
+    });
   }
 
   protected readonly UserPrettyNames = UserPrettyNames;

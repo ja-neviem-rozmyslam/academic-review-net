@@ -9,8 +9,8 @@
           Meno:
           <input
             type="text"
-            placeholder="Zadajte meno"
-            [value]="userDetails.user.name"
+            placeholder="Meno"
+            [(ngModel)]="userDetails.name"
             class="w-full p-2 border border-gray-300 rounded"
           />
         </label>
@@ -21,18 +21,29 @@
           Priezvisko:
           <input
             type="text"
-            placeholder="Zadajte priezvisko"
-            [value]="userDetails.user.surname"
+            placeholder="Priezvisko"
+            [(ngModel)]="userDetails.surname"
             class="w-full p-2 border border-gray-300 rounded"
           />
         </label>
       </div>
     </div>
 
-
+    <div class="w-full mb-4">
+      <label for="university" class="block text-sm font-medium mb-1">
+        Univerzita:
+        <app-arn-select
+                      id="university"
+                      [options]="universitiesSelectOptions"
+                      [placeholder]="'Univerzita'"
+                      [required]="true"
+                      [(selectedOption)]="userDetails.universityId"></app-arn-select>
+      </label>
+    </div>
 
     <div class="mb-4 arn-input">
-      <app-arn-button [buttonText]="'Resetovať heslo'" [classes]="'w-full'"
+      <app-arn-button [buttonText]="'Resetovať heslo'" [classes]="'w-full'" serve
+
                       (buttonClick)="sendPasswordReset();"></app-arn-button>
       <p class="text-sm text-gray-500">Po kliknutí vám pošleme email s odkazom na resetovanie hesla.</p>
     </div>
@@ -43,6 +54,7 @@
     <div class="flex justify-between items-center mt-4">
       <app-arn-button
         [buttonText]="'Aktualizovať údaje'"
+        (buttonClick)="updateProfile()"
         [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
       </app-arn-button>
 

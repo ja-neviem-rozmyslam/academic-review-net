@@ -7,9 +7,11 @@ import com.ukf.arn.Entities.User;
 import com.ukf.arn.Entities.Submission;
 import com.ukf.arn.Submissions.Objects.SubmissionDto;
 import com.ukf.arn.Submissions.Repository.SubmissionRepository;
+import com.ukf.arn.Users.Objects.UpdateRequest;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Objects.UserDetailsDto;
 import com.ukf.arn.config.SecurityConfig;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -90,5 +92,14 @@ public class UserService {
 
         UserDetailsDto userDetailsDTO = new UserDetailsDto(userDTO, conferenceDTOs, submissionDtos, submissionDtosToReview);
         return userDetailsDTO;
+    }
+
+    public ResponseEntity<?> updateUserDetails(UpdateRequest userDto) {
+        User user = SecurityConfig.getLoggedInUser();
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.getUniversity().setId(userDto.getUniversityId());
+        userRepository.save(user);
+        return ResponseEntity.ok("User details updated successfully");
     }
 }
