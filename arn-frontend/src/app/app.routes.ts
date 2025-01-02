@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdministrationPanelComponent } from './modules/administration-panel/administration-panel/administration-panel.component';
+import { AdministrationPageComponent } from './modules/administration-panel/administration-panel/administration-page.component';
 import { LoginPanelComponent } from './modules/components/login-panel/login-panel.component';
 import { ForgotPasswordComponent } from './modules/components/password-management/forgot-password/forgot-password.component';
 import { PasswordChangeComponent } from './modules/components/password-management/password-change/password-change.component';
@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'verification', component: VerifyPageComponent },
 
   { path: 'administration',
-    component: AdministrationPanelComponent,
+    component: AdministrationPageComponent,
     canActivate: [RoleGuard],
     data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] },
     children: []

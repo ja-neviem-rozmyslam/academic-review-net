@@ -5,8 +5,8 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginPanelComponent} from './modules/components/login-panel/login-panel.component';
 import {
-  AdministrationPanelComponent
-} from './modules/administration-panel/administration-panel/administration-panel.component';
+  AdministrationPageComponent
+} from './modules/administration-panel/administration-panel/administration-page.component';
 import {SidemenuComponent} from './modules/components/sidemenu/sidemenu.component';
 import {FormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -52,12 +52,14 @@ import {PaginationComponent} from './modules/components/pagination/pagination.co
 import { MyThesesComponent } from './modules/main-panel/my-theses/my-theses.component';
 import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/thesis-card.component';
 import { ProfileSettingsComponent } from './modules/main-panel/profile-page/profile-settings/profile-settings.component';
+import { ArnGridListComponent } from './modules/components/arn-grid-list/arn-grid-list.component';
+import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn-date-picker.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPanelComponent,
-    AdministrationPanelComponent,
+    AdministrationPageComponent,
     SidemenuComponent,
     DialogComponent,
     ArnButtonComponent,
@@ -83,7 +85,9 @@ import { ProfileSettingsComponent } from './modules/main-panel/profile-page/prof
     ProfilePageComponent,
     MyThesesComponent,
     ThesisCardComponent,
-    ProfileSettingsComponent],
+    ProfileSettingsComponent,
+    ArnGridListComponent,
+    ArnDatePickerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

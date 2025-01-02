@@ -43,7 +43,7 @@ export class SubmissionComponent implements OnInit {
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
-    if (!this.invalidFileAmount && this.formValidationErrors.emptyFields.length === 0) {
+    if (!this.invalidFileAmount && !this.formValidationErrors) {
       this.submissionForm.conferenceId = this.conferenceDetail.id;
       this.uploadSubmission();
     }
