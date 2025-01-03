@@ -13,10 +13,12 @@ import {UserDetails} from './entities/UserDetails';
 export class ProfileSettingsComponent extends BaseModal implements OnInit {
 
   @Output() profileUpdated = new EventEmitter<void>();
+  @Output() passwordResetSent = new EventEmitter<void>();
 
   userDetails: UserDetails;
   emailDomains: EmailDomain[];
   universitiesSelectOptions: any[];
+  isFetching = true;
 
   constructor(@Inject('modalData') public data: any, private profileSettingsService: ProfileSettingsService, private emailDomainService: EmailDomainService) {
     super();
@@ -37,11 +39,13 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
         display: university.universityName,
         selectObject: university
       }));
+      this.isFetching = false;
     });
   }
 
   updateProfile(): void {
     //console.log(this.userDetails);
+    this.isFetching = true;
     this.profileSettingsService.updateProfile(this.userDetails).pipe().subscribe(() => {
       this.profileUpdated.emit();
       this.closeModal();
@@ -49,7 +53,9 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
   }
 
   sendPasswordReset(): void {
+    this.isFetching = true;
     this.profileSettingsService.sendPasswordReset(this.userDetails.email).pipe().subscribe(() => {
+      this.passwordResetSent.emit();
       this.closeModal();
     });
   }
