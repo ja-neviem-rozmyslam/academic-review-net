@@ -8,7 +8,8 @@ import {UserDetails} from './entities/UserDetails';
 @Component({
   selector: 'app-profile-settings',
   templateUrl: './profile-settings.component.html',
-  styleUrl: './profile-settings.component.less'
+  styleUrl: './profile-settings.component.less',
+  providers: [EmailDomainService]
 })
 export class ProfileSettingsComponent extends BaseModal implements OnInit {
 
