@@ -6,6 +6,7 @@ import {Submission} from '../entities/Submission';
 import {ConferenceDetail} from '../entities/ConferenceDetail';
 import {UserRoles} from '../../../constants';
 import {saveAs} from 'file-saver';
+import {FormValidationErrors} from '../../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-submission',
@@ -27,6 +28,8 @@ export class SubmissionComponent implements OnInit {
   uploadedFiles: File[] = [];
   showInReadMode: boolean;
 
+  formValidationErrors: FormValidationErrors;
+
   constructor(
     private submissionService: SubmissionService) {
   }
@@ -40,7 +43,7 @@ export class SubmissionComponent implements OnInit {
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
-    if (!this.invalidFileAmount) {
+    if (!this.invalidFileAmount && this.formValidationErrors.emptyFields.length === 0) {
       this.submissionForm.conferenceId = this.conferenceDetail.id;
       this.uploadSubmission();
     }
