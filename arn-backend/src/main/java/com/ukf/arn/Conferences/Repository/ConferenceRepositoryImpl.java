@@ -2,6 +2,7 @@ package com.ukf.arn.Conferences.Repository;
 
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -35,5 +36,19 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
         );
 
         return query.fetch();
+    }
+
+    public static ConferenceDto mapToConferenceDto(Conference conference) {
+        ConferenceDto conferenceDto = new ConferenceDto();
+        conferenceDto.setId(conference.getId());
+        conferenceDto.setConferenceName(conference.getConferenceName());
+        conferenceDto.setUploadDeadline(conference.getUploadDeadline().toString());
+        conferenceDto.setReviewDeadline(conference.getReviewDeadline().toString());
+        conferenceDto.setCreationDate(conference.getCreationDate());
+        conferenceDto.setFaculty(conference.getFaculty());
+        conferenceDto.setClosed(conference.isClosed());
+        conferenceDto.setReviewForm(conference.getReviewForm());
+        conferenceDto.setHasPassword(conference.hasPassword());
+        return conferenceDto;
     }
 }

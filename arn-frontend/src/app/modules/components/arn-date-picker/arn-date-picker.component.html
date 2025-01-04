@@ -1,1 +1,8 @@
-<p>date-picker works!</p>
+<div class="relative w-full">
+  <input type="date"
+         class="input-base w-full cursor-pointer"
+         [(ngModel)]="selectedDate"
+         (ngModelChange)="selectedDateChange.emit($event)"
+         [required]="required"
+         [disabled]="disabled">
+</div>

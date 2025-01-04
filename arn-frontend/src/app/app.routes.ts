@@ -14,6 +14,9 @@ import {ConferencesListPageComponent} from './modules/main-panel/conference-page
 import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
 import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
 import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.component';
+import {
+  ConferencesManagementComponent
+} from './modules/administration-panel/conferences-management/conferences-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -27,7 +30,17 @@ export const routes: Routes = [
     component: AdministrationPageComponent,
     canActivate: [RoleGuard],
     data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] },
-    children: []
+    children: [
+      {
+        path: '',
+        redirectTo: 'conference-management',
+        pathMatch: 'full'
+      },
+      {
+        path: 'conference-management',
+        component: ConferencesManagementComponent
+      }
+    ]
   },
   {
     path: 'main',

@@ -54,6 +54,7 @@ import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/
 import { ProfileSettingsComponent } from './modules/main-panel/profile-page/profile-settings/profile-settings.component';
 import { ArnGridListComponent } from './modules/components/arn-grid-list/arn-grid-list.component';
 import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn-date-picker.component';
+import { ConferencesManagementComponent } from './modules/administration-panel/conferences-management/conferences-management.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn
     ThesisCardComponent,
     ProfileSettingsComponent,
     ArnGridListComponent,
-    ArnDatePickerComponent],
+    ArnDatePickerComponent,
+    ConferencesManagementComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

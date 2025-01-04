@@ -14,6 +14,9 @@ public class ConferenceDto {
     private boolean joined;
     private boolean hasPassword;
 
+    public ConferenceDto() {
+    }
+
     public ConferenceDto(Long id, String conferenceName, String uploadDeadline, String reviewDeadline, LocalDateTime creationDate, String faculty, boolean closed, String review_form, boolean joined, boolean hasPassword) {
         this.id = id;
         this.conferenceName = conferenceName;
@@ -65,5 +68,45 @@ public class ConferenceDto {
 
     public boolean isHasPassword() {
         return hasPassword;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setConferenceName(String conferenceName) {
+        this.conferenceName = conferenceName;
+    }
+
+    public void setUploadDeadline(String uploadDeadline) {
+        this.uploadDeadline = uploadDeadline;
+    }
+
+    public void setReviewDeadline(String reviewDeadline) {
+        this.reviewDeadline = reviewDeadline;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    public void setReviewForm(String reviewForm) {
+        this.reviewForm = reviewForm;
+    }
+
+    public void setJoined(boolean joined) {
+        this.joined = joined;
+    }
+
+    public void setHasPassword(boolean hasPassword) {
+        this.hasPassword = hasPassword;
     }
 }

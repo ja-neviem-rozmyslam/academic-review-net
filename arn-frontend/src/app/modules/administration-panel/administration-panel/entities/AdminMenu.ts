@@ -8,6 +8,11 @@ import {
 
 export const AdminMenu: MenuItem[] = [
   {
+    path: 'conference-management',
+    title: 'Správa Konferencií',
+    icon: SquaresPlusOutlineIconComponent
+  },
+  {
     path: 'user-management',
     title: 'Správa Používateľov',
     icon: UsersOutlineIconComponent
@@ -16,11 +21,6 @@ export const AdminMenu: MenuItem[] = [
     path: 'admin-management',
     title: 'Správa Administrátorov',
     icon: UserPlusOutlineIconComponent
-  },
-  {
-    path: 'conference-management',
-    title: 'Správa Konferencií',
-    icon: SquaresPlusOutlineIconComponent
   },
   {
     path: 'university-management',
