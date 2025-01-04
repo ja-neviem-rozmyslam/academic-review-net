@@ -10,8 +10,10 @@ export class TabsComponent {
   @Input() activeTab: string;
   @Output() tabChanged = new EventEmitter<string>();
 
-  setActiveTab(value: string): void {
-    this.activeTab = value;
-    this.tabChanged.emit(value);
+  setActiveTab(value: string, disabled: boolean): void {
+    if (!disabled) {
+      this.activeTab = value;
+      this.tabChanged.emit(value);
+    }
   }
 }

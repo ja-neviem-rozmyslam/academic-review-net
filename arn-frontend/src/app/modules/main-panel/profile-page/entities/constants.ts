@@ -4,6 +4,6 @@ export const SUBMISSION = 'SUBMISSIONS';
 export const REVIEW = 'REVIEWS';
 
 export const TABOPTIONS: TabOption[] = [
-  { value: SUBMISSION, label: 'Odovzdané práce'},
-  { value: REVIEW, label: 'Práce na hodnotenie'},
+  { value: SUBMISSION, label: 'Odovzdané práce', disabled: false},
+  { value: REVIEW, label: 'Práce na hodnotenie', disabled: false},
 ];
