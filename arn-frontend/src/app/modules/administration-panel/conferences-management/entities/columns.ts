@@ -3,7 +3,7 @@ import {Column} from '../../../components/arn-grid-list/entities/Column';
 export const CONFERENCE_COLUMNS: Column[] = [
   {
     title: 'Konferencia',
-    name: 'name',
+    name: 'conferenceName',
     width: 30,
   },
   {
@@ -14,19 +14,19 @@ export const CONFERENCE_COLUMNS: Column[] = [
   {
     title: 'Termín odovzdania',
     name: 'uploadDeadline',
-    width: 30,
+    width: 20,
   },
   {
     title: 'Termín posudzovania',
     name: 'reviewDeadline',
-    width: 30,
+    width: 20,
   },
   {
     title: 'Stav',
-    name: 'status',
-    width: 30,
+    name: 'closed',
+    width: 10,
     template: (dataItem: any) => {
-      return dataItem.status ? 'Aktívna' : 'Ukončená';
+      return dataItem.closed ? 'Aktívna' : 'Ukončená';
     }
   }
 ];

@@ -12,6 +12,7 @@ export class ArnGridListComponent implements OnInit {
   @Input() columns: Column[] = [];
   @Input() searchMethod: (searchObject: any, sortOptions: { column: string; direction: 'asc' | 'desc' }) => Observable<any>;
   @Input() searchObject: any = {};
+  @Input() initialSort: string;
   @Input() initialRefresh: boolean = false;
 
   @Output() editAction = new EventEmitter<any>();
@@ -24,6 +25,9 @@ export class ArnGridListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.initialSort) {
+      this.currentSort = { column: this.initialSort, direction: 'desc' };
+    }
     if (this.initialRefresh) {
       this.refreshGrid();
     }

@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ConferenceManagementService {
-  ADMIN_CONFERENCE_ENDPOINT = 'admin/conference';
+  ADMIN_CONFERENCE_ENDPOINT = 'api-admin/conference';
 
   constructor(private http: HttpClient) {
   }

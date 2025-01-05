@@ -1,7 +1,8 @@
-<div class="h-[50vh]">
+<div class="h-[52vh]">
   <app-arn-grid-list
     [columns]="columns"
     [initialRefresh]="true"
+    [initialSort]="'conferenceName'"
     [searchMethod]="search"
     (doubleClickAction)="onDoubleClick($event)" />
 </div>
