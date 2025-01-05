@@ -10,6 +10,7 @@ import {ConferenceManagementService} from './services/conference-management.serv
 export class ConferencesManagementComponent {
 
   columns = CONFERENCE_COLUMNS;
+  conferenceSearchCriteria = {};
 
   constructor(private conferenceManagementService: ConferenceManagementService) {
   }
@@ -19,5 +20,9 @@ export class ConferencesManagementComponent {
 
   onDoubleClick(item: any): void {
     console.log('Double click', item);
+  }
+
+  searchStarted() {
+    console.log(this.conferenceSearchCriteria);
   }
 }

@@ -1,8 +1,19 @@
-<div class="h-[52vh]">
-  <app-arn-grid-list
-    [columns]="columns"
-    [initialRefresh]="true"
-    [initialSort]="'conferenceName'"
-    [searchMethod]="search"
-    (doubleClickAction)="onDoubleClick($event)" />
+<div class="h-[51vh] flex space-x-6">
+  <div class="w-1/6">
+    <app-conferences-search
+      [searchObject]="conferenceSearchCriteria"
+      (startSearch)="searchStarted()"/>
+  </div>
+
+  <div class="w-5/6">
+    <app-arn-grid-list
+      [columns]="columns"
+      [initialRefresh]="true"
+      [sortable]="true"
+      [searchObject]="conferenceSearchCriteria"
+      [initialSort]="'conferenceName'"
+      [searchMethod]="search"
+      (doubleClickAction)="onDoubleClick($event)"
+    />
+  </div>
 </div>

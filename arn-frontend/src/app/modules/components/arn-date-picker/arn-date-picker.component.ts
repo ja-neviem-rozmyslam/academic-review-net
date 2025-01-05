@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-arn-date-picker',
@@ -16,8 +16,6 @@ export class ArnDatePickerComponent implements OnInit {
     if (this.selectedDate) {
       const dateOnly = this.selectedDate.split(' ')[0];
       this.selectedDate = dateOnly;
-    } else {
-      this.selectedDate = new Date().toISOString().split('T')[0];
     }
   }
 }

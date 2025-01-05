@@ -1,0 +1,16 @@
+<div class="space-y-2 h-full flex flex-col">
+  <div class="flex justify-end">
+    <button class="arn-button" (click)="onClear()">Clear</button>
+  </div>
+
+  <div class="content-wrapper flex-grow">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="w-full">
+    <app-arn-button
+      (click)="onSearch()"
+      [classes]="'w-full'"
+      [buttonText]="'Vyhľadať'" />
+  </div>
+</div>

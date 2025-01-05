@@ -12,6 +12,7 @@ export class ArnGridListComponent implements OnInit {
   @Input() columns: Column[] = [];
   @Input() searchMethod: (searchObject: any, sortOptions: { column: string; direction: 'asc' | 'desc' }) => Observable<any>;
   @Input() searchObject: any = {};
+  @Input() sortable: boolean;
   @Input() initialSort: string;
   @Input() initialRefresh: boolean = false;
 
@@ -25,7 +26,7 @@ export class ArnGridListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.initialSort) {
+    if (this.sortable && this.initialSort) {
       this.currentSort = { column: this.initialSort, direction: 'desc' };
     }
     if (this.initialRefresh) {
@@ -35,21 +36,11 @@ export class ArnGridListComponent implements OnInit {
 
   refreshGrid(): void {
     if (this.searchMethod) {
-      const result = this.searchMethod(this.searchObject, this.currentSort);
-      if (result instanceof Observable) {
-        console.log(result);
-        result.subscribe(
-          data => {
-            this.data = data;
-            this.cdr.detectChanges();
-          },
-          error => {
-            console.error('Error fetching data:', error);
-          }
-        );
-      } else {
-        console.error('searchMethod did not return an Observable');
-      }
+      this.searchMethod(this.searchObject, this.currentSort).subscribe((data) => {
+        if (!data) return;
+        this.data = data;
+        this.cdr.detectChanges();
+      });
     }
   }
 

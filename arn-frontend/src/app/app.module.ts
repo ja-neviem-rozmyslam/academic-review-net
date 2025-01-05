@@ -55,6 +55,8 @@ import { ProfileSettingsComponent } from './modules/main-panel/profile-page/prof
 import { ArnGridListComponent } from './modules/components/arn-grid-list/arn-grid-list.component';
 import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn-date-picker.component';
 import { ConferencesManagementComponent } from './modules/administration-panel/conferences-management/conferences-management.component';
+import { ConferencesSearchComponent } from './modules/administration-panel/conferences-management/conferences-search/conferences-search.component';
+import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcriteria/arn-searchcriteria.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { ConferencesManagementComponent } from './modules/administration-panel/c
     ProfileSettingsComponent,
     ArnGridListComponent,
     ArnDatePickerComponent,
-    ConferencesManagementComponent],
+    ConferencesManagementComponent,
+    ConferencesSearchComponent,
+    ArnSearchcriteriaComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
