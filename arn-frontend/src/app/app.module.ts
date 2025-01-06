@@ -57,6 +57,7 @@ import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn
 import { ConferencesManagementComponent } from './modules/administration-panel/conferences-management/conferences-management.component';
 import { ConferencesSearchComponent } from './modules/administration-panel/conferences-management/conferences-search/conferences-search.component';
 import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcriteria/arn-searchcriteria.component';
+import {ArnLoaderComponent} from './modules/components/arn-loader/arn-loader.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,9 @@ import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcrite
     ArnDatePickerComponent,
     ConferencesManagementComponent,
     ConferencesSearchComponent,
-    ArnSearchcriteriaComponent],
+    ArnSearchcriteriaComponent,
+    ArnLoaderComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
