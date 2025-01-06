@@ -13,12 +13,12 @@ export class ConferenceManagementService {
 
   getConferences(searchObject: any, sortOptions: any): Observable<any> {
     const params = {
-      sortColumn: sortOptions.column,
-      sortDirection: sortOptions.direction
+      column: sortOptions.column,
+      direction: sortOptions.direction
     };
 
     return this.http.post(`${this.ADMIN_CONFERENCE_ENDPOINT}`, searchObject, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       params: params
     });
   }

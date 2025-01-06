@@ -1,5 +1,7 @@
 package com.ukf.arn.Administration;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
@@ -21,7 +23,9 @@ public class AdministrationService {
     }
 
     public List<ConferenceDto> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
-        List<Conference> conferences = conferenceRepository.findAllByPredicate(ConferenceRepositoryImpl.createPredicate(searchObject));
+        BooleanBuilder predicate = ConferenceRepositoryImpl.createPredicate(searchObject);
+        OrderSpecifier orderSpecifier = ConferenceRepositoryImpl.buildSort(sort);
+        List<Conference> conferences = conferenceRepository.findAllByPredicate(predicate, orderSpecifier);
         return conferences.stream()
                 .map(ConferenceRepositoryImpl::mapToConferenceDto)
                 .collect(Collectors.toList());

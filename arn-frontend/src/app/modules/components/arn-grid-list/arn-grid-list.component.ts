@@ -10,7 +10,10 @@ import {Observable} from 'rxjs';
 export class ArnGridListComponent implements OnInit {
   @Input() data: any[] = [];
   @Input() columns: Column[] = [];
-  @Input() searchMethod: (searchObject: any, sortOptions: { column: string; direction: 'asc' | 'desc' }) => Observable<any>;
+  @Input() searchMethod: (searchObject: any, sortOptions: {
+    column: string;
+    direction: 'asc' | 'desc'
+  }) => Observable<any>;
   @Input() searchObject: any = {};
   @Input() sortable: boolean;
   @Input() initialSort: string;
@@ -27,7 +30,7 @@ export class ArnGridListComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.sortable && this.initialSort) {
-      this.currentSort = { column: this.initialSort, direction: 'desc' };
+      this.currentSort = {column: this.initialSort, direction: 'asc'};
     }
     if (this.initialRefresh) {
       this.refreshGrid();

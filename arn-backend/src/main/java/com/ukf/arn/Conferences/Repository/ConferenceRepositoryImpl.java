@@ -1,9 +1,11 @@
 package com.ukf.arn.Conferences.Repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
+import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
 import jakarta.persistence.EntityManager;
@@ -13,8 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
-import static com.ukf.arn.Entities.SqlUtils.createLikePredicate;
-import static com.ukf.arn.Entities.SqlUtils.isValueEmpty;
+import static com.ukf.arn.Entities.SqlUtils.*;
 
 public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
 
@@ -43,11 +44,12 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
     }
 
     @Override
-    public List<Conference> findAllByPredicate(BooleanBuilder predicate) {
+    public List<Conference> findAllByPredicate(BooleanBuilder predicate, OrderSpecifier orderSpecifier) {
         return new JPAQuery<>(entityManager)
                 .select(CONFERENCE)
                 .from(CONFERENCE)
                 .where(predicate)
+                .orderBy(orderSpecifier)
                 .fetch();
     }
 
@@ -84,6 +86,29 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
         }
 
         return predicate;
+    }
+
+
+    public static OrderSpecifier buildSort(Sort sort) {
+        if (sort != null) {
+            switch (sort.getColumn()) {
+                case "conferenceName":
+                    return buildOrderSpecifier(CONFERENCE.conferenceName, sort.getDirection());
+                case "uploadDeadline":
+                    return buildOrderSpecifier(CONFERENCE.uploadDeadline, sort.getDirection());
+                case "reviewDeadline":
+                    return buildOrderSpecifier(CONFERENCE.reviewDeadline, sort.getDirection());
+                case "creationDate":
+                    return buildOrderSpecifier(CONFERENCE.creationDate, sort.getDirection());
+                case "faculty":
+                    return buildOrderSpecifier(CONFERENCE.faculty, sort.getDirection());
+                case "closed":
+                    return buildOrderSpecifier(CONFERENCE.closed, sort.getDirection());
+                default:
+                    return null;
+            }
+        }
+        return null;
     }
 
     public static ConferenceDto mapToConferenceDto(Conference conference) {

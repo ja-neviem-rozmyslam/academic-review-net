@@ -1,22 +1,22 @@
 package com.ukf.arn.Administration.Objects;
 
+import org.springframework.data.domain.Sort.Direction;
+
 public class Sort {
-    private String sortColumn;
-    private String sortDirection;
+    private String column;
+    private Direction direction;
 
-    public String getSortColumn() {
-        return sortColumn;
+    public Sort(String column, String direction) {
+        this.column = column;
+        this.direction = Direction.fromString(direction);
     }
 
-    public void setSortColumn(String sortColumn) {
-        this.sortColumn = sortColumn;
+    public String getColumn() {
+        return column;
     }
 
-    public String getSortDirection() {
-        return sortDirection;
+    public Direction getDirection() {
+        return direction;
     }
 
-    public void setSortDirection(String sortDirection) {
-        this.sortDirection = sortDirection;
-    }
 }
