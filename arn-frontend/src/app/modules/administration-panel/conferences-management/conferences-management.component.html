@@ -1,0 +1,19 @@
+<div class="h-[60vh] flex space-x-6">
+  <div class="w-[25%]">
+    <app-conferences-search
+      [searchObject]="conferenceSearchCriteria$ | async"
+      (startSearch)="onSearchStarted()"/>
+  </div>
+
+  <div class="w-full">
+    <app-arn-grid-list
+      [columns]="columns"
+      [initialRefresh]="true"
+      [sortable]="true"
+      [searchObject]="conferenceSearchCriteria$ | async"
+      [initialSort]="'conferenceName'"
+      [searchMethod]="search"
+      (doubleClickAction)="onDoubleClick($event)"
+    />
+  </div>
+</div>

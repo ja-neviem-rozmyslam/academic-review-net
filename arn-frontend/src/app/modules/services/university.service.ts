@@ -16,5 +16,4 @@ export class UniversityService {
       headers: {'Content-Type': 'application/json'}
     });
   }
-
 }

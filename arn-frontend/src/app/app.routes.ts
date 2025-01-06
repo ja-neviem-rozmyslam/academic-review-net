@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdministrationPanelComponent } from './modules/administration-panel/administration-panel/administration-panel.component';
+import { AdministrationPageComponent } from './modules/administration-panel/administration-panel/administration-page.component';
 import { LoginPanelComponent } from './modules/components/login-panel/login-panel.component';
 import { ForgotPasswordComponent } from './modules/components/password-management/forgot-password/forgot-password.component';
 import { PasswordChangeComponent } from './modules/components/password-management/password-change/password-change.component';
@@ -14,6 +14,9 @@ import {ConferencesListPageComponent} from './modules/main-panel/conference-page
 import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
 import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
 import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.component';
+import {
+  ConferencesManagementComponent
+} from './modules/administration-panel/conferences-management/conferences-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -24,10 +27,20 @@ export const routes: Routes = [
   { path: 'verification', component: VerifyPageComponent },
 
   { path: 'administration',
-    component: AdministrationPanelComponent,
+    component: AdministrationPageComponent,
     canActivate: [RoleGuard],
     data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] },
-    children: []
+    children: [
+      {
+        path: '',
+        redirectTo: 'conference-management',
+        pathMatch: 'full'
+      },
+      {
+        path: 'conference-management',
+        component: ConferencesManagementComponent
+      }
+    ]
   },
   {
     path: 'main',

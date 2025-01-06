@@ -7,6 +7,7 @@ import {ConferenceDetail} from '../entities/ConferenceDetail';
 import {UserRoles} from '../../../constants';
 import {saveAs} from 'file-saver';
 import {FormValidationErrors} from '../../../objects/FormValidationErrors';
+import {ConferenceStore} from '../../conference-page/store/conferences-store.service';
 
 @Component({
   selector: 'app-submission',
@@ -31,19 +32,21 @@ export class SubmissionComponent implements OnInit {
   formValidationErrors: FormValidationErrors;
 
   constructor(
-    private submissionService: SubmissionService) {
+    private submissionService: SubmissionService, private conferencesStore: ConferenceStore) {
   }
 
   ngOnInit(): void {
+    this.conferencesStore.initThesisCategories();
     this.showInReadMode = this.submissionOptions.isUploaded;
     if (this.showInReadMode) {
       this.retrieveFiles(this.conferenceDetail.submission.id);
     }
+
   }
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
-    if (!this.invalidFileAmount && this.formValidationErrors.emptyFields.length === 0) {
+    if (!this.invalidFileAmount && !this.formValidationErrors) {
       this.submissionForm.conferenceId = this.conferenceDetail.id;
       this.uploadSubmission();
     }

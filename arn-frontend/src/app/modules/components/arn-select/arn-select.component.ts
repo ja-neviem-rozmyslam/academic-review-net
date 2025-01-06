@@ -12,7 +12,7 @@ export class ArnSelectComponent implements OnInit, OnChanges {
   @Input() options: SelectOption[];
   @Input() required: boolean;
   @Input() disabled: boolean;
-  @Input() selectedOption: string | number;
+  @Input() selectedOption: string | number | boolean;
   @Output() selectedOptionChange = new EventEmitter<string | number>();
   showPlaceholder: boolean = true;
 

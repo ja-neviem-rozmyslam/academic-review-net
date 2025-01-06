@@ -9,14 +9,14 @@ import {UserRoles} from '../../../constants';
 export function getMenuItems(userRoles: string[]): MenuItem[] {
   const menuItems: MenuItem[] = [
     {
-      path: 'profile',
-      title: 'Profil',
-      icon: UserOutlineIconComponent,
-    },
-    {
       path: 'conferences',
       title: 'Konferencie',
       icon: PresentationChartBarOutlineIconComponent,
+    },
+    {
+      path: 'profile',
+      title: 'Profil',
+      icon: UserOutlineIconComponent,
     },
     {
       path: 'theses',
