@@ -1,0 +1,174 @@
+<div *ngIf="isLoading">
+  <div class="flex flex-wrap gap-4">
+    <div class="w-full xl:flex-[2] min-w-0 card-base p-5 border animate-pulse space-y-6">
+      <div class="h-10 w-2/3 bg-gray-300 rounded"></div>
+      <div class="flex items-center space-x-4">
+        <div class="w-20 h-20 rounded-full bg-gray-300"></div>
+        <div class="space-y-3 w-80">
+          <div class="h-6 w-1/3 bg-gray-300 rounded"></div>
+          <div class="flex gap-2">
+            <div class="h-5 w-1/5 bg-gray-300 rounded"></div>
+            <div class="h-5 w-1/4 bg-gray-300 rounded"></div>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="h-6 w-1/2 bg-gray-300 rounded"></div>
+        <div class="h-5 w-2/3 bg-gray-300 rounded"></div>
+      </div>
+      <div class="h-10 w-full bg-gray-300 rounded"></div>
+    </div>
+
+    <div class="w-full xl:flex-[1] min-w-0 card-base p-5 border animate-pulse space-y-8">
+      <div class="h-6 w-1/2 bg-gray-300 rounded"></div>
+      <div class="space-y-4">
+        <div class="flex justify-between items-center">
+          <div class="w-full">
+            <div class="h-6 w-1/3 bg-gray-300 rounded"></div>
+            <div class="h-5 w-1/4 bg-gray-300 rounded mt-2"></div>
+          </div>
+          <div class="h-6 w-1/5 bg-gray-300 rounded"></div>
+        </div>
+        <div class="flex justify-between items-center">
+          <div class="w-full">
+            <div class="h-6 w-1/3 bg-gray-300 rounded"></div>
+            <div class="h-5 w-1/4 bg-gray-300 rounded mt-2"></div>
+          </div>
+          <div class="h-6 w-1/5 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+      <div class="h-10 w-full bg-gray-300 rounded"></div>
+    </div>
+  </div>
+
+  <div class="my-6 animate-pulse">
+    <div class="h-12 w-full bg-gray-300 rounded"></div>
+  </div>
+
+  <div class="card-base p-5 border animate-pulse space-y-8" *ngIf="selectedOption === 'SUBMISSIONS' || selectedOption === 'REVIEWS'">
+    <div class="h-6 w-1/2 bg-gray-300 rounded"></div>
+    <div class="space-y-8">
+      <div class="flex justify-between items-center">
+        <div class="w-full">
+          <div class="h-6 w-1/3 bg-gray-300 rounded"></div>
+          <div class="h-5 w-1/4 bg-gray-300 rounded mt-2"></div>
+        </div>
+        <div class="h-6 w-1/5 bg-gray-300 rounded"></div>
+      </div>
+      <div class="flex justify-between items-center">
+        <div class="w-full">
+          <div class="h-6 w-1/3 bg-gray-300 rounded"></div>
+          <div class="h-5 w-1/4 bg-gray-300 rounded mt-2"></div>
+        </div>
+        <div class="h-6 w-1/5 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="error">{{ error }}</div>
+
+<div *ngIf="userDetails">
+  <app-arn-toast [showToast]="showAlert">
+    <div class="toast-icon text-green-500 bg-green-100 rounded">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+           viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+      </svg>
+      <span class="sr-only">Success</span>
+    </div>
+    <div class="ms-3 text-sm font-normal">{{ alertMessage }}</div>
+  </app-arn-toast>
+  <div class="flex flex-wrap gap-4">
+    <div class="w-full xl:flex-[2] min-w-0 card-base p-5 border flex flex-col space-y-7">
+      <h2 class="text-3xl font-bold">Osobné informácie</h2>
+      <div class="flex items-center space-x-4">
+        <div class="w-20 h-20 rounded-full bg-gray-300"></div>
+        <div class="space-y-1">
+          <h3 class="text-xl font-bold">{{ userDetails.user.name }} {{ userDetails.user.surname }}</h3>
+          <div *ngFor="let role of userDetails.user.roles"
+               class="bg-gray-100 rounded-full px-2 py-1 inline-block text-sm mr-2">
+            {{ UserPrettyNames[role] }}
+          </div>
+        </div>
+      </div>
+      <div class="text-sm space-y-2">
+        <div><i class="fas fa-envelope"></i> {{ userDetails.user.email }}</div>
+        <div><i class="fas fa-university"></i> {{ userDetails.user.university.name }}</div>
+      </div>
+      <app-arn-button
+        class="w-full"
+        [buttonText]="'Upraviť profil'"
+        (buttonClick)="openSettings()"
+        [classes]="'bg-gray-800'">
+      </app-arn-button>
+    </div>
+
+    <div class="w-full xl:flex-[1] min-w-0 card-base p-5 border flex flex-col space-y-4">
+      <h2 class="text-3xl font-bold">Nadchádzajúce konferencie</h2>
+      <div class="flex-grow">
+        <div *ngFor="let conference of userDetails.conference.slice(0,2)" class="item"
+             (click)="navigateToConferencePage(conference.id)">
+          <div class="p-3 flex justify-between items-center">
+            <div>
+              <h3 class="text-lg font-bold">{{ conference.conferenceName }}</h3>
+              <p class="text-xs text-gray-500">Deadline: {{ conference.uploadDeadline | date:'dd.MM.yyyy' }}</p>
+            </div>
+            <span
+              [ngClass]="getSubmissionByConferenceId(conference.id) ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700'"
+              class="text-xs px-2 py-1 rounded-full font-medium">
+          {{ getSubmissionByConferenceId(conference.id) ? 'Odovzdané' : 'Neodovzdané' }}
+        </span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-auto">
+        <app-arn-button
+          [buttonText]="'Zobraziť všetky konferencie'"
+          (buttonClick)="navigateToMyTheses()"
+          [classes]="'bg-gray-800'">
+        </app-arn-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-6">
+    <app-tabs
+      [tabs]="tabOptions"
+      [activeTab]="selectedOption"
+      (tabChanged)="selectedOption = $event"
+      class="w-full"></app-tabs>
+  </div>
+
+  @if (selectedOption === 'SUBMISSIONS') {
+    <div class="card-base p-5 border flex flex-col">
+      <h2 class="text-3xl font-bold mb-4">Moje odovzdané práce</h2>
+      <div *ngFor="let submission of userDetails.submission" class="p-3 flex justify-between items-center item"
+           (click)="navigateToConferencePage(submission.conferenceId)">
+        <div>
+          <h3 class="text-lg font-bold">{{ submission.title }}</h3>
+          <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
+        </div>
+        <span class="text-xs px-2 py-1 rounded-full font-medium border">
+          Čaká na hodnotenie
+      </span>
+      </div>
+    </div>
+  }
+  @if (selectedOption === 'REVIEWS') {
+    <div class="card-base p-5 border flex flex-col">
+      <h2 class="text-3xl font-bold mb-4">Práce na hodnotenie</h2>
+      <div *ngFor="let submission of userDetails.submissionsToReview" class="p-3 flex justify-between items-center item"
+           (click)="navigateToConferencePage(submission.conferenceId)">
+        <div>
+          <h3 class="text-lg font-bold">{{ submission.title }}</h3>
+          <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
+        </div>
+        <span class="text-xs px-2 py-1 rounded-full font-medium border">
+          Čaká na hodnotenie
+      </span>
+      </div>
+    </div>
+  }
+
+</div>

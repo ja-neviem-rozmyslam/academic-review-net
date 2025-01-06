@@ -9,7 +9,7 @@
         "@schematics/angular:component": {
           "style": "less",
           "standalone": false,
-          "path": "src/app/modules/components"
+          "path": "src/app/modules"
         },
         "@schematics/angular:service": {
           "path": "src/app/modules/services"
@@ -22,7 +22,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/arn-frotend",
+            "outputPath": "dist/arn-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -72,6 +72,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "arn-frotend:build:production"

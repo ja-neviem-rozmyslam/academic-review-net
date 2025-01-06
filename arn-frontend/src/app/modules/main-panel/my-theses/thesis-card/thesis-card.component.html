@@ -1,0 +1,25 @@
+<div class="card-base p-5 border flex flex-col space-y-6 min-h-full">
+  @if (thesis.id !== null) {
+    <div class="flex flex-col space-y-1 flex-grow">
+      <div class="flex justify-between items-start">
+        <h1 class="text-lg font-bold">{{ thesis.title }}</h1>
+      </div>
+      <span class="self-start bg-gray-100 text-xs font-medium px-3 py-2 rounded-full">
+      {{ getThesisCategoryName() }}
+    </span>
+    </div>
+
+    <div class="text-sm space-y-1 ml-1 text-gray-700 flex-grow">
+      <p><strong class="mr-1">Začiatok</strong> 2024-06-15</p>
+      <p><strong class="mr-1">Termín odovzdania</strong> 2024-06-15</p>
+    </div>
+  } @else {
+    <div class="flex-grow text-lg text-gray-700 font-medium flex items-center justify-center">
+      Ešte ste neodovzdali prácu v tejto konferencií
+    </div>
+  }
+  <div>
+    <app-arn-button class="w-full" [buttonText]="'Otvoriť'" (buttonClick)="openConference()"
+                    [classes]="'bg-gray-800'"></app-arn-button>
+  </div>
+</div>
