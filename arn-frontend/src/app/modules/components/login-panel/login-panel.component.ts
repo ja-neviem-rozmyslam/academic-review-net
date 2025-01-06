@@ -21,6 +21,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
+  isFetching: boolean = false;
   errorMessage: string;
 
   isAdminLogin: boolean = false;
@@ -61,6 +62,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
         return;
       }
     } else {
+      this.isFetching = true;
       if (this.rememberMe)
         localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
@@ -82,6 +84,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   private initErrorHandling() {
     this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
       if(error) {
+        this.isFetching = false;
         this.errorMessage = this.utilityService.handleResponseError(error);
         this.store.dispatch(resetError());
       }
