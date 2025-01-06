@@ -1,0 +1,67 @@
+<app-arn-searchcriteria
+  (clearSearch)="clearSearchCriteria()"
+  (search)="startSearch.emit()">
+  <div class="space-y-2 h-full">
+    <div class="arn-input">
+      <label for="name">Názov</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="searchObject.name"
+        placeholder="Názov konferencie"/>
+    </div>
+    <div class="arn-input">
+      <label for="faculty">Fakulta</label>
+      <input
+        type="text"
+        id="faculty"
+        name="faculty"
+        [(ngModel)]="searchObject.faculty"
+        placeholder="Názov fakulty"/>
+    </div>
+    <div class="arn-input">
+      <label for="status">Stav</label>
+      <app-arn-select
+        id="status"
+        name="status"
+        [(selectedOption)]="searchObject.closed"
+        [options]="conferenceStatusOptions"
+        [placeholder]="'Stav konferencie'"/>
+    </div>
+    <div class="arn-input">
+      <label for="uploadedDeadline">Termín odovzdania (od - do)</label>
+      <div class="flex space-x-4" id="uploadedDeadline">
+        <div>
+          <app-arn-date-picker
+            id="uploadDeadlineStart"
+            name="'uploadDeadlineStart'"
+            [(selectedDate)]="searchObject.uploadDeadlineStart"/>
+        </div>
+        <div>
+          <app-arn-date-picker
+            id="uploadDeadlineEnd"
+            name="'uploadDeadlineEnd'"
+            [(selectedDate)]="searchObject.uploadDeadlineEnd"/>
+        </div>
+      </div>
+    </div>
+    <div class="arn-input">
+      <label for="reviewDeadline">Termín posudzovania (od - do)</label>
+      <div class="flex space-x-4" id="reviewDeadline">
+        <div>
+          <app-arn-date-picker
+            id="reviewDeadlineStart"
+            name="'reviewDeadlineStart'"
+            [(selectedDate)]="searchObject.reviewDeadlineStart"/>
+        </div>
+        <div>
+          <app-arn-date-picker
+            id="reviewDeadlineEnd"
+            name="'reviewDeadlineEnd'"
+            [(selectedDate)]="searchObject.reviewDeadlineEnd"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-arn-searchcriteria>

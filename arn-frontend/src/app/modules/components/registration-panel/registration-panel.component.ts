@@ -70,7 +70,7 @@ export class RegistrationPanelComponent implements OnInit {
           } as NavigationExtras);
         },
         (error: HttpErrorResponse) => {
-          this.utilityService.handleResponseError(error);
+          this.errorMessage = this.utilityService.handleResponseError(error);
         }
       );
     }

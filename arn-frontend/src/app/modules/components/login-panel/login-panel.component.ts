@@ -51,11 +51,11 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.formValidationErrors) {
-      if (this.formValidationErrors.emptyFields.length > 0) {
+      if (this.formValidationErrors.emptyFields?.length > 0) {
         this.errorMessage = 'Všetky polia musia byť vyplnené';
         return;
       }
-      if (this.formValidationErrors.invalidEmails.length > 0) {
+      if (this.formValidationErrors.invalidEmails?.length > 0) {
         this.errorMessage = 'Neplatný formát emailu';
         this.loginInfo.email = '';
         return;

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.ukf.arn.Entities")
+@EntityScan(basePackages = "com.ukf.arn")
 @EnableScheduling
 public class Application {
 
