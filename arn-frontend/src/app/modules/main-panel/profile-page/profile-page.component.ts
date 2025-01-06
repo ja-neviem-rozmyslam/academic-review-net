@@ -33,10 +33,10 @@ export class ProfilePageComponent implements OnInit {
     const roles = this.userDetails.user.roles;
 
     const isStudent = roles.includes('S');
-    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').disabled = !isStudent;
+    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').hidden = !isStudent;
 
     const isReviewer = roles.includes('R');
-    this.tabOptions.find(tab => tab.value === 'REVIEWS').disabled = !isReviewer;
+    this.tabOptions.find(tab => tab.value === 'REVIEWS').hidden = !isReviewer;
   }
 
   getSubmissionByConferenceId(conferenceId: number) {

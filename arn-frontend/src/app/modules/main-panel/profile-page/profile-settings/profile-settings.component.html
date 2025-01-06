@@ -2,7 +2,7 @@
 
   <app-arn-loader [isVisible]="isFetching"></app-arn-loader>
 
-  <div class="w-full">
+  <div class="w-full rounded-sm">
 
     <h2 class="text-lg font-semibold mb-4">Upraviť profil</h2>
 
@@ -63,6 +63,7 @@
       <app-arn-button
         [buttonText]="'Zrušiť'"
         (buttonClick)="closeModal()"
+        [customColor]="'#da3c3c'"
         [classes]="'bg-gray-200 text-gray-700 hover:bg-gray-300'">
       </app-arn-button>
     </div>
