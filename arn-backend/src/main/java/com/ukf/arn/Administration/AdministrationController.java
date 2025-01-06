@@ -1,5 +1,7 @@
 package com.ukf.arn.Administration;
 
+import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
+import com.ukf.arn.Administration.Objects.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,8 @@ public class AdministrationController {
 
     @PostMapping("/conference")
     public ResponseEntity<?> getConferenceData(
-            @RequestBody Map<String, Object> searchObject,
-            @RequestParam(required = false) String sortColumn,
-            @RequestParam(required = false) String sortDirection) {
-        return ResponseEntity.ok(administrationService.getConferenceData(searchObject, sortColumn, sortDirection));
+            @RequestBody ConferenceSearchDto searchObject,
+            @RequestParam(required = false) Sort sort) {
+        return ResponseEntity.ok(administrationService.getConferenceData(searchObject, sort));
     }
 }

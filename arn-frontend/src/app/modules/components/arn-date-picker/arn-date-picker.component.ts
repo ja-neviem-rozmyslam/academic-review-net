@@ -10,6 +10,7 @@ export class ArnDatePickerComponent implements OnInit {
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
   @Input() selectedDate: string = '';
+  @Input() dateTime: boolean = false;
   @Output() selectedDateChange = new EventEmitter<string>();
 
   ngOnInit() {

@@ -1,5 +1,5 @@
 <div class="relative w-full">
-  <input type="date"
+  <input [type]="dateTime ? 'datetime-local' : 'date'"
          class="input-base w-full cursor-pointer"
          [(ngModel)]="selectedDate"
          (ngModelChange)="selectedDateChange.emit($event)"

@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {CONFERENCE_COLUMNS} from './entities/columns';
 import {ConferenceManagementService} from './services/conference-management.service';
+import {ArnGridListComponent} from '../../components/arn-grid-list/arn-grid-list.component';
+import {ConferencesSearchStore} from './store/conferences-search.store';
 
 @Component({
   selector: 'app-conferences-management',
   templateUrl: './conferences-management.component.html',
-  styleUrl: './conferences-management.component.less'
+  styleUrl: './conferences-management.component.less',
+  providers: [ConferencesSearchStore]
 })
 export class ConferencesManagementComponent {
+  @ViewChild(ArnGridListComponent) arnGridList: ArnGridListComponent;
 
   columns = CONFERENCE_COLUMNS;
-  conferenceSearchCriteria = {};
+  conferenceSearchCriteria$ = this.conferencesSearchStore.searchCriteria$;
 
-  constructor(private conferenceManagementService: ConferenceManagementService) {
+  constructor(private conferenceManagementService: ConferenceManagementService, private conferencesSearchStore: ConferencesSearchStore) {
   }
 
   search = (searchObject, sortOptions) =>
@@ -22,7 +26,7 @@ export class ConferencesManagementComponent {
     console.log('Double click', item);
   }
 
-  searchStarted() {
-    console.log(this.conferenceSearchCriteria);
+  onSearchStarted() {
+    this.arnGridList.refreshGrid();
   }
 }
