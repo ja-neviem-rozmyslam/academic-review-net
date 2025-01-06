@@ -12,4 +12,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long>, S
     Submission findByConferencesIdAndAuthorId(Long conferenceId, UUID authorId);
 
     List<Submission> findByAuthorId(UUID authorId);
+
+    List<Submission> findByReviewerId(UUID reviewerId);
 }

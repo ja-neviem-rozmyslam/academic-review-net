@@ -5,6 +5,9 @@ import {TABOPTIONS} from './entities/constants';
 import {DialogService} from '../../services/dialog.service';
 import {ProfileSettingsComponent} from './profile-settings/profile-settings.component';
 import {UserPrettyNames} from '../../constants';
+import {Observable} from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-profile-page',
@@ -17,11 +20,23 @@ export class ProfilePageComponent implements OnInit {
   userDetails: any;
   isLoading: boolean = true;
   error: string | null = null;
+  showAlert = false;
+  alertMessage = '';
 
   constructor(private profilePageService: ProfilePageService, private router: Router, private dialogService: DialogService) {}
 
   ngOnInit(): void {
-    this.fetchUserDetails();
+    this.fetchUserDetails().subscribe();
+  }
+
+  updateTabAvailability() {
+    const roles = this.userDetails.user.roles;
+
+    const isStudent = roles.includes('S');
+    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').disabled = !isStudent;
+
+    const isReviewer = roles.includes('R');
+    this.tabOptions.find(tab => tab.value === 'REVIEWS').disabled = !isReviewer;
   }
 
   getSubmissionByConferenceId(conferenceId: number) {
@@ -36,23 +51,50 @@ export class ProfilePageComponent implements OnInit {
     this.router.navigate(['/main/conferences', conferenceId]);
   }
 
-  fetchUserDetails(): void {
-    this.profilePageService.getUserDetail().subscribe({
-      next: (data) => {
-        this.userDetails = data;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.error = 'Failed to load user details. Please try again later.';
-        this.isLoading = false;
-      }
-    });
+  fetchUserDetails(): Observable<any> {
+    return this.profilePageService.getUserDetail().pipe(
+      tap({
+        next: (data) => {
+          this.userDetails = data;
+          this.isLoading = false;
+          this.updateTabAvailability();
+        },
+        error: () => {
+          this.error = 'Failed to load user details. Please try again later.';
+          this.isLoading = false;
+        }
+      })
+    );
   }
 
   openSettings(): void {
-    this.dialogService.openCustomModal(ProfileSettingsComponent, {
+    const modalRef = this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
-      backdrop: 'dynamic'
+      backdrop: 'dynamic',
+    }, this.userDetails);
+
+    modalRef.instance.profileUpdated.subscribe(() => {
+      this.fetchUserDetails().subscribe({
+        complete: () => {
+          this.alertMessage = 'Profil bol úspešne aktualizovaný.';
+          this.showAlert = true;
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 5000);
+        }
+      });
+    });
+
+    modalRef.instance.passwordResetSent.subscribe(() => {
+      this.fetchUserDetails().subscribe({
+        complete: () => {
+          this.alertMessage = 'E-mail na zmenu hesla bol odoslaný.';
+          this.showAlert = true;
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 5000);
+        }
+      });
     });
   }
 
