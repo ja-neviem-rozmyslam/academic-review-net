@@ -1,0 +1,33 @@
+<app-arn-searchcriteria
+  (clearSearch)="clearSearchCriteria()"
+  (search)="startSearch.emit()">
+  <div class="space-y-2 h-full">
+    <div class="arn-input">
+      <label for="name">Meno</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="searchObject.name"
+        placeholder="Meno"/>
+    </div>
+    <div class="arn-input">
+      <label for="university">Univerzita</label>
+      <app-arn-select
+        id="university"
+        name="university"
+        [(selectedOption)]="searchObject.university"
+        [options]="universityOptions"
+        [placeholder]="'Univerzita'"/>
+    </div>
+    <div class="arn-input">
+      <label for="role">Rola</label>
+      <app-arn-select
+        id="role"
+        name="role"
+        [(selectedOption)]="searchObject.role"
+        [options]="userRoleOptions"
+        [placeholder]="'Rola'"/>
+    </div>
+  </div>
+</app-arn-searchcriteria>

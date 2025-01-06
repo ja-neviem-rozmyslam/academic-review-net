@@ -60,7 +60,7 @@ export class ArnGridListComponent implements OnInit {
     if (this.currentSort.column === column.name) {
       this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      this.currentSort = {column: column.name, direction: 'desc'};
+      this.currentSort = {column: column.name, direction: 'asc'};
     }
     this.refreshGrid();
   }

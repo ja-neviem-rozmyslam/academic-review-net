@@ -1,0 +1,21 @@
+<div class="h-[60vh] flex space-x-6">
+  <div class="w-[25%]">
+    <app-users-search
+      [searchObject]="UsersSearchCriteria$ | async"
+      (startSearch)="onSearchStarted()"/>
+  </div>
+
+  <div class="w-full">
+    <app-arn-grid-list
+      [columns]="columns"
+      [initialRefresh]="true"
+      [sortable]="true"
+      [initialSort]="'name'"
+      [searchObject]="UsersSearchCriteria$ | async"
+      [searchMethod]="search"
+      (deleteAction)="deleteUser($event)"
+      (editAction)="editUser($event)"
+    />
+  </div>
+</div>
+

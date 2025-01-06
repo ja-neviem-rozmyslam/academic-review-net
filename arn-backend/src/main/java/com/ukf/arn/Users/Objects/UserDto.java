@@ -16,6 +16,7 @@ public class UserDto {
     private University university;
     private List<String> roles;
     private String token;
+    private Boolean verified;
 
     public UserDto() {
     }
@@ -28,7 +29,12 @@ public class UserDto {
         this.registrationDate = registrationDate;
         this.university = university;
         this.roles = roles;
+
     }
+
+    public void setVerified(Boolean verified) { this.verified = verified; }
+
+    public Boolean getVerified() { return verified; }
 
     public UUID getId() {
         return id;

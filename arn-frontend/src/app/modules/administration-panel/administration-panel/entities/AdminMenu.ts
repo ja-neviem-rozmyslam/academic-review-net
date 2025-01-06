@@ -13,7 +13,7 @@ export const AdminMenu: MenuItem[] = [
     icon: SquaresPlusOutlineIconComponent
   },
   {
-    path: 'user-management',
+    path: 'users-management',
     title: 'Správa Používateľov',
     icon: UsersOutlineIconComponent
   },

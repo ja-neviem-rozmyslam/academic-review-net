@@ -17,6 +17,6 @@ public class UniversityController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUniversities() {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(universityService.getAllUniversities());
     }
 }
