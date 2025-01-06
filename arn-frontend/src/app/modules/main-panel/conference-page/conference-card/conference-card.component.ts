@@ -19,8 +19,8 @@ export class ConferenceCardComponent {
 
   joinConference() {
     this.dialogService.openCustomModal(ConferenceJoinModalComponent, {
-      placement: 'center',
-      backdrop: 'dynamic'
+        placement: 'center',
+        backdrop: 'dynamic'
     }, {conferenceId: this.conference.id, hasPassword: this.conference.hasPassword});
   }
 

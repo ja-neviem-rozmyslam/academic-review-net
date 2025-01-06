@@ -9,12 +9,14 @@ public class UserDetailsDto {
     private UserDto user;
     private List<ConferenceDto> conference;
     private List<SubmissionDto> submission;
+    private List<SubmissionDto> submissionsToReview;
 
 
-    public UserDetailsDto(UserDto user, List<ConferenceDto> conference, List<SubmissionDto> submission) {
+    public UserDetailsDto(UserDto user, List<ConferenceDto> conference, List<SubmissionDto> submission, List<SubmissionDto> submissionsToReview) {
         this.user = user;
         this.conference = conference;
         this.submission = submission;
+        this.submissionsToReview = submissionsToReview;
     }
 
     public UserDto getUser() {
@@ -40,4 +42,8 @@ public class UserDetailsDto {
     public void setSubmission(List<SubmissionDto> submission) {
         this.submission = submission;
     }
+
+    public List<SubmissionDto> getSubmissionsToReview() { return submissionsToReview; }
+
+    public void setSubmissionsToReview(List<SubmissionDto> submissionsToReview) {}
 }
