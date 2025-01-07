@@ -49,7 +49,7 @@ export class ProfilePageComponent implements OnInit {
 
   navigateToConferencePage(conferenceId: number, submissionId?: number) {
     if (submissionId) {
-      this.router.navigate(['/main/conferences', conferenceId, 'submissions', submissionId]);
+      this.router.navigate(['/main/submissions', submissionId]);
     }
     else {
       this.router.navigate(['/main/conferences', conferenceId])

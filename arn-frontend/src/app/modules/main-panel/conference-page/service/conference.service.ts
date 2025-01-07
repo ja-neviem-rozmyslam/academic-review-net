@@ -23,18 +23,24 @@ export class ConferenceService {
     return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
   }
 
-  getConferenceData(conferenceId: number, submissionId?: number, includeCoAuthors = false): Observable<ConferenceDetail> {
-    const params: { [key: string]: string } = {
+  getData(endpoint: string, id: number, includeCoAuthors = false): Observable<any> {
+    const params: Record<string, string> = {
       includeCoAuthors: includeCoAuthors.toString(),
     };
-    if (submissionId !== undefined) {
-      params['submissionId'] = submissionId.toString();
-    }
 
-    return this.http.get<ConferenceDetail>(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`, { params }).pipe(
-      map(conferenceDetail => this.parseConferenceDetail(conferenceDetail))
+    return this.http.get<any>(`${this.CONFERENCE_API_ENDPOINT}/${endpoint}/${id}`, { params }).pipe(
+      map(data => this.parseConferenceDetail(data))
     );
   }
+
+  getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
+    return this.getData('', conferenceId, includeCoAuthors);
+  }
+
+  getSubmissionData(submissionId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
+    return this.getData('submission', submissionId, includeCoAuthors);
+  }
+
 
   private parseConferenceDetail(conferenceDetail: ConferenceDetail): ConferenceDetail {
     if (typeof conferenceDetail.reviewForm === 'string') {

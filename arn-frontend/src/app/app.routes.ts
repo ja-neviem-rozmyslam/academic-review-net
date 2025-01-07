@@ -62,7 +62,7 @@ export const routes: Routes = [
         component: ConferencePageComponent
       },
       {
-        path: 'conferences/:id/submissions/:submissionId',
+        path: 'submissions/:submissionId',
         component: ConferencePageComponent
       },
       {

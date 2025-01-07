@@ -12,12 +12,12 @@ public class SubmissionRequest {
     public SubmissionRequest() {
     }
 
-    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferencesId, Long thesesCategoriesId, String coauthors) {
+    public SubmissionRequest(String thesisTitle, String abstractSk, String abstractEn, Long conferenceId, Long category, String coauthors) {
         this.title = thesisTitle;
         this.abstractSk = abstractSk;
         this.abstractEn = abstractEn;
-        this.conferenceId = conferencesId;
-        this.category = thesesCategoriesId;
+        this.conferenceId = conferenceId;
+        this.category = category;
         this.coauthors = coauthors;
     }
 

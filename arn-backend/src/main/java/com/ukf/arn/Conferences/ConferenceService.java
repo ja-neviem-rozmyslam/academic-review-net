@@ -61,7 +61,7 @@ public class ConferenceService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getConferenceData(Long conferenceId, Long submissionId, boolean includeCoAuthors) {
+    public ResponseEntity<?> getConferenceData(Long conferenceId, boolean includeCoAuthors) {
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         if (conference == null) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
@@ -72,15 +72,26 @@ public class ConferenceService {
             return ResponseEntity.badRequest().body("Nemáte prístup k tejto konferencii.");
         }
 
-        Submission submission;
-        if (submissionId != null) {
-            submission = submissionRepository.findById(submissionId).orElse(null);
-            if (!submission.getAuthorId().equals(user.getId()) && !submission.getReviewerId().equals(user.getId())) {
-                return ResponseEntity.badRequest().body("Nemáte prístup k tejto práci.");
-            }
-        } else {
-            submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, user.getId());
+        Submission submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, user.getId());
+
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference, includeCoAuthors);
+
+        return ResponseEntity.ok(conferenceDetail);
+    }
+
+    public ResponseEntity<?> getSubmissionData(Long submissionId, boolean includeCoAuthors) {
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
+        if (submission == null) {
+            return ResponseEntity.badRequest().body("Príspevok neexistuje.");
         }
+
+        User user = SecurityConfig.getLoggedInUser();
+        if (!submission.getAuthorId().equals(user.getId()) && !submission.getReviewerId().equals(user.getId())) {
+            return ResponseEntity.badRequest().body("Nemáte prístup k tomuto príspevku.");
+        }
+
+        Long conferenceId = submission.getConferencesId();
+        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference, includeCoAuthors);
 
         return ResponseEntity.ok(conferenceDetail);
