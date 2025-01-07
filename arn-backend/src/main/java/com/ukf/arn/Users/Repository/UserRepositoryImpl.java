@@ -2,6 +2,7 @@ package com.ukf.arn.Users.Repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
@@ -14,8 +15,10 @@ import org.springframework.data.domain.Sort.Direction;
 import java.util.List;
 
 
+import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
+import static com.ukf.arn.ConstantsKatalog.Role.*;
 import static com.ukf.arn.ConstantsKatalog.USER;
-import static com.ukf.arn.Entities.SqlUtils.buildOrderSpecifiers;
+import static com.ukf.arn.Entities.SqlUtils.*;
 
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -34,6 +37,27 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     public static BooleanBuilder createPredicate(UserSearchDto searchObject) {
         BooleanBuilder predicate = new BooleanBuilder();
+
+        if (!isValueEmpty(searchObject.getName())) {
+            predicate.and(createLikePredicate(USER.surname, searchObject.getName()))
+                    .or(createLikePredicate(USER.name, searchObject.getName()));
+        }
+
+       /* if (!isValueEmpty(searchObject.getUniversity())) {
+            predicate.and(createLikePredicate(USER.university.id, searchObject.getUniversity()));
+        }*/
+
+        if (!isValueEmpty(searchObject.getRole())){
+            predicate.and(USER.roles.any().in(searchObject.getRole()));
+        }
+
+
+        if (searchObject.isAdmin()){
+            predicate.and(USER.roles.any().in(ADMIN.getCode(), SUPERADMIN.getCode()));
+        }
+        else {
+            predicate.and((USER.roles.any().in(STUDENT.getCode(), REVIEWER.getCode())));
+        }
 
 
         return predicate;
