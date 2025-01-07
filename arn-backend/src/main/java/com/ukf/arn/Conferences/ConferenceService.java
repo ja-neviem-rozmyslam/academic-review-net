@@ -81,12 +81,14 @@ public class ConferenceService {
 
     public ResponseEntity<?> getSubmissionData(Long submissionId, boolean includeCoAuthors) {
         Submission submission = submissionRepository.findById(submissionId).orElse(null);
+        User user = SecurityConfig.getLoggedInUser();
+
         if (submission == null) {
             return ResponseEntity.badRequest().body("Príspevok neexistuje.");
         }
 
-        User user = SecurityConfig.getLoggedInUser();
-        if (!submission.getAuthorId().equals(user.getId()) && !submission.getReviewerId().equals(user.getId())) {
+        if (!submission.getAuthorId().equals(user.getId()) &&
+                (submission.getReviewerId() == null || !submission.getReviewerId().equals(user.getId()))) {
             return ResponseEntity.badRequest().body("Nemáte prístup k tomuto príspevku.");
         }
 
