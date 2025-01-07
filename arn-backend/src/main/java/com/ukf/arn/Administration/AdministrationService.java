@@ -31,8 +31,7 @@ public class AdministrationService {
 
     public List<ConferenceDto> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
         BooleanBuilder predicate = ConferenceRepositoryImpl.createPredicate(searchObject);
-        OrderSpecifier orderSpecifier = ConferenceRepositoryImpl.buildSort(sort);
-        List<Conference> conferences = conferenceRepository.findAllByPredicate(predicate, orderSpecifier);
+        List<Conference> conferences = conferenceRepository.findAllByPredicate(predicate, sort);
         return conferences.stream()
                 .map(ConferenceRepositoryImpl::mapToConferenceDto)
                 .collect(Collectors.toList());
@@ -40,8 +39,7 @@ public class AdministrationService {
 
     public List<UserDto> getUserData(UserSearchDto searchObject, Sort sort) {
         BooleanBuilder predicate = UserRepositoryImpl.createPredicate(searchObject);
-        OrderSpecifier orderSpecifier = UserRepositoryImpl.buildSort(sort);
-        List<User> users = userRepository.findAllByPredicate(predicate, orderSpecifier);
+        List<User> users = userRepository.findAllByPredicate(predicate, sort);
         return users.stream()
                 .map(UserRepositoryImpl::mapToUserDto)
                 .collect(Collectors.toList());

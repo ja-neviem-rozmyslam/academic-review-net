@@ -5,19 +5,17 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
-import com.ukf.arn.Entities.University;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Users.Objects.UserDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-import java.time.LocalDateTime;
+import org.springframework.data.domain.Sort.Direction;
 import java.util.List;
-import java.util.UUID;
 
-import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
+
 import static com.ukf.arn.ConstantsKatalog.USER;
-import static com.ukf.arn.Entities.SqlUtils.buildOrderSpecifier;
+import static com.ukf.arn.Entities.SqlUtils.buildOrderSpecifiers;
 
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -25,35 +23,39 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<User> findAllByPredicate(BooleanBuilder predicate, OrderSpecifier orderSpecifier) {
+    public List<User> findAllByPredicate(BooleanBuilder predicate, Sort sort) {
         return new JPAQuery<>(entityManager)
                 .select(USER)
                 .from(USER)
                 .where(predicate)
-                .orderBy(orderSpecifier)
+                .orderBy(buildSort(sort))
                 .fetch();
     }
 
-    public static BooleanBuilder createPredicate(UserSearchDto searchObject){
+    public static BooleanBuilder createPredicate(UserSearchDto searchObject) {
         BooleanBuilder predicate = new BooleanBuilder();
-
 
 
         return predicate;
     }
 
-    public static OrderSpecifier buildSort(Sort sort){
+    public static OrderSpecifier[] buildSort(Sort sort) {
         if (sort != null) {
             switch (sort.getColumn()) {
                 case "name":
-                    return buildOrderSpecifier(USER.name, sort.getDirection());
-
+                    return buildOrderSpecifiers(List.of(USER.surname, USER.name), sort.getDirection());
+                case "email":
+                    return buildOrderSpecifiers(List.of(USER.email), sort.getDirection());
+                case "university":
+                    return buildOrderSpecifiers(List.of(USER.university.name), sort.getDirection());
+                case "roles":
+                    return buildOrderSpecifiers(List.of(USER.roles.size()), sort.getDirection());
             }
         }
-        return null;
+        return buildOrderSpecifiers(List.of(USER.name), Direction.ASC);
     }
 
-    public static UserDto mapToUserDto(User user){
+    public static UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());

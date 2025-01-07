@@ -6,6 +6,8 @@ import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.StringPath;
 import org.springframework.data.domain.Sort;
 
+import java.util.List;
+
 public class SqlUtils {
 
     public static BooleanExpression createLikePredicate(StringPath path, String value) {
@@ -19,6 +21,12 @@ public class SqlUtils {
 
     public static OrderSpecifier buildOrderSpecifier(ComparableExpressionBase<?> column, Sort.Direction direction) {
         return direction.isAscending() ? column.asc() : column.desc();
+    }
+
+    public static OrderSpecifier[] buildOrderSpecifiers(List<ComparableExpressionBase<?>> columns, Sort.Direction direction) {
+        return columns.stream()
+                .map(column -> buildOrderSpecifier(column, direction))
+                .toArray(OrderSpecifier[]::new);
     }
 
     public static boolean isValueEmpty(String value) {
