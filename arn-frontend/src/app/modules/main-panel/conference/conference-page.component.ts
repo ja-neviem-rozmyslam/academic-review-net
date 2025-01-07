@@ -23,6 +23,9 @@ export class ConferencePageComponent implements OnInit {
 
   roleInConference: string | null = null;
 
+  alertMessage = '';
+  showAlert = false;
+
   submissionOptions = {
     isUploaded: false,
     isBeforeDeadline: false,
@@ -66,7 +69,7 @@ export class ConferencePageComponent implements OnInit {
     loadFn().subscribe({
       next: (conferenceDetail: ConferenceDetail) => {
         this.conferenceDetail = conferenceDetail;
-        console.log(conferenceDetail);
+        //console.log(conferenceDetail);
         this.isConferenceLoaded = Boolean(conferenceDetail.id);
         this.updateViewBasedOnRole();
       },
@@ -137,6 +140,12 @@ export class ConferencePageComponent implements OnInit {
     if (hours > 0) return `${prefix} ${hours} hodín`;
     if (minutes > 0) return `${prefix} ${minutes} minút`;
     return `${prefix} < 1 minúta`;
+  }
+
+  displayAlert(message: string): void {
+    this.alertMessage = message;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 5000);
   }
 
   private navigateToHome(): void {
