@@ -1,9 +1,8 @@
 package com.ukf.arn.Services;
 
 import com.ukf.arn.Authentication.Repository.UserTokenRepository;
-import com.ukf.arn.Entities.User;
 import com.ukf.arn.Entities.UserToken;
-import com.ukf.arn.Users.UserRepository;
+import com.ukf.arn.Users.Repository.UserRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

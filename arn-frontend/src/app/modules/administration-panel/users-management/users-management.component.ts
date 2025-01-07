@@ -3,6 +3,7 @@ import {ArnGridListComponent} from '../../components/arn-grid-list/arn-grid-list
 import {USER_COLUMNS} from './entities/columns';
 import {UsersManagementService} from './services/users-management.service';
 import {UsersSearchStore} from './store/users-search-store';
+import {User} from '../../objects/User';
 
 @Component({
   selector: 'app-users-management',
@@ -24,11 +25,11 @@ export class UsersManagementComponent {
   search = (searchObject, sortOptions) =>
     this.usersManagementService.getUsers(searchObject, sortOptions);
 
-  deleteUser(user: any): void {
+  deleteUser(user: User): void {
     console.log('Delete user', user);
   }
 
-  editUser(user: any): void {
+  editUser(user: User): void {
     console.log('Edit user', user);
   }
 

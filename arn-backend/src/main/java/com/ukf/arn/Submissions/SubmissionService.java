@@ -12,7 +12,7 @@ import com.ukf.arn.Submissions.Objects.SubmissionDto;
 import com.ukf.arn.Submissions.Objects.SubmissionRequest;
 import com.ukf.arn.Submissions.Repository.SubmissionCategoryRepository;
 import com.ukf.arn.Submissions.Repository.SubmissionRepository;
-import com.ukf.arn.Users.UserRepository;
+import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

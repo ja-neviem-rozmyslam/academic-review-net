@@ -10,6 +10,7 @@ import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Users.Objects.UpdateRequest;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Objects.UserDetailsDto;
+import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

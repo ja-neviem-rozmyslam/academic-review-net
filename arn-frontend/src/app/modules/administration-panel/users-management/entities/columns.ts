@@ -1,36 +1,44 @@
 import {ACTIONS, Column} from '../../../components/arn-grid-list/entities/Column';
+import {User} from '../../../objects/User';
+import {UserPrettyNames} from '../../../constants';
 
 export const USER_COLUMNS: Column[] = [
   {
     title: 'Meno',
     name: 'name',
-    width: 30,
-    template: (dataItem: any) => {
-        return dataItem.name + ' ' + dataItem.surname;
+    width: 20,
+    template: (dataItem: User) => {
+        return dataItem.surname + ', ' + dataItem.name;
     },
   },
   {
     title: 'Email',
     name: 'email',
-    width: 30,
+    width: 25,
   },
   {
     title: 'Univerzita',
     name: 'university',
-    width: 20,
+    width: 40,
+    template: (dataItem: User) => {
+      return dataItem.university?.name;
+    },
   },
   {
     title: 'Rola',
-    name: 'role',
+    name: 'roles',
     width: 20,
+    template: (dataItem: User) => {
+      return dataItem.roles.map(role => UserPrettyNames[role]).join(', ');
+    },
   },
   {
     actionType: ACTIONS.EDIT,
-    width: 10,
+    width: 5,
   },
   {
     actionType: ACTIONS.DELETE,
     actionCondition: (dataItem: any) => !dataItem.verified,
-    width: 10,
+    width: 5,
   }
 ];

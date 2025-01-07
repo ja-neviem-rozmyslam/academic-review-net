@@ -4,7 +4,7 @@ import com.ukf.arn.Entities.UserToken;
 import com.ukf.arn.Authentication.Repository.UserTokenRepository;
 import com.ukf.arn.MailService.MailService;
 import com.ukf.arn.Entities.User;
-import com.ukf.arn.Users.UserRepository;
+import com.ukf.arn.Users.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
