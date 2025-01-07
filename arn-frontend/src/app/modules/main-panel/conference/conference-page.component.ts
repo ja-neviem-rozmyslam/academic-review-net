@@ -45,11 +45,12 @@ export class ConferencePageComponent implements OnInit {
 
   ngOnInit(): void {
     const conferenceId = this.route.snapshot.params['id'];
+    const submissionId = this.route.snapshot.params['submissionId'];
     if (!conferenceId) {
       this.redirectToHome();
       return;
     }
-    this.loadConferenceData(conferenceId);
+    this.loadConferenceData(conferenceId, submissionId);
   }
 
   getInfoTabContent(dateTime: string, prefix: string): string {
@@ -78,8 +79,8 @@ export class ConferencePageComponent implements OnInit {
   }
 
 
-  private loadConferenceData(conferenceId: number): void {
-    this.conferenceService.getConferenceData(conferenceId).subscribe({
+  private loadConferenceData(conferenceId: number, submissionId?: number): void {
+    this.conferenceService.getConferenceData(conferenceId, submissionId).subscribe({
       next: (conferenceDetail: ConferenceDetail) => {
         this.conferenceDetail = conferenceDetail;
         this.isConferenceLoaded = conferenceDetail.id !== undefined;

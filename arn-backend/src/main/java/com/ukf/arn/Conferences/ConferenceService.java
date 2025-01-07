@@ -61,7 +61,7 @@ public class ConferenceService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getConferenceData(Long conferenceId, boolean includeCoAuthors) {
+    public ResponseEntity<?> getConferenceData(Long conferenceId, Long submissionId, boolean includeCoAuthors) {
         Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
         if (conference == null) {
             return ResponseEntity.badRequest().body("Konferencia neexistuje.");
@@ -72,11 +72,20 @@ public class ConferenceService {
             return ResponseEntity.badRequest().body("Nemáte prístup k tejto konferencii.");
         }
 
-        Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
-        ConferenceDetail conferenceDetail = getConferenceDetail(submission != null ? submission : null, conference, includeCoAuthors);
+        Submission submission;
+        if (submissionId != null) {
+            submission = submissionRepository.findById(submissionId).orElse(null);
+            if (!submission.getAuthorId().equals(user.getId()) && !submission.getReviewerId().equals(user.getId())) {
+                return ResponseEntity.badRequest().body("Nemáte prístup k tejto práci.");
+            }
+        } else {
+            submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, user.getId());
+        }
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference, includeCoAuthors);
 
         return ResponseEntity.ok(conferenceDetail);
     }
+
 
     private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference, boolean includeCoAuthors) {
         ConferenceDetail conferenceDetail = new ConferenceDetail();

@@ -19,8 +19,11 @@ public class ConferenceController {
     }
 
     @GetMapping("/{conferenceId}")
-    public ResponseEntity<?> getConferenceData(@PathVariable Long conferenceId, @RequestParam boolean includeCoAuthors) throws IOException {
-        return conferenceService.getConferenceData(conferenceId, includeCoAuthors);
+    public ResponseEntity<?> getConferenceData(
+            @PathVariable Long conferenceId,
+            @RequestParam(required = false) Long submissionId,
+            @RequestParam boolean includeCoAuthors) throws IOException {
+        return conferenceService.getConferenceData(conferenceId, submissionId, includeCoAuthors);
     }
 
     @PostMapping("/join/{conferenceId}")

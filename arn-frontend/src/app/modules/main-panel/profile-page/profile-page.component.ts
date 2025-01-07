@@ -47,8 +47,13 @@ export class ProfilePageComponent implements OnInit {
     this.router.navigate(['/main/my-theses']);
   }
 
-  navigateToConferencePage(conferenceId: number) {
-    this.router.navigate(['/main/conferences', conferenceId]);
+  navigateToConferencePage(conferenceId: number, submissionId?: number) {
+    if (submissionId) {
+      this.router.navigate(['/main/conferences', conferenceId, 'submissions', submissionId]);
+    }
+    else {
+      this.router.navigate(['/main/conferences', conferenceId])
+    }
   }
 
   fetchUserDetails(): Observable<any> {

@@ -10,6 +10,7 @@ import {ConferenceDetail} from '../../conference/entities/ConferenceDetail';
 })
 export class ConferenceService {
   CONFERENCE_API_ENDPOINT = 'api/conferences';
+  endpoint: string;
 
   constructor(private http: HttpClient) {
   }
@@ -22,20 +23,27 @@ export class ConferenceService {
     return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
   }
 
-  getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
-    return this.http.get<ConferenceDetail>(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`, {
-      params: { includeCoAuthors: includeCoAuthors.toString() }
-    }).pipe(
-      map(conferenceDetail => {
-        if (typeof conferenceDetail.reviewForm === 'string') {
-          conferenceDetail.reviewForm = JSON.parse(conferenceDetail.reviewForm);
-        }
-        if (typeof conferenceDetail.review === 'string') {
-          conferenceDetail.review = JSON.parse(conferenceDetail.review);
-        }
-        return conferenceDetail;
-      })
+  getConferenceData(conferenceId: number, submissionId?: number, includeCoAuthors = false): Observable<ConferenceDetail> {
+    const params: { [key: string]: string } = {
+      includeCoAuthors: includeCoAuthors.toString(),
+    };
+    if (submissionId !== undefined) {
+      params['submissionId'] = submissionId.toString();
+    }
+
+    return this.http.get<ConferenceDetail>(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`, { params }).pipe(
+      map(conferenceDetail => this.parseConferenceDetail(conferenceDetail))
     );
+  }
+
+  private parseConferenceDetail(conferenceDetail: ConferenceDetail): ConferenceDetail {
+    if (typeof conferenceDetail.reviewForm === 'string') {
+      conferenceDetail.reviewForm = JSON.parse(conferenceDetail.reviewForm);
+    }
+    if (typeof conferenceDetail.review === 'string') {
+      conferenceDetail.review = JSON.parse(conferenceDetail.review);
+    }
+    return conferenceDetail;
   }
 
 }
