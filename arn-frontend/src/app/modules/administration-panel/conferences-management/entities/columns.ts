@@ -30,9 +30,5 @@ export const CONFERENCE_COLUMNS: Column[] = [
       const statusOption = CONFERENCE_CLOSED_OPTIONS.find(option => option.value === dataItem.closed);
       return `<span class="${dataItem.closed ? 'text-red-700' : 'text-green-800'}">${statusOption?.display}</span>`;
     }
-  },
-  {
-      actionType: ACTIONS.EDIT,
-      width: 5,
   }
 ];

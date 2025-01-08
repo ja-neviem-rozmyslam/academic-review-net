@@ -8,7 +8,8 @@
       class="cursor-pointer" />
   </div>
 
-  <div class="content-wrapper flex-grow">
+  <div class="content-wrapper flex-grow"
+    (keydown)="handleKeydown($event)">
     <ng-content></ng-content>
   </div>
 

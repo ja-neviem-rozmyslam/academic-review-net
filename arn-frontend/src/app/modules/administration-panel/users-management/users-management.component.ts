@@ -1,9 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ArnGridListComponent} from '../../components/arn-grid-list/arn-grid-list.component';
-import {USER_COLUMNS} from './entities/columns';
+import {getUserColumns} from './entities/columns';
 import {UsersManagementService} from './services/users-management.service';
 import {UsersSearchStore} from './store/users-search-store';
 import {User} from '../../objects/User';
+import {ActivatedRoute} from '@angular/router';
+import {combineLatest, take, tap} from 'rxjs';
+import {Column} from '../../components/arn-grid-list/entities/Column';
 
 @Component({
   selector: 'app-users-management',
@@ -11,15 +14,32 @@ import {User} from '../../objects/User';
   styleUrl: './users-management.component.less',
   providers: [UsersSearchStore]
 })
-export class UsersManagementComponent {
+export class UsersManagementComponent implements OnInit {
   @ViewChild(ArnGridListComponent) arnGridList: ArnGridListComponent;
 
-  columns = USER_COLUMNS;
+  isAdminSearch: boolean;
+  columns: Column[];
+  usersSearchCriteria$ = this.usersSearchStore.searchCriteria$;
 
-  UsersSearchCriteria$ = this.usersSearchStore.searchCriteria$;
+  constructor(private usersManagementService: UsersManagementService,
+              private route: ActivatedRoute,
+              private usersSearchStore: UsersSearchStore) {
+  }
 
-  constructor(private usersManagementService: UsersManagementService, private usersSearchStore: UsersSearchStore) {
-
+  ngOnInit(): void {
+    combineLatest([this.route.data, this.usersSearchCriteria$]).pipe(
+      take(1),
+      tap(([routeData, criteria]) => {
+        this.isAdminSearch = routeData['isAdminSearch'] || false;
+        this.columns = getUserColumns(this.isAdminSearch);
+        this.usersSearchStore.patchState({
+          searchCriteria: {
+            ...criteria,
+            isAdmin: this.isAdminSearch
+          }
+        });
+      })
+    ).subscribe();
   }
 
   search = (searchObject, sortOptions) =>

@@ -1,4 +1,4 @@
-import {TabOption} from '../../../../components/tabs/entities/TabOption';
+import {TabOption} from '../../../components/tabs/entities/TabOption';
 
 export const EDIT = 'EDIT';
 export const ASSIGN = 'ASSIGN';

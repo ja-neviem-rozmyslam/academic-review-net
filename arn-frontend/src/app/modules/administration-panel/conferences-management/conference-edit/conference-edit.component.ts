@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {TABOPTIONS} from './entities/constants';
+import {TABOPTIONS} from '../entities/constants';
 
 @Component({
   selector: 'app-conference-edit',

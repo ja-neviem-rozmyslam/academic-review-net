@@ -1,6 +1,6 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg h-full">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg h-full bg-white">
   <table class="w-full text-sm text-left rtl:text-right">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+    <thead class="text-xs uppercase bg-gray-200">
     <tr>
       <th *ngFor="let column of columns"
           class="p-4 border-b border-gray-300 cursor-pointer"
@@ -28,7 +28,7 @@
     </thead>
     <tbody *ngIf="data">
     <tr *ngFor="let item of data"
-        class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
+        class="odd:bg-white even:bg-gray-50 border-b border-gray-200 cursor-pointer"
         (dblclick)="onDoubleClick(item)">
       <td *ngFor="let column of columns"
           class="p-4"
@@ -40,14 +40,15 @@
           <span [innerHTML]="column.template ? column.template(item) : ''"></span>
         </ng-template>
         <ng-container *ngIf="column.actionType && (!column.actionCondition || column.actionCondition(item))">
-            <span (click)="handleAction(column.actionType, item)" class="cursor-pointer">
-              <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
-                <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
-              </ng-container>
-              <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
-                <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
-              </ng-container>
-            </span>
+          <span (click)="handleAction(column.actionType, item)"
+                class="cursor-pointer flex items-center justify-center rounded-full hover:bg-gray-100 p-1 element-transition">
+            <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
+              <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
+            </ng-container>
+            <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
+              <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
+            </ng-container>
+          </span>
         </ng-container>
       </td>
     </tr>

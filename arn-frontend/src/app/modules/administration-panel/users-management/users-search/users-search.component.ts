@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UsersSearchCriteria} from '../entities/UsersSearchCriteria';
 import {UsersSearchStore} from '../store/users-search-store';
-import {USERS_ROLE_OPTIONS} from '../entities/users-management-constants';
+import {ADMIN_ROLE_OPTIONS, USERS_ROLE_OPTIONS} from '../entities/users-management-constants';
 import {UniversityService} from '../../../services/university.service';
 import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
 @Component({
@@ -28,6 +28,9 @@ export class UsersSearchComponent implements OnInit {
         display: university.name
       }));
     });
+    if (this.searchObject.isAdmin) {
+      this.userRoleOptions = ADMIN_ROLE_OPTIONS;
+    }
   }
 
   clearSearchCriteria(): void {

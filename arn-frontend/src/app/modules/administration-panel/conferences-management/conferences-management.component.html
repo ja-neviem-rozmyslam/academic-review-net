@@ -1,4 +1,4 @@
-<div class="h-[60vh] flex space-x-6">
+<div class="h-[80vh] flex space-x-6">
   <div class="w-[25%]">
     <app-conferences-search
       [searchObject]="conferenceSearchCriteria$ | async"
@@ -14,7 +14,6 @@
       [initialSort]="'conferenceName'"
       [searchMethod]="search"
       (doubleClickAction)="onDoubleClick($event)"
-      (editAction)="editConference($event)"
     />
   </div>
 </div>

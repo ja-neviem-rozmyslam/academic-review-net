@@ -47,6 +47,11 @@ export const routes: Routes = [
         component: UsersManagementComponent
       },
       {
+        path: 'admin-management',
+        component: UsersManagementComponent,
+        data: { isAdminSearch: true }
+      },
+      {
         path: 'conference/:conferenceID',
         component: ConferenceEditComponent
       }

@@ -43,14 +43,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     .or(createLikePredicate(USER.name, searchObject.getName()));
         }
 
-       /* if (!isValueEmpty(searchObject.getUniversity())) {
-            predicate.and(createLikePredicate(USER.university.id, searchObject.getUniversity()));
-        }*/
+       if (searchObject.getUniversity() != null) {
+            predicate.and(USER.university.id.eq(searchObject.getUniversity()));
+        }
 
         if (!isValueEmpty(searchObject.getRole())){
             predicate.and(USER.roles.any().in(searchObject.getRole()));
         }
 
+        if (!isValueEmpty(searchObject.getEmail())){
+            predicate.and(createLikePredicate(USER.email, searchObject.getEmail()));
+        }
 
         if (searchObject.isAdmin()){
             predicate.and(USER.roles.any().in(ADMIN.getCode(), SUPERADMIN.getCode()));

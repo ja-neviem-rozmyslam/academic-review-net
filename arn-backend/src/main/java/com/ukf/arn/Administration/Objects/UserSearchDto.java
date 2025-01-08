@@ -2,7 +2,8 @@ package com.ukf.arn.Administration.Objects;
 
 public class UserSearchDto {
     private String name;
-    private String university;
+    private String email;
+    private Long university;
     private String role;
     private boolean isAdmin;
 
@@ -14,11 +15,11 @@ public class UserSearchDto {
         this.name = name;
     }
 
-    public String getUniversity() {
+    public Long getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(Long university) {
         this.university = university;
     }
 
@@ -34,8 +35,16 @@ public class UserSearchDto {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 
