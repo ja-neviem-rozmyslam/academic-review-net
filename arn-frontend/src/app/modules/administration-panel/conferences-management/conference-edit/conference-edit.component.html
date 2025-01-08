@@ -1,0 +1,81 @@
+<div class="mb-4">
+  <app-tabs
+    [tabs]="tabOptions"
+    [activeTab]="selectedOption"
+    (tabChanged)="selectedOption = $event"
+  ></app-tabs>
+</div>
+
+@if (selectedOption === 'EDIT') {
+
+  <div class="w-full">
+
+    <h2 class="text-lg font-semibold mb-4">Upraviť Konferenciu</h2>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Názov konferencie:
+          <input
+            type="text"
+            placeholder="Názov konferencie"
+            [(ngModel)] = 'item.conferenceName'
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
+
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Fakulta:
+          <input
+            type="text"
+            placeholder="Fakulta"
+            [(ngModel)] = 'item.faculty'
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Dátum uzatvorenia:
+          <input
+            type="datetime-local"
+            [(ngModel)] = 'item.reviewDeadline'
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
+
+      <div class="arn-input">
+        <label class="block text-sm font-medium mb-1">
+          Dátum nahratia:
+          <input
+            type="datetime-local"
+            [(ngModel)] = 'item.uploadDeadline'
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center mt-4">
+      <app-arn-button
+        [buttonText]="'Aktualizovať konferenciu'"
+        (buttonClick)="updateConference()"
+        [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
+      </app-arn-button>
+
+      <app-arn-button
+        [buttonText]="'Zrušiť'"
+        (buttonClick)="viewConferences()"
+        [classes]="'bg-gray-200 text-gray-700 hover:bg-gray-300'">
+      </app-arn-button>
+    </div>
+
+  </div>
+
+}

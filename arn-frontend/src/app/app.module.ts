@@ -59,6 +59,7 @@ import { ConferencesSearchComponent } from './modules/administration-panel/confe
 import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcriteria/arn-searchcriteria.component';
 import { UsersManagementComponent } from './modules/administration-panel/users-management/users-management.component';
 import { UsersSearchComponent } from './modules/administration-panel/users-management/users-search/users-search.component';
+import { ConferenceEditComponent } from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { UsersSearchComponent } from './modules/administration-panel/users-manag
     ConferencesSearchComponent,
     ArnSearchcriteriaComponent,
     UsersManagementComponent,
-    UsersSearchComponent],
+    UsersSearchComponent,
+    ConferenceEditComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
