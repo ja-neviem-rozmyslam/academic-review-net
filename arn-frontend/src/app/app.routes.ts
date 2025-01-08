@@ -18,6 +18,7 @@ import {
   ConferencesManagementComponent
 } from './modules/administration-panel/conferences-management/conferences-management.component';
 import {UsersManagementComponent} from './modules/administration-panel/users-management/users-management.component';
+import {ConferenceEditComponent} from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component'
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -39,11 +40,15 @@ export const routes: Routes = [
       },
       {
         path: 'conference-management',
-        component: ConferencesManagementComponent
+        component: ConferencesManagementComponent,
       },
       {
         path: 'users-management',
         component: UsersManagementComponent
+      },
+      {
+        path: 'conference/:conferenceID',
+        component: ConferenceEditComponent
       }
     ]
   },
