@@ -88,17 +88,15 @@ export class ConferencePageComponent implements OnInit {
     const isStudent = this.roleService.isStudent() && submissionRole === UserRoles.STUDENT;
     const isReviewer = this.roleService.isReviewer() && submissionRole === UserRoles.REVIEWER;
 
-    if (isStudent) {
-      this.setupStudentView(submission, uploadDeadline, review, reviewDeadline);
-    } else if (isReviewer) {
-      this.setupReviewerView(review, reviewDeadline);
+    if (isStudent || isReviewer) {
+      this.setupView(submission, uploadDeadline, review, reviewDeadline, isReviewer);
     } else {
       this.handleUnauthorizedAccess();
     }
   }
 
-  private setupStudentView(submission: any, uploadDeadline: string, review: any, reviewDeadline: string): void {
-    this.roleInConference = UserRoles.STUDENT;
+  private setupView(submission: any, uploadDeadline: string, review: any, reviewDeadline: string, isReviewer: boolean): void {
+    this.roleInConference = isReviewer ? UserRoles.REVIEWER : UserRoles.STUDENT;
     this.submissionOptions = {
       isUploaded: Boolean(submission),
       isBeforeDeadline: new Date() < new Date(uploadDeadline),
@@ -107,16 +105,7 @@ export class ConferencePageComponent implements OnInit {
       isReviewed: Boolean(review),
       isBeforeDeadline: new Date() < new Date(reviewDeadline),
     };
-    this.infoTabContent = this.getInfoTabContent(uploadDeadline, 'Na odovzdanie práce zostáva');
-  }
-
-  private setupReviewerView(review: any, reviewDeadline: string): void {
-    this.roleInConference = UserRoles.REVIEWER;
-    this.reviewOptions = {
-      isReviewed: Boolean(review),
-      isBeforeDeadline: new Date() < new Date(reviewDeadline),
-    };
-    this.infoTabContent = this.getInfoTabContent(reviewDeadline, 'Na napísanie posudku zostáva');
+    this.infoTabContent = !isReviewer ? this.getInfoTabContent(uploadDeadline, 'Na odovzdanie práce zostáva') : this.getInfoTabContent(reviewDeadline, 'Na napísanie posudku zostáva')
   }
 
   private handleUnauthorizedAccess(): void {

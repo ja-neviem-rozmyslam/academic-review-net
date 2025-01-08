@@ -81,7 +81,7 @@ export class ProfilePageComponent implements OnInit {
     modalRef.instance.profileUpdated.subscribe(() => {
       this.fetchUserDetails().subscribe({
         complete: () => {
-          this.alertMessage = 'Profil bol úspešne aktualizovaný.';
+          this.alertMessage = 'Profil bol úspešne aktualizovaný';
           this.showAlert = true;
           setTimeout(() => {
             this.showAlert = false;
@@ -93,7 +93,7 @@ export class ProfilePageComponent implements OnInit {
     modalRef.instance.passwordResetSent.subscribe(() => {
       this.fetchUserDetails().subscribe({
         complete: () => {
-          this.alertMessage = 'E-mail na zmenu hesla bol odoslaný.';
+          this.alertMessage = 'E-mail na zmenu hesla bol odoslaný';
           this.showAlert = true;
           setTimeout(() => {
             this.showAlert = false;

@@ -135,7 +135,7 @@ export class SubmissionComponent implements OnInit {
         return this.noSubmissionTemplate;
       }
     } else if (this.roleInConference === UserRoles.REVIEWER) {
-      if (this.showInReadMode) {
+      if (this.showInReadMode && !this.submissionOptions.isBeforeDeadline) {
         return this.submissionReadTemplate;
       } else {
         return this.noSubmissionTemplate;
