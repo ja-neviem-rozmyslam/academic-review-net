@@ -10,6 +10,7 @@ import {ConferenceDetail} from '../../conference/entities/ConferenceDetail';
 })
 export class ConferenceService {
   CONFERENCE_API_ENDPOINT = 'api/conferences';
+  endpoint: string;
 
   constructor(private http: HttpClient) {
   }
@@ -22,20 +23,33 @@ export class ConferenceService {
     return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
   }
 
-  getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
-    return this.http.get<ConferenceDetail>(`${this.CONFERENCE_API_ENDPOINT}/${conferenceId}`, {
-      params: { includeCoAuthors: includeCoAuthors.toString() }
-    }).pipe(
-      map(conferenceDetail => {
-        if (typeof conferenceDetail.reviewForm === 'string') {
-          conferenceDetail.reviewForm = JSON.parse(conferenceDetail.reviewForm);
-        }
-        if (typeof conferenceDetail.review === 'string') {
-          conferenceDetail.review = JSON.parse(conferenceDetail.review);
-        }
-        return conferenceDetail;
-      })
+  getData(endpoint: string, id: number, includeCoAuthors = false): Observable<any> {
+    const params: Record<string, string> = {
+      includeCoAuthors: includeCoAuthors.toString(),
+    };
+
+    return this.http.get<any>(`${this.CONFERENCE_API_ENDPOINT}/${endpoint}/${id}`, { params }).pipe(
+      map(data => this.parseConferenceDetail(data))
     );
+  }
+
+  getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
+    return this.getData('', conferenceId, includeCoAuthors);
+  }
+
+  getSubmissionData(submissionId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
+    return this.getData('submission', submissionId, includeCoAuthors);
+  }
+
+
+  private parseConferenceDetail(conferenceDetail: ConferenceDetail): ConferenceDetail {
+    if (typeof conferenceDetail.reviewForm === 'string') {
+      conferenceDetail.reviewForm = JSON.parse(conferenceDetail.reviewForm);
+    }
+    if (typeof conferenceDetail.review === 'string') {
+      conferenceDetail.review = JSON.parse(conferenceDetail.review);
+    }
+    return conferenceDetail;
   }
 
 }
