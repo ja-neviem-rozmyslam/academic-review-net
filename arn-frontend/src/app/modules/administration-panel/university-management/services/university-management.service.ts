@@ -15,20 +15,8 @@ export class UniversityManagementService {
     return this.http.get<any>(this.ADMIN_CONFERENCE_ENDPOINT);
   }
 
-  addDomainToUniversity(universityId: number): Observable<any> {
-    return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${universityId}/add-domain`, {});
-  }
-
-  removeDomainFromUniversity(domainId: number): Observable<any> {
-    return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/remove-domain/${domainId}`, {});
-  }
-
   saveUniversity(university: any): Observable<any> {
     return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/save`, university);
-  }
-
-  addUniversity(): Observable<any> {
-    return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/add`, {});
   }
 
   removeUniversity(universityId: number, university: any): Observable<any> {

@@ -1,11 +1,14 @@
 package com.ukf.arn.Administration;
 
 import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
+import com.ukf.arn.Administration.Objects.SaveUniversityRequest;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
 import com.ukf.arn.Universities.UniversityDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api-admin")
@@ -36,33 +39,12 @@ public class AdministrationController {
         return ResponseEntity.ok(administrationService.getAllUniversityDtos());
     }
 
-    @PostMapping("/university/{id}/add-domain")
-    public ResponseEntity<?> addDomainToUniversity(
-            @PathVariable Long id) {
-        return ResponseEntity.ok(administrationService.addDomainToUniversity(id));
-    }
-
-    @PostMapping("/university/remove-domain/{id}")
-    public ResponseEntity<?> removeDomainFromUniversity(
-            @PathVariable Long id) {
-        return administrationService.removeDomainFromUniversity(id);
-    }
-
     @PostMapping("/university/save")
     public ResponseEntity<?> saveUniversity(
-            @RequestBody UniversityDto universityDto) {
-        return administrationService.saveUniversity(universityDto);
-    }
-
-    @PostMapping("/university/add")
-    public ResponseEntity<?> addUniversity() {
-        return ResponseEntity.ok(administrationService.addUniversity());
-    }
-
-    @PostMapping("/university/{id}/remove")
-    public ResponseEntity<?> deleteUniversity(
-            @PathVariable Long id, @RequestBody UniversityDto universityDto) {
-        return ResponseEntity.ok(administrationService.removeUniversity(id, universityDto));
+            @RequestBody SaveUniversityRequest request) {
+        UniversityDto universityDto = request.getUniversity();
+        List<Long> removedDomains = request.getRemovedDomains();
+        return administrationService.saveUniversity(universityDto, removedDomains);
     }
 
 }

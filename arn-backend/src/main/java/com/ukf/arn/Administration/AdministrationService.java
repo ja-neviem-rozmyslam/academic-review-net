@@ -79,50 +79,33 @@ public class AdministrationService {
                 .collect(Collectors.toList());
     }
 
-    public EmailDomainDto addDomainToUniversity(Long universityId) {
-        University university = universityRepository.findById(universityId).orElseThrow();
-        EmailDomain emailDomain = new EmailDomain("", university);
-        emailDomainRepository.save(emailDomain);
+    public ResponseEntity<?> saveUniversity(UniversityDto universityDto, List<Long> removedDomains) {
+        University university;
 
-        return new EmailDomainDto(emailDomain.getId(), emailDomain.getDomain());
-    }
+        if (removedDomains != null && !removedDomains.isEmpty()) {
+            emailDomainRepository.deleteAllById(removedDomains);
+        }
 
-    public ResponseEntity<?> removeDomainFromUniversity(Long domainId) {
-        EmailDomain emailDomain = emailDomainRepository.findById(domainId).orElseThrow();
-        emailDomainRepository.delete(emailDomain);
-        return ResponseEntity.ok().build();
-    }
+        if (universityDto.getId() < 0) {
+            university = new University(universityDto.getName());
+        } else {
+            university = universityRepository.findById(universityDto.getId()).orElseThrow();
+            university.setName(universityDto.getName());
+        }
 
-    public ResponseEntity<?> saveUniversity(UniversityDto universityDto) {
-        University university = universityRepository.findById(universityDto.getId()).orElseThrow();
-        university.setName(universityDto.getName());
         universityRepository.save(university);
 
         for (EmailDomainDto domainDto : universityDto.getDomain()) {
-            EmailDomain domain = emailDomainRepository.findById(domainDto.getId()).orElseThrow();
-            domain.setDomain(domainDto.getDomain());
+            EmailDomain domain;
+            if (domainDto.getId() < 0) {
+                domain = new EmailDomain(domainDto.getDomain(), university);
+                emailDomainRepository.save(domain);
+            } else {
+                domain = emailDomainRepository.findById(domainDto.getId()).orElseThrow();
+                domain.setDomain(domainDto.getDomain());
+            }
             emailDomainRepository.save(domain);
         }
-
-        return ResponseEntity.ok().build();
-    }
-
-    public UniversityDto addUniversity() {
-        University university = new University("");
-        universityRepository.save(university);
-
-        return new UniversityDto(university.getId(), university.getName(), new ArrayList<>());
-    }
-
-    public ResponseEntity<?> removeUniversity(Long universityId, UniversityDto universityDto) {
-        if (universityDto.getDomain() != null) {
-            for (EmailDomainDto domainDto : universityDto.getDomain()) {
-                EmailDomain domain = emailDomainRepository.findById(domainDto.getId()).orElseThrow();
-                emailDomainRepository.delete(domain);
-            }
-        }
-        University university = universityRepository.findById(universityId).orElseThrow();
-        universityRepository.delete(university);
 
         return ResponseEntity.ok().build();
     }
