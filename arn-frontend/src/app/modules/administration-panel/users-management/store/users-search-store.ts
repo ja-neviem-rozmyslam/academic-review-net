@@ -6,8 +6,10 @@ import {UsersSearchState} from '../entities/UsersSearchState';
 export class UsersSearchStore extends ComponentStore<UsersSearchState> {
   readonly searchCriteria$ = this.select((state) => state.searchCriteria);
 
-  readonly clearSearchCriteria = this.updater(() => ({
-    searchCriteria: {},
+  readonly clearSearchCriteria = this.updater(state => ({
+    searchCriteria: {
+      isAdmin: state.searchCriteria.isAdmin
+    }
   }));
 
   constructor() {

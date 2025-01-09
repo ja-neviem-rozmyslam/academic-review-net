@@ -64,7 +64,8 @@ export class DialogService {
 
   openCustomModal<T extends BaseModal>(component: Type<T>, modalOptions: ModalOptions = {
     placement: 'center',
-    backdrop: 'dynamic'
+    backdrop: 'dynamic',
+    closable: false,
   }, data?: any): ComponentRef<T> {
     const injector = Injector.create({
       providers: [{ provide: 'modalData', useValue: data }],

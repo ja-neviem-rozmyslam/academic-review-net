@@ -1,0 +1,35 @@
+<app-base-modal [modal]="modalInstance" [modalMaxWidthClass]="'max-w-2xl'">
+  <div class="space-y-2 w-full">
+    <h1 class="text-lg font-semibold mb-4">Vytvoriť Konferenciu</h1>
+    <div class="arn-input">
+      <label for="conferenceName">Názov</label>
+      <input
+        type="text"
+        id="conferenceName"
+        class="w-full"
+        placeholder="Názov konferencie"
+        [(ngModel)]='conference.conferenceName'
+      />
+    </div>
+    <div class="arn-input">
+      <label for="faculty">Fakulta</label>
+      <input
+        type="text"
+        id="faculty"
+        class="w-full"
+        placeholder="Názov fakulty"
+        [(ngModel)]='conference.faculty'
+      />
+    </div>
+    <div class="arn-input">
+      <label for="conferenceName">Názov konferencie</label>
+      <input
+        type="text"
+        id="conferenceName"
+        class="w-full"
+        placeholder="Názov konferencie"
+        [(ngModel)]='conference.conferenceName'
+      />
+    </div>
+  </div>
+</app-base-modal>

@@ -5,77 +5,70 @@
     (tabChanged)="selectedOption = $event"
   ></app-tabs>
 </div>
-
-@if (selectedOption === 'EDIT') {
-
-  <div class="w-full">
-
-    <h2 class="text-lg font-semibold mb-4">Upraviť Konferenciu</h2>
-
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Názov konferencie:
+<div class="w-full card-base p-4">
+  @if (selectedOption === EDIT) {
+    <div class="space-y-5">
+      <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="arn-input">
+          <label for="conferenceName">Názov konferencie</label>
           <input
             type="text"
+            id="conferenceName"
             placeholder="Názov konferencie"
-            [(ngModel)] = 'item.conferenceName'
+            [(ngModel)]='item.conferenceName'
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
-      </div>
+        </div>
 
-      <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Fakulta:
+        <div class="arn-input">
+          <label for="faculty">Fakulta</label>
           <input
             type="text"
+            id="faculty"
             placeholder="Fakulta"
-            [(ngModel)] = 'item.faculty'
-            class="w-full p-2 border border-gray-300 rounded"
-          />
-        </label>
+            [(ngModel)]='item.faculty'
+            class="w-full p-2 border border-gray-300 rounded">
+        </div>
       </div>
-    </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Dátum uzatvorenia:
+      <div class="grid grid-cols-2 gap-4">
+        <div class="arn-input">
+          <label for="reviewDeadline">Termín posudozvania (od)</label>
           <input
             type="datetime-local"
-            [(ngModel)] = 'item.reviewDeadline'
+            id="reviewDeadline"
+            [(ngModel)]='item.reviewDeadline'
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
-      </div>
+        </div>
 
-      <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Dátum nahratia:
+        <div class="arn-input">
+          <label for="uploadDeadline">Dátum nahratia</label>
           <input
             type="datetime-local"
-            [(ngModel)] = 'item.uploadDeadline'
+            id="uploadDeadline"
+            [(ngModel)]='item.uploadDeadline'
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mt-4">
+        <app-arn-button
+          [buttonText]="'Späť'"
+          (buttonClick)="viewConferences()">
+        </app-arn-button>
+
+        <app-arn-button
+          [buttonText]="'Aktualizovať konferenciu'"
+          (buttonClick)="updateConference()">
+        </app-arn-button>
       </div>
     </div>
+  } @else if (ASSIGN) {
 
-    <div class="flex justify-between items-center mt-4">
-      <app-arn-button
-        [buttonText]="'Aktualizovať konferenciu'"
-        (buttonClick)="updateConference()"
-        [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
-      </app-arn-button>
+  } @else if (SUBMISSION) {
 
-      <app-arn-button
-        [buttonText]="'Zrušiť'"
-        (buttonClick)="viewConferences()"
-        [classes]="'bg-gray-200 text-gray-700 hover:bg-gray-300'">
-      </app-arn-button>
-    </div>
-
-  </div>
-
-}
+  }
+</div>

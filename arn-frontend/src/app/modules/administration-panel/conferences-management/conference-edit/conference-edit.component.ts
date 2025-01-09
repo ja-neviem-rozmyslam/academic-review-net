@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {TABOPTIONS} from '../entities/constants';
+import {ASSIGN, EDIT, SUBMISSION, TABOPTIONS} from '../entities/constants';
 
 @Component({
   selector: 'app-conference-edit',
@@ -28,4 +28,8 @@ export class ConferenceEditComponent implements OnInit {
   updateConference() {
     console.log("UPDATE");
   }
+
+  protected readonly EDIT = EDIT;
+  protected readonly ASSIGN = ASSIGN;
+  protected readonly SUBMISSION = SUBMISSION;
 }
