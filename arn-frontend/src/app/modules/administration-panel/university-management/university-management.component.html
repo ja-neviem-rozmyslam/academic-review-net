@@ -1,0 +1,97 @@
+<app-arn-toast [showToast]="alertVisible">
+  <div class="toast-icon text-green-500 bg-green-100 rounded">
+    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+         viewBox="0 0 20 20">
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+    </svg>
+    <span class="sr-only">Success</span>
+  </div>
+  <div class="ms-3 text-sm font-normal">{{ alertMessage }}</div>
+</app-arn-toast>
+
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-4xl font-bold">Správa univerzít</h1>
+
+  <app-arn-button
+    [buttonText]="'Pridať univerzitu'"
+    [classes]="'bg-gray-800 text-white hover:bg-gray-700'"
+    (click)="addUniversity()"
+  >
+  </app-arn-button>
+</div>
+
+<div class="arn-input mb-4">
+  <input
+    required
+    type="text"
+    id="university-search"
+    name="university-search"
+    placeholder="Hľadať univerzitu"
+    [(ngModel)]="universitySearch"
+    (input)="searchUniversities()"
+  />
+</div>
+
+<div
+  class="w-full xl:flex-[1] min-w-0 card-base p-5 border flex flex-col space-y-4 mb-6"
+  *ngFor="let univ of filteredUniversities"
+>
+  <form appFormValidation (ngSubmit)="saveUniversity(univ.id)" (getValidationErrors)="formValidationErrors = $event">
+    <div class="flex justify-between items-center mb-3">
+      <input
+        required
+        class="text-xl font-semibold border-b border-gray-300 focus:outline-none w-1/2"
+        name="{{univ.id}}"
+        [(ngModel)]="univ.name"
+        placeholder="Názov univerzity"
+      />
+
+      <div class="flex flex-row">
+        <div
+          class="p-2 rounded text-red-500 hover:text-red-700 transition hover:bg-red-100 cursor-pointer ml-4"
+          (click)="removeUniversity(univ.id)"
+          title="Odstrániť univerzitu"
+        >
+          <trash-outline-icon/>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-medium mb-2">Domény:</h3>
+
+    <div
+      class="flex justify-between items-center space-x-4 rounded arn-input mb-2"
+      *ngFor="let dom of univ.domain"
+    >
+      <input
+        type="text"
+        required
+        name="{{dom.id}}"
+        [(ngModel)]="dom.domain"
+        placeholder="Doména"
+      />
+
+      <div
+        class="p-2 rounded text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
+        (click)="removeDomainFromUniversity(univ.id, dom.id)"
+        title="Odstrániť doménu"
+      >
+        <trash-outline-icon/>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center h-10 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer" (click)="addDomainToUniversity(univ.id)">
+      <plus-small-outline-icon />
+    </div>
+
+    <div class="mt-4">
+      <app-arn-button
+
+        [buttonText]="'Aktualizovať údaje'"
+        [classes]="'bg-blue-600 text-white hover:bg-blue-500'"
+      >
+      </app-arn-button>
+    </div>
+  </form>
+</div>
