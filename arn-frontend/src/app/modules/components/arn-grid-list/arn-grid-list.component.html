@@ -1,4 +1,4 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg h-full bg-white">
+<div class="relative overflow-x-auto h-full">
   <table class="w-full text-sm text-left rtl:text-right">
     <thead class="text-xs uppercase bg-gray-200">
     <tr>
@@ -54,4 +54,9 @@
     </tr>
     </tbody>
   </table>
+  <plus-outline-icon *ngIf="addPlusButton"
+                     (click)="plusButtonAction.emit()"
+                     size="30"
+                     stroke="1.5"
+                     class="absolute right-4 bottom-4 bg-gray-100 rounded-xl border-2 p-1 cursor-pointer hover:bg-gray-200 element-transition transform hover:scale-125"/>
 </div>

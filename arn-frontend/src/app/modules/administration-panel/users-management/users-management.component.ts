@@ -53,6 +53,10 @@ export class UsersManagementComponent implements OnInit {
     console.log('Edit user', user);
   }
 
+  addNewAdmin(): void {
+
+  }
+
   onSearchStarted() {
     this.arnGridList.refreshGrid();
   }

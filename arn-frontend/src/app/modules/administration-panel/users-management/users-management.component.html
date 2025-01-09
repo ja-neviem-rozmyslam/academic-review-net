@@ -1,5 +1,5 @@
-<div class="h-[80vh] flex space-x-6">
-  <div class="w-[25%]">
+<div class="h-[80vh] flex space-x-2 card-base overflow-hidden">
+  <div class="max-w-[30%] w-[30%] p-4">
     <app-users-search
       [searchObject]="usersSearchCriteria$ | async"
       (startSearch)="onSearchStarted()"/>
@@ -11,8 +11,10 @@
       [initialRefresh]="true"
       [sortable]="true"
       [initialSort]="'name'"
+      [addPlusButton]="isAdminSearch"
       [searchObject]="usersSearchCriteria$ | async"
       [searchMethod]="search"
+      (plusButtonAction)="addNewAdmin()"
       (deleteAction)="deleteUser($event)"
       (editAction)="editUser($event)"
     />

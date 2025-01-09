@@ -18,10 +18,12 @@ export class ArnGridListComponent implements OnInit {
   @Input() sortable: boolean;
   @Input() initialSort: string;
   @Input() initialRefresh: boolean = false;
+  @Input() addPlusButton: boolean = false;
 
   @Output() editAction = new EventEmitter<any>();
   @Output() deleteAction = new EventEmitter<any>();
   @Output() doubleClickAction = new EventEmitter<any>();
+  @Output() plusButtonAction = new EventEmitter<void>();
 
   currentSort: { column: string; direction: 'asc' | 'desc' } = {column: '', direction: 'asc'};
 

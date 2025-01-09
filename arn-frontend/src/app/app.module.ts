@@ -61,6 +61,7 @@ import { UsersManagementComponent } from './modules/administration-panel/users-m
 import { UsersSearchComponent } from './modules/administration-panel/users-management/users-search/users-search.component';
 import { ConferenceEditComponent } from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component';
 import { UniversityManagementComponent } from './modules/administration-panel/university-management/university-management.component';
+import { ConferenceCreateModalComponent } from './modules/administration-panel/conferences-management/conference-create-modal/conference-create-modal.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,7 @@ import { UniversityManagementComponent } from './modules/administration-panel/un
     UsersSearchComponent,
     ConferenceEditComponent,
     UniversityManagementComponent,
-    ],
+    ConferenceCreateModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

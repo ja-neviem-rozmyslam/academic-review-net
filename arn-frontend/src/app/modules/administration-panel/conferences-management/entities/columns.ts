@@ -1,5 +1,5 @@
-import {ACTIONS, Column} from '../../../components/arn-grid-list/entities/Column';
-import {CONFERENCE_CLOSED_OPTIONS} from './conference-management-constants';
+import {Column} from '../../../components/arn-grid-list/entities/Column';
+import {CONFERENCE_CLOSED_OPTIONS} from './constants';
 
 export const CONFERENCE_COLUMNS: Column[] = [
   {

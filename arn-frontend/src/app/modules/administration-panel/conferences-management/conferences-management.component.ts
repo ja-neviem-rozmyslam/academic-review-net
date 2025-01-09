@@ -4,6 +4,8 @@ import {ConferenceManagementService} from './services/conference-management.serv
 import {ArnGridListComponent} from '../../components/arn-grid-list/arn-grid-list.component';
 import {ConferencesSearchStore} from './store/conferences-search.store';
 import {Router} from '@angular/router';
+import {DialogService} from '../../services/dialog.service';
+import {ConferenceCreateModalComponent} from './conference-create-modal/conference-create-modal.component';
 
 @Component({
   selector: 'app-conferences-management',
@@ -19,6 +21,7 @@ export class ConferencesManagementComponent {
 
   constructor(private conferenceManagementService: ConferenceManagementService,
               private conferencesSearchStore: ConferencesSearchStore,
+              private dialogService: DialogService,
               private router: Router) {
   }
 
@@ -27,6 +30,10 @@ export class ConferencesManagementComponent {
 
   onDoubleClick(item: any): void {
     this.router.navigate(['/administration/conference', item.id], {state: {item}});
+  }
+
+  addNewConference(): void {
+    this.dialogService.openCustomModal(ConferenceCreateModalComponent);
   }
 
   onSearchStarted() {
