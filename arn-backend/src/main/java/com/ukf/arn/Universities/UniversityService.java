@@ -13,7 +13,7 @@ public class UniversityService {
         this.universityRepository = universityRepository;
     }
 
-    public University getUniversityById(int id) {
+    public University getUniversityById(Long id) {
         return universityRepository.findById(id).orElse(null);
     }
 
