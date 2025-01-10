@@ -71,6 +71,7 @@ export class ProfilePageComponent implements OnInit {
     const modalRef = this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
       backdrop: 'dynamic',
+      closable: false,
     }, this.userDetails);
 
     modalRef.instance.profileUpdated.subscribe(() => {

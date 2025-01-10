@@ -38,6 +38,7 @@ export class FormValidationDirective {
 
     this.validateSelects();
     this.validateFileInputs();
+    this.validateDateInputs();
 
     if (this.validationErrors.emptyFields.length > 0 || this.validationErrors.invalidEmails.length > 0) {
       event.preventDefault();
@@ -47,10 +48,21 @@ export class FormValidationDirective {
     }
   }
 
+  private validateDateInputs(): void {
+    const dateInputs = this.el.nativeElement.querySelectorAll('input[type="date"][required], input[type="datetime-local"][required]');
+    dateInputs.forEach((dateInput: HTMLInputElement) => {
+      if (!dateInput.value) {
+        this.addError(dateInput, dateInput.name || 'unknown-date', 'emptyFields');
+      } else {
+        this.removeError(dateInput);
+      }
+    });
+  }
+
   private validateSelects(): void {
     const selectElements = this.el.nativeElement.querySelectorAll('select[required]');
     selectElements.forEach((select: HTMLSelectElement) => {
-      const key = select.getAttribute('ng-reflect-name') || select.name;
+      const key = select.getAttribute('name') || select.name;
       if (!select.value) {
         this.addError(select, key || 'unknown-select', 'emptyFields');
       } else {

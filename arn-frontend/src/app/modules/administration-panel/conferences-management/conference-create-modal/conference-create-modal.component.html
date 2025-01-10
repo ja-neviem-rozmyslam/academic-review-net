@@ -1,35 +1,122 @@
-<app-base-modal [modal]="modalInstance" [modalMaxWidthClass]="'max-w-2xl'">
-  <div class="space-y-2 w-full">
-    <h1 class="text-lg font-semibold mb-4">Vytvoriť Konferenciu</h1>
-    <div class="arn-input">
-      <label for="conferenceName">Názov</label>
-      <input
-        type="text"
-        id="conferenceName"
-        class="w-full"
-        placeholder="Názov konferencie"
-        [(ngModel)]='conference.conferenceName'
-      />
-    </div>
-    <div class="arn-input">
-      <label for="faculty">Fakulta</label>
-      <input
-        type="text"
-        id="faculty"
-        class="w-full"
-        placeholder="Názov fakulty"
-        [(ngModel)]='conference.faculty'
-      />
-    </div>
-    <div class="arn-input">
-      <label for="conferenceName">Názov konferencie</label>
-      <input
-        type="text"
-        id="conferenceName"
-        class="w-full"
-        placeholder="Názov konferencie"
-        [(ngModel)]='conference.conferenceName'
-      />
-    </div>
+<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalMaxWidthClass]="'max-w-6xl'">
+  <div class="flex flex-col w-full h-[65vh]">
+    <form (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event"
+          class="flex flex-col h-full">
+      <div class="flex flex-1 space-x-4">
+        <div class="w-[40%] space-y-4">
+          <div class="arn-input">
+            <label for="conferenceName">Názov</label>
+            <input
+              type="text"
+              id="conferenceName"
+              name="conferenceName"
+              class="w-full"
+              placeholder="Názov konferencie"
+              [(ngModel)]="conference.conferenceName"
+              required/>
+          </div>
+          <div class="arn-input">
+            <label for="faculty">Fakulta</label>
+            <input
+              type="text"
+              id="faculty"
+              name="faculty"
+              class="w-full"
+              placeholder="Názov fakulty"
+              [(ngModel)]="conference.faculty"
+              required/>
+          </div>
+          <div class="arn-input">
+            <label for="uploadDeadline">Dátum odovzdania</label>
+            <app-arn-date-picker
+              id="uploadDeadline"
+              [name]="'uploadDeadline'"
+              [dateTime]="true"
+              [(selectedDate)]="conference.uploadDeadline"
+              required/>
+          </div>
+          <div class="arn-input">
+            <label for="reviewDeadline">Dátum posúdenia</label>
+            <app-arn-date-picker
+              id="reviewDeadline"
+              [name]="'reviewDeadline'"
+              [dateTime]="true"
+              [(selectedDate)]="conference.reviewDeadline"
+              required/>
+          </div>
+          <div class="mt-5 flex items-center">
+            <input
+              id="setPassword"
+              [name]="'setPassword'"
+              aria-describedby="setPassword"
+              type="checkbox"
+              class="checkbox-custom p-2"
+              [(ngModel)]="setPassword"/>
+            <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
+              Chcete tejto konferencií nastaviť heslo?
+            </label>
+          </div>
+          <div *ngIf="setPassword" class="arn-input mt-4">
+            <label for="conferencePassword">Heslo</label>
+            <input
+              type="text"
+              id="conferencePassword"
+              name="conferencePassword"
+              class="w-full"
+              placeholder="Heslo"
+              [(ngModel)]="conference.password"
+              required/>
+          </div>
+        </div>
+
+        <hr class="w-1 h-[93%] bg-gray-100 border-0 rounded">
+
+        <div class="w-[60%]">
+          <div class="mb-3">
+            <h2 class="text-lg font-semibold">Hodnotiaci formulár</h2>
+            <p class="text-gray-600 text-sm">Tu vytvorte hodnotiaci formulár, na základe ktorého budú recenzenti
+              hodnotiť práce.</p>
+          </div>
+          <div class="flex flex-col max-h-[50vh] overflow-y-auto">
+            <div *ngFor="let field of reviewFormFields; let i = index" class="space-y-4">
+              <div class="arn-input">
+                <label [for]="'reviewedCategory-' + i">Kategória hodnotenia</label>
+                <input
+                  type="text"
+                  [id]="'reviewedCategory-' + i"
+                  [(ngModel)]="field.reviewedCategory"
+                  name="reviewedCategory"
+                  class="w-full"
+                  placeholder="Kategória hodnotenia"
+                  required
+                />
+              </div>
+
+              <div class="arn-input">
+                <label [for]="'fieldType-' + i">Typ poľa</label>
+                <select
+                  [id]="'fieldType-' + i"
+                  [(ngModel)]="field.isTextField"
+                  name="fieldType"
+                  class="w-full"
+                  required
+                >
+                  <option [value]="true">Textové pole</option>
+                  <option [value]="false">Výberové pole</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" (click)="addNewField()" class="btn btn-primary mt-4">Pridať nové pole</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-auto">
+        <app-arn-button
+          [classes]="'w-full'"
+          buttonText="Vytvoriť"
+          type="submit"/>
+      </div>
+    </form>
   </div>
 </app-base-modal>

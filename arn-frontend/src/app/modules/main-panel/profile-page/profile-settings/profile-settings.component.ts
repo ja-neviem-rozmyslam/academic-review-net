@@ -45,7 +45,6 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
   }
 
   updateProfile(): void {
-    //console.log(this.userDetails);
     this.isFetching = true;
     this.profileSettingsService.updateProfile(this.userDetails).pipe().subscribe(() => {
       this.profileUpdated.emit();
