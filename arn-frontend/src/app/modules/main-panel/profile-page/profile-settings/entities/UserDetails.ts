@@ -3,4 +3,5 @@ export interface UserDetails {
   name: string;
   surname: string;
   universityId: number;
+  role?: string;
 }
