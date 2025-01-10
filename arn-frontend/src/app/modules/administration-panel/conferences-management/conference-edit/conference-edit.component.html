@@ -81,6 +81,18 @@
 
   } @else if (ASSIGN) {
 
+  <div class="w-full relative">
+    <app-arn-grid-list
+      [data]="submissions"
+      [columns]="columns"
+      [initialRefresh]="true"
+      [sortable]="true"
+      [searchObject]="conferenceSearchCriteria$ | async"
+      [initialSort]="'conferenceName'"
+      [searchMethod]="search">
+    </app-arn-grid-list>
+  </div>
+
   } @else if (SUBMISSION) {
 
   }

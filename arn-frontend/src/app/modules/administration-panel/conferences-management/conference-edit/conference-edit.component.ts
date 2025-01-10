@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ASSIGN, EDIT, SUBMISSION, TABOPTIONS} from '../entities/constants';
 import {ConferenceEditService} from './services/conference-edit.service'
-
+import {CONFERENCE_COLUMNS} from './entities/columns'
 @Component({
   selector: 'app-conference-edit',
   templateUrl: './conference-edit.component.html',
@@ -15,14 +15,30 @@ export class ConferenceEditComponent implements OnInit {
 
   showAlert: boolean;
   alertMessage: string;
+  columns = CONFERENCE_COLUMNS;
+  submissions: any;
 
   constructor(private router: Router, private conferenceEditService: ConferenceEditService) {}
 
   ngOnInit(): void {
     this.item = window.history.state.item;
+    this.getSubmissions();
     if(this.item == null) {
       this.viewConferences();
     }
+  }
+
+  getSubmissions() {
+    this.conferenceEditService.getSubmissions(this.item.id).subscribe({
+          next: (data) => {
+            this.submissions = data.body.map(item => ({
+              ...item,
+              authorName: item.author?.name + " " + item.author?.surname,
+              reviewerName: item.reviewer?.name + " " + item.reviewer?.surname,
+            }));
+
+          }
+        });
   }
 
   viewConferences() {

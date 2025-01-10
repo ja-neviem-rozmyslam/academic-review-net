@@ -15,4 +15,7 @@ export class ConferenceEditService {
       return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/update`, conference);
   }
 
+  getSubmissions(conferenceId: number): Observable<any> {
+      return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/submissions`);
+  }
 }
