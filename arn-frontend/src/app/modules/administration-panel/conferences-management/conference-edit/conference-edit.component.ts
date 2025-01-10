@@ -13,6 +13,9 @@ export class ConferenceEditComponent implements OnInit {
   tabOptions = TABOPTIONS;
   selectedOption = TABOPTIONS[0].value;
 
+  showAlert: boolean;
+  alertMessage: string;
+
   constructor(private router: Router, private conferenceEditService: ConferenceEditService) {}
 
   ngOnInit(): void {
@@ -27,7 +30,13 @@ export class ConferenceEditComponent implements OnInit {
   }
 
   updateConference() {
-    this.conferenceEditService.saveConference(this.item.id, this.item).subscribe();
+    this.conferenceEditService.saveConference(this.item.id, this.item).subscribe({
+      next: () => {
+        this.showAlert = true;
+        this.alertMessage = "Údaje konferencie boli zmenené.";
+        setTimeout(() => this.showAlert= false, 3000);
+      }
+    });
   }
 
   protected readonly EDIT = EDIT;
