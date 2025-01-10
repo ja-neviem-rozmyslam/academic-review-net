@@ -59,4 +59,9 @@ public class AdministrationController {
             @PathVariable Long id, @RequestBody ConferenceDto conferenceDto) {
         return ResponseEntity.ok(administrationService.updateConference(id, conferenceDto));
     }
+
+    @GetMapping("/conference/{id}/submissions")
+    public ResponseEntity<?> getConferenceSubmissions( @PathVariable Long id) {
+        return ResponseEntity.ok(administrationService.getConferenceSubmissions(id));
+    }
 }

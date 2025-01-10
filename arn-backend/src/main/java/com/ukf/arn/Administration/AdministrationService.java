@@ -9,10 +9,9 @@ import com.ukf.arn.Conferences.Repository.ConferenceRepository;
 import com.ukf.arn.Conferences.Repository.ConferenceRepositoryImpl;
 import com.ukf.arn.EmailDomain.EmailDomainDto;
 import com.ukf.arn.EmailDomain.EmailDomainRepository;
-import com.ukf.arn.Entities.Conference;
-import com.ukf.arn.Entities.EmailDomain;
-import com.ukf.arn.Entities.University;
-import com.ukf.arn.Entities.User;
+import com.ukf.arn.Entities.*;
+import com.ukf.arn.Submissions.Objects.SubmissionDto;
+import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Universities.UniversityDto;
 import com.ukf.arn.Universities.UniversityRepository;
 import com.ukf.arn.Users.Objects.UserDto;
@@ -34,12 +33,14 @@ public class AdministrationService {
     private final UserRepository userRepository;
     private final UniversityRepository universityRepository;
     private final EmailDomainRepository emailDomainRepository;
+    private final SubmissionRepository submissionRepository;
 
-    public AdministrationService(ConferenceRepository conferenceRepository, UserRepository userRepository, UniversityRepository universityRepository, EmailDomainRepository emailDomainRepository) {
+    public AdministrationService(ConferenceRepository conferenceRepository, UserRepository userRepository, UniversityRepository universityRepository, EmailDomainRepository emailDomainRepository, SubmissionRepository submissionRepository) {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
         this.emailDomainRepository = emailDomainRepository;
+        this.submissionRepository = submissionRepository;
     }
 
     public List<ConferenceDto> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
@@ -132,5 +133,39 @@ public class AdministrationService {
         conferenceRepository.save(conference);
 
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> getConferenceSubmissions(Long conferenceId) {
+        List<Submission> submissions = submissionRepository.findByConferencesId(conferenceId);
+        List<SubmissionDto> submissionsDto = submissions.stream()
+                .map(this::mapToSubmissionDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(submissionsDto);
+    }
+
+    public SubmissionDto mapToSubmissionDto(Submission submission) {
+        SubmissionDto dto = new SubmissionDto();
+        dto.setId(submission.getId());
+        dto.setTitle(submission.getThesisTitle());
+
+        if(submission.getReviewerId() != null) {
+            User reviewer = userRepository.findById(submission.getReviewerId()).orElse(null);
+            dto.setReviewer(mapUserToDto(reviewer));
+        }
+
+        User author = userRepository.findById(submission.getAuthorId()).orElse(null);
+
+        if(author != null) {
+            dto.setAuthor(mapUserToDto(author));
+        }
+
+        return dto;
+    }
+
+    private UserDto mapUserToDto(User user) {
+        UserDto dto = new UserDto();
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        return dto;
     }
 }
