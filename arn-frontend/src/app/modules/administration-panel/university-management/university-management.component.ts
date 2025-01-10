@@ -28,6 +28,7 @@ export class UniversityManagementComponent implements OnInit {
 
   alertMessage = '';
   alertVisible = false;
+  alertType = 'SUCCESS';
 
   tempIdCounter = -1;
 
@@ -126,7 +127,7 @@ export class UniversityManagementComponent implements OnInit {
 
   saveUniversity(univId: number): void {
     if (this.formValidationErrors) {
-      this.showAlert("Všetky polia musia byť vyplnené.");
+      this.showAlert("Všetky polia musia byť vyplnené.", 'ERROR');
       return;
     }
 
@@ -149,8 +150,9 @@ export class UniversityManagementComponent implements OnInit {
     });
   }
 
-  showAlert(message: string) {
+  showAlert(message: string, alertType = 'SUCCESS') {
     this.alertMessage = message;
+    this.alertType = alertType;
     this.alertVisible = true;
     setTimeout(() => this.alertVisible = false, 5000);
   }

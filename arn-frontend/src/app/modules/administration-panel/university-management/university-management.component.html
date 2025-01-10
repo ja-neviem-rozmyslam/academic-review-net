@@ -1,13 +1,26 @@
 <app-arn-toast [showToast]="alertVisible">
-  <div class="toast-icon text-green-500 bg-green-100 rounded">
-    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-         viewBox="0 0 20 20">
-      <path
-        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-    </svg>
-    <span class="sr-only">Success</span>
-  </div>
+  @if (alertType==="SUCCESS") {
+    <div class="toast-icon text-green-500 bg-green-100 rounded">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+           viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+      </svg>
+      <span class="sr-only">Success</span>
+    </div>
+  }
+  @else {
+    <div class="toast-icon text-red-500 bg-red-100">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+           viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+      </svg>
+      <span class="sr-only">Error</span>
+    </div>
+  }
   <div class="ms-3 text-sm font-normal">{{ alertMessage }}</div>
+
 </app-arn-toast>
 
 <div class="flex items-center justify-between mb-6">
@@ -37,14 +50,14 @@
   class="w-full xl:flex-[1] min-w-0 card-base p-5 border flex flex-col space-y-4 mb-6"
   *ngFor="let univ of filteredUniversities"
 >
-  <form appFormValidation (ngSubmit)="saveUniversity(univ.id)" (getValidationErrors)="formValidationErrors = $event">
-    <div class="flex justify-between items-center mb-3">
+  <form appFormValidation (getValidationErrors)="formValidationErrors = $event" (ngSubmit)="saveUniversity(univ.id) ">
+    <div class="flex justify-between items-center mb-3 arn-input">
       <input
-        required
         class="text-xl font-semibold border-b border-gray-300 focus:outline-none w-1/2"
-        name="{{univ.id}}"
+        name="university-name"
         [(ngModel)]="univ.name"
         placeholder="Názov univerzity"
+        required
       />
 
       <div class="flex flex-row">
@@ -66,10 +79,11 @@
     >
       <input
         type="text"
-        required
-        name="{{dom.id}}"
+        [attr.name]="'domain-name-' + dom.id"
+        name="domain-name-{{dom.id}}"
         [(ngModel)]="dom.domain"
         placeholder="Doména"
+        required
       />
 
       <div
@@ -87,9 +101,7 @@
 
     <div class="mt-4">
       <app-arn-button
-
         [buttonText]="'Aktualizovať údaje'"
-        [classes]="'bg-blue-600 text-white hover:bg-blue-500'"
       >
       </app-arn-button>
     </div>

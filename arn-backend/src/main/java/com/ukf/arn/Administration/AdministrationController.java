@@ -47,4 +47,10 @@ public class AdministrationController {
         return administrationService.saveUniversity(universityDto, removedDomains);
     }
 
+    @PostMapping("/university/{id}/remove")
+    public ResponseEntity<?> deleteUniversity(
+            @PathVariable Long id, @RequestBody UniversityDto universityDto) {
+        return ResponseEntity.ok(administrationService.removeUniversity(id, universityDto));
+    }
+
 }

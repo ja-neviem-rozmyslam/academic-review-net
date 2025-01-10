@@ -109,4 +109,16 @@ public class AdministrationService {
 
         return ResponseEntity.ok().build();
     }
+
+    public ResponseEntity<?> removeUniversity(Long universityId, UniversityDto universityDto) {
+        if (universityDto.getDomain() != null) {
+            for (EmailDomainDto domainDto : universityDto.getDomain()) {
+                EmailDomain domain = emailDomainRepository.findById(domainDto.getId()).orElseThrow();
+                emailDomainRepository.delete(domain);
+            }
+        }
+        University university = universityRepository.findById(universityId).orElseThrow();
+        universityRepository.delete(university);
+        return ResponseEntity.ok().build();
+    }
 }
