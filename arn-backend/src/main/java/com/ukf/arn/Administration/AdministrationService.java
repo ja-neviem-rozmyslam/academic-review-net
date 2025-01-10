@@ -121,4 +121,16 @@ public class AdministrationService {
         universityRepository.delete(university);
         return ResponseEntity.ok().build();
     }
+
+    public ResponseEntity<?> updateConference(Long conferenceId, ConferenceDto conferenceDto) {
+        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
+        conference.setConferenceName(conferenceDto.getConferenceName());
+        conference.setFaculty(conferenceDto.getFaculty());
+        conference.setReviewDeadline(conferenceDto.getReviewDeadline());
+        conference.setUploadDeadline(conferenceDto.getUploadDeadline());
+
+        conferenceRepository.save(conference);
+
+        return ResponseEntity.ok().build();
+    }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ASSIGN, EDIT, SUBMISSION, TABOPTIONS} from '../entities/constants';
+import {ConferenceEditService} from './services/conference-edit.service'
 
 @Component({
   selector: 'app-conference-edit',
@@ -12,7 +13,7 @@ export class ConferenceEditComponent implements OnInit {
   tabOptions = TABOPTIONS;
   selectedOption = TABOPTIONS[0].value;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private conferenceEditService: ConferenceEditService) {}
 
   ngOnInit(): void {
     this.item = window.history.state.item;
@@ -26,7 +27,7 @@ export class ConferenceEditComponent implements OnInit {
   }
 
   updateConference() {
-    console.log("UPDATE");
+    this.conferenceEditService.saveConference(this.item.id, this.item).subscribe();
   }
 
   protected readonly EDIT = EDIT;
