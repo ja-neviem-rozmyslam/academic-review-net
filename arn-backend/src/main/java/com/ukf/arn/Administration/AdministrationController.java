@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api-admin")
@@ -51,6 +52,11 @@ public class AdministrationController {
     public ResponseEntity<?> deleteUniversity(
             @PathVariable Long id, @RequestBody UniversityDto universityDto) {
         return ResponseEntity.ok(administrationService.removeUniversity(id, universityDto));
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID userId) {
+        return administrationService.deleteUser(userId);
     }
 
 }

@@ -28,10 +28,10 @@
       @if (modalSettings.showFooter) {
         <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b gap-3">
           <app-arn-button
-            [buttonText]="'Uložiť'"
+            [buttonText]="modalSettings.buttonText.confirm"
             (buttonClick)="onAccept()"></app-arn-button>
           <app-arn-button
-            [buttonText]="'Zrušiť'"
+            [buttonText]="modalSettings.buttonText.cancel"
             [negativeColor]="true"
             (buttonClick)="onCancel()"></app-arn-button>
         </div>

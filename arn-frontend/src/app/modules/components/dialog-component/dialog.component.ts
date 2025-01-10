@@ -14,6 +14,7 @@ export class DialogComponent extends BaseModal {
     this.dialogSettings = dialogSettings;
     if (dialogSettings.dialogType === CONFIRM) {
       this.modalSettings.showFooter = true;
+      this.modalSettings.buttonText = dialogSettings.buttonText;
     }
   }
 

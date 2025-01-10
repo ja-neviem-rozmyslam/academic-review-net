@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/email-domains/**").anonymous()
                         .requestMatchers("/api/password-reset/**").anonymous()
                         .requestMatchers("/api/password-reset/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -18,13 +18,11 @@ import com.ukf.arn.Universities.UniversityRepository;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.Users.Repository.UserRepositoryImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -120,5 +118,17 @@ public class AdministrationService {
         University university = universityRepository.findById(universityId).orElseThrow();
         universityRepository.delete(university);
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> deleteUser(UUID userId) {
+        try {
+            User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+            userRepository.delete(user);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the user");
+        }
     }
 }

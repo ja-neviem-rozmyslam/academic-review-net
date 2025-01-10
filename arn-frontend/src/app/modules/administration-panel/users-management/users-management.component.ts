@@ -7,6 +7,11 @@ import {User} from '../../objects/User';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, take, tap} from 'rxjs';
 import {Column} from '../../components/arn-grid-list/entities/Column';
+import {DialogService} from '../../services/dialog.service';
+import {
+  ConferenceCreateModalComponent
+} from "../conferences-management/conference-create-modal/conference-create-modal.component";
+import {EditUserModalComponent} from "../../components/edit-user-modal/edit-user-modal.component";
 
 @Component({
   selector: 'app-users-management',
@@ -23,7 +28,8 @@ export class UsersManagementComponent implements OnInit {
 
   constructor(private usersManagementService: UsersManagementService,
               private route: ActivatedRoute,
-              private usersSearchStore: UsersSearchStore) {
+              private usersSearchStore: UsersSearchStore,
+              private dialogService: DialogService) {
   }
 
   ngOnInit(): void {
@@ -46,15 +52,19 @@ export class UsersManagementComponent implements OnInit {
     this.usersManagementService.getUsers(searchObject, sortOptions);
 
   deleteUser(user: User): void {
-    console.log('Delete user', user);
+    this.dialogService.openConfirmDialog('Vymazať používateľa',  `Chcete naozaj vymazať používateľa ${user.name}?`, () => {
+      this.usersManagementService.deleteUser(user.id).subscribe(() => {
+        this.arnGridList.refreshGrid();
+      });
+    }, {confirm: 'Vymazať', cancel: 'Zrušiť'});
   }
 
   editUser(user: User): void {
-    console.log('Edit user', user);
+    this.dialogService.openCustomModal(EditUserModalComponent);
   }
 
   addNewAdmin(): void {
-
+    console.log('Add new admin');
   }
 
   onSearchStarted() {

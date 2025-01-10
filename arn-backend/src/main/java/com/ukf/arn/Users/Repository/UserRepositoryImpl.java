@@ -2,7 +2,7 @@ package com.ukf.arn.Users.Repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.StringExpression;
+//import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
