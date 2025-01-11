@@ -84,6 +84,10 @@ export const routes: Routes = [
         component: ConferencePageComponent
       },
       {
+        path: 'submissions/:submissionId',
+        component: ConferencePageComponent
+      },
+      {
         path: 'my-theses',
         component: MyThesesComponent
       },

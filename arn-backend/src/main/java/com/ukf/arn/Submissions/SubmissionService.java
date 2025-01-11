@@ -83,6 +83,7 @@ public class SubmissionService {
             submission.setThesisTitle(submissionRequest.getTitle());
             submission.setAbstractSk(submissionRequest.getAbstractSk());
             submission.setAbstractEn(submissionRequest.getAbstractEn());
+            submission.setThesesType(submissionRequest.getCategory());
             submission.setAuthorId(SecurityConfig.getLoggedInUser().getId());
             submission.setCoauthors(submissionRequest.getCoauthors());
         } else {

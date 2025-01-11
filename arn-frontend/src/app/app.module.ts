@@ -57,6 +57,7 @@ import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn
 import { ConferencesManagementComponent } from './modules/administration-panel/conferences-management/conferences-management.component';
 import { ConferencesSearchComponent } from './modules/administration-panel/conferences-management/conferences-search/conferences-search.component';
 import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcriteria/arn-searchcriteria.component';
+import {ArnLoaderComponent} from './modules/components/arn-loader/arn-loader.component';
 import { UsersManagementComponent } from './modules/administration-panel/users-management/users-management.component';
 import { UsersSearchComponent } from './modules/administration-panel/users-management/users-search/users-search.component';
 import { ConferenceEditComponent } from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component';
@@ -100,6 +101,8 @@ import { EditUserModalComponent } from './modules/components/edit-user-modal/edi
     ArnDatePickerComponent,
     ConferencesManagementComponent,
     ConferencesSearchComponent,
+    ArnSearchcriteriaComponent,
+    ArnLoaderComponent,
     ArnSearchcriteriaComponent,
     UsersManagementComponent,
     UsersSearchComponent,
