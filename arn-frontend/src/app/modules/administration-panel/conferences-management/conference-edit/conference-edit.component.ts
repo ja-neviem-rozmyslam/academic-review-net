@@ -41,7 +41,16 @@ export class ConferenceEditComponent implements OnInit {
       next: (data) => {
         const blob = new Blob([data], { type: 'application/zip' });
         const url = window.URL.createObjectURL(blob);
-        window.open(url);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `konferencia-${this.item.id}.zip`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Nastal problém pri sťahovaní súborov: ', err);
       }
     });
   }

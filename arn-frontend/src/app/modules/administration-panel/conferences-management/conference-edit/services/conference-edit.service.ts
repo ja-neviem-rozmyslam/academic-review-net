@@ -20,6 +20,8 @@ export class ConferenceEditService {
   }
 
   downloadData(conferenceId: number): Observable<Blob> {
-    return this.http.get(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/download`, { responseType: 'blob' });
+    return this.http.get(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/download`, {
+      responseType: 'blob'
+    });
   }
 }
