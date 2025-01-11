@@ -13,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 
 import org.springframework.data.domain.Sort.Direction;
 import java.util.List;
+import java.util.UUID;
 
 
 import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
@@ -33,6 +34,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .where(predicate)
                 .orderBy(buildSort(sort))
                 .fetch();
+    }
+
+    public String getNameAndSurnameById(String uuid) {
+        return new JPAQuery<>(entityManager)
+                .select(USER.name.concat(" ").concat(USER.surname))
+                .from(USER)
+                .where(USER.id.eq(UUID.fromString(uuid)))
+                .fetchOne();
     }
 
     public static BooleanBuilder createPredicate(UserSearchDto searchObject) {

@@ -31,14 +31,28 @@ export class ConferenceEditComponent implements OnInit {
   getSubmissions() {
     this.conferenceEditService.getSubmissions(this.item.id).subscribe({
           next: (data) => {
-            this.submissions = data.body.map(item => ({
-              ...item,
-              authorName: item.author?.name + " " + item.author?.surname,
-              reviewerName: item.reviewer?.name + " " + item.reviewer?.surname,
-            }));
-
+            this.submissions = data.body;
           }
-        });
+    });
+  }
+
+  downloadData() {
+    this.conferenceEditService.downloadData(this.item.id).subscribe({
+      next: (data) => {
+        const blob = new Blob([data], { type: 'application/zip' });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `konferencia-${this.item.id}.zip`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Nastal problém pri sťahovaní súborov: ', err);
+      }
+    });
   }
 
   viewConferences() {

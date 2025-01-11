@@ -6,6 +6,8 @@ import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Universities.UniversityDto;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +66,18 @@ public class AdministrationController {
     @GetMapping("/conference/{id}/submissions")
     public ResponseEntity<?> getConferenceSubmissions( @PathVariable Long id) {
         return ResponseEntity.ok(administrationService.getConferenceSubmissions(id));
+    }
+
+    @GetMapping("/conference/{id}/download")
+    public ResponseEntity<byte[]> downloadConferenceSubmissions(@PathVariable Long id) {
+        byte[] zipBytes = administrationService.downloadConferenceSubmissions(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "konferencia-" + id + ".zip");
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(zipBytes);
     }
     @PostMapping("/user/{userId}/delete")
     public ResponseEntity<?> deleteUser(@PathVariable UUID userId) {

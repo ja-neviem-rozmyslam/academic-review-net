@@ -20,7 +20,14 @@
 <div class="w-full card-base p-4">
   @if (selectedOption === EDIT) {
     <div class="space-y-5">
-      <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
+      <div class="flex justify-between">
+        <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
+        <app-arn-button
+          [buttonText]="'Stiahnuť dáta'"
+          (buttonClick)="downloadData()">
+        </app-arn-button>
+      </div>
+
       <div class="grid grid-cols-2 gap-4">
         <div class="arn-input">
           <label for="conferenceName">Názov konferencie</label>
@@ -87,9 +94,7 @@
       [columns]="columns"
       [initialRefresh]="true"
       [sortable]="true"
-      [searchObject]="conferenceSearchCriteria$ | async"
-      [initialSort]="'conferenceName'"
-      [searchMethod]="search">
+      [initialSort]="'title'">
     </app-arn-grid-list>
   </div>
 
