@@ -36,6 +36,16 @@ export class ConferenceEditComponent implements OnInit {
     });
   }
 
+  downloadData() {
+    this.conferenceEditService.downloadData(this.item.id).subscribe({
+      next: (data) => {
+        const blob = new Blob([data], { type: 'application/zip' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      }
+    });
+  }
+
   viewConferences() {
     this.router.navigate(['/administration/conference-management']);
   }
