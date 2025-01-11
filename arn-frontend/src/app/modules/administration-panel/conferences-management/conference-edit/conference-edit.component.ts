@@ -31,14 +31,9 @@ export class ConferenceEditComponent implements OnInit {
   getSubmissions() {
     this.conferenceEditService.getSubmissions(this.item.id).subscribe({
           next: (data) => {
-            this.submissions = data.body.map(item => ({
-              ...item,
-              authorName: item.author?.name + " " + item.author?.surname,
-              reviewerName: item.reviewer?.name + " " + item.reviewer?.surname,
-            }));
-
+            this.submissions = data.body;
           }
-        });
+    });
   }
 
   viewConferences() {

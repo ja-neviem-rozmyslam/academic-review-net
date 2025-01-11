@@ -8,12 +8,16 @@ export const CONFERENCE_COLUMNS: Column[] = [
   },
   {
     title: 'Študent',
-    name: 'authorName',
+    name: 'author',
     width: 30,
+    template: (row) => `${row.author.name} ${row.author.surname}`,
   },
   {
     title: 'Recenzent',
-    name: 'reviewerName',
+    name: 'reviewer',
     width: 20,
-  },
+    template: (row) => {
+      return row.reviewer === null ? 'Žiadny' : `${row.reviewer.name} ${row.reviewer.surname}`;
+    }
+  }
 ];
