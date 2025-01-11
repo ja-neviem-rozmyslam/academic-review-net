@@ -12,8 +12,7 @@
               class="w-full"
               placeholder="Názov konferencie"
               [(ngModel)]="conference.conferenceName"
-              required
-            />
+              required/>
           </div>
           <div class="arn-input">
             <label for="faculty">Fakulta</label>
@@ -24,8 +23,7 @@
               class="w-full"
               placeholder="Názov fakulty"
               [(ngModel)]="conference.faculty"
-              required
-            />
+              required/>
           </div>
           <div class="arn-input">
             <label for="uploadDeadline">Dátum odovzdania</label>
@@ -34,8 +32,7 @@
               [name]="'uploadDeadline'"
               [dateTime]="true"
               [(selectedDate)]="conference.uploadDeadline"
-              required
-            />
+              required/>
           </div>
           <div class="arn-input">
             <label for="reviewDeadline">Dátum posúdenia</label>
@@ -44,8 +41,7 @@
               [name]="'reviewDeadline'"
               [dateTime]="true"
               [(selectedDate)]="conference.reviewDeadline"
-              required
-            />
+              required/>
           </div>
           <div class="mt-5 flex items-center">
             <input
@@ -54,8 +50,7 @@
               aria-describedby="setPassword"
               type="checkbox"
               class="checkbox-custom p-2"
-              [(ngModel)]="setPassword"
-            />
+              [(ngModel)]="setPassword"/>
             <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
               Chcete tejto konferencií nastaviť heslo?
             </label>
@@ -69,8 +64,7 @@
               class="w-full"
               placeholder="Heslo"
               [(ngModel)]="conference.password"
-              required
-            />
+              required/>
           </div>
         </div>
         <hr class="w-1 h-[93%] bg-gray-100 border-0 rounded">
@@ -81,7 +75,7 @@
           </div>
           <div class="flex flex-col max-h-[50vh] overflow-y-auto">
             <div class="space-y-4">
-              @for (field of reviewFormFields; track field) {
+              @for (field of conference.reviewForm; track field) {
                 <div class="flex items-end space-x-2">
                   <div class="arn-input w-8/12">
                     <label for="{{ 'reviewedCategory-' + field.id }}" class="text-sm font-medium text-gray-700">
@@ -95,23 +89,20 @@
                       class="w-full border rounded px-2 py-1"
                       placeholder="Kategória hodnotenia"
                       autocomplete="off"
-                      required
-                    />
+                      required/>
                   </div>
                   <div class="w-3/12">
                     <app-arn-select
                       [name]="'fieldType' + field.id"
                       [options]="REVIEW_FORM_OPTIONS"
                       [selectedOption]="REVIEW_FORM_TEXT"
-                      (selectedOptionChange)="onFieldTypeChange($event, field)"
-                    ></app-arn-select>
+                      (selectedOptionChange)="onFieldTypeChange($event, field)" />
                   </div>
                   <div class="w-1/12 flex justify-center">
                     <div
-                      class="p-2 rounded text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
+                      class="p-2 rounded-lg text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
                       title="Odstrániť doménu"
-                      (click)="removeField(field.id)"
-                    >
+                      (click)="removeField(field.id)">
                       <trash-outline-icon/>
                     </div>
                   </div>
@@ -120,8 +111,7 @@
             </div>
             <div
               class="flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer mt-4"
-              (click)="addNewField()"
-            >
+              (click)="addNewField()">
               <plus-small-outline-icon/>
             </div>
           </div>
@@ -131,8 +121,7 @@
         <app-arn-button
           [classes]="'w-full'"
           buttonText="Vytvoriť"
-          type="submit"
-        />
+          type="submit"/>
       </div>
     </form>
   </div>

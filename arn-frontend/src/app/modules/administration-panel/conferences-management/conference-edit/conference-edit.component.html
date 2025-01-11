@@ -35,7 +35,7 @@
             type="text"
             id="conferenceName"
             placeholder="Názov konferencie"
-            [(ngModel)]='item.conferenceName'
+            [(ngModel)]='conference.conferenceName'
             class="w-full p-2 border border-gray-300 rounded"
           />
         </div>
@@ -46,7 +46,7 @@
             type="text"
             id="faculty"
             placeholder="Fakulta"
-            [(ngModel)]='item.faculty'
+            [(ngModel)]='conference.faculty'
             class="w-full p-2 border border-gray-300 rounded">
         </div>
       </div>
@@ -57,7 +57,7 @@
           <input
             type="datetime-local"
             id="reviewDeadline"
-            [(ngModel)]='item.reviewDeadline'
+            [(ngModel)]='conference.reviewDeadline'
             class="w-full p-2 border border-gray-300 rounded"
           />
         </div>
@@ -67,9 +67,83 @@
           <input
             type="datetime-local"
             id="uploadDeadline"
-            [(ngModel)]='item.uploadDeadline'
+            [(ngModel)]='conference.uploadDeadline'
             class="w-full p-2 border border-gray-300 rounded"
           />
+        </div>
+      </div>
+
+      <div class="space-x-4 flex h-9">
+        <div class="flex items-center">
+          <input
+            id="setPassword"
+            name="setPassword"
+            aria-describedby="setPassword"
+            type="checkbox"
+            class="checkbox-custom p-2"
+            [(ngModel)]="setPassword"/>
+          <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
+            Chcete tejto konferencií nastaviť heslo?
+          </label>
+        </div>
+        <div *ngIf="setPassword" class="arn-input w-1/4">
+          <input
+            type="text"
+            id="conferencePassword"
+            name="conferencePassword"
+            class="w-full"
+            placeholder="Heslo"
+            [(ngModel)]="conference.password"
+            required/>
+        </div>
+      </div>
+
+      <div class="w-[70%]">
+        <div class="mb-3">
+          <h2 class="text-lg font-semibold">Hodnotiaci formulár</h2>
+          <p class="text-gray-600 text-sm">Tu vytvorte hodnotiaci formulár, na základe ktorého budú recenzenti hodnotiť práce.</p>
+        </div>
+        <div class="flex flex-col max-h-[40vh] overflow-y-auto">
+          <div class="space-y-4">
+            @for (field of conference.reviewForm; track field) {
+              <div class="flex items-end space-x-2">
+                <div class="arn-input w-8/12">
+                  <label for="{{ 'reviewedCategory-' + field.id }}" class="text-sm font-medium text-gray-700">
+                    Hodnotený aspekt
+                  </label>
+                  <input
+                    type="text"
+                    [id]="'reviewedCategory-' + field.id"
+                    [(ngModel)]="field.reviewedCategory"
+                    name="{{ 'reviewedCategory-' + field.id }}"
+                    class="w-full border rounded px-2 py-1"
+                    placeholder="Kategória hodnotenia"
+                    autocomplete="off"
+                    required/>
+                </div>
+                <div class="w-3/12">
+                  <app-arn-select
+                    [name]="'fieldType' + field.id"
+                    [options]="REVIEW_FORM_OPTIONS"
+                    [selectedOption]="getSelectedOption(field)"
+                    (selectedOptionChange)="onFieldTypeChange($event, field)" />
+                </div>
+                <div class="w-1/12 flex justify-center">
+                  <div
+                    class="p-2 rounded-lg text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
+                    title="Odstrániť doménu"
+                    (click)="removeField(field.id)">
+                    <trash-outline-icon/>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <div
+            class="flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer mt-4"
+            (click)="addNewField()">
+            <plus-small-outline-icon/>
+          </div>
         </div>
       </div>
 

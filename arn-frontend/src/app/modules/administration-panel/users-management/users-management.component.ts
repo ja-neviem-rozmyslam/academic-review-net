@@ -8,9 +8,6 @@ import {ActivatedRoute} from '@angular/router';
 import {combineLatest, take, tap} from 'rxjs';
 import {Column} from '../../components/arn-grid-list/entities/Column';
 import {DialogService} from '../../services/dialog.service';
-import {
-  ConferenceCreateModalComponent
-} from "../conferences-management/conference-create-modal/conference-create-modal.component";
 import {EditUserModalComponent} from "../../components/edit-user-modal/edit-user-modal.component";
 
 @Component({

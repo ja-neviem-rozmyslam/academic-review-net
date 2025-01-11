@@ -3,7 +3,7 @@
     <thead class="text-xs uppercase bg-gray-200">
     <tr>
       <th *ngFor="let column of columns"
-          class="p-4 border-b border-gray-300 cursor-pointer"
+          class="p-4 border-b border-gray-300 cursor-pointer bg-gray-200 top-0 sticky"
           [style.width.%]="calculateWidth(column)"
           [class.sortable]="isDataColumn(column)"
           (click)="toggleSort(column)">

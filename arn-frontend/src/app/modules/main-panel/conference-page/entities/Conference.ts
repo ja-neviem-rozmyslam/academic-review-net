@@ -1,3 +1,5 @@
+import {ReviewFormObject} from '../../conference/entities/ReviewFormObject';
+
 export class Conference {
   id?: number = null;
   conferenceName: string = '';
@@ -5,6 +7,6 @@ export class Conference {
   uploadDeadline: string = '';
   reviewDeadline: string = '';
   faculty: string = '';
-  reviewForm: string = '';
+  reviewForm: ReviewFormObject[] = [];
   closed?: boolean = false;
 }

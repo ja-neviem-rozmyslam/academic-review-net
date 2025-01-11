@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { BaseModal } from '../../../components/base-modal/entities/BaseModal';
 import { Conference } from '../../../main-panel/conference-page/entities/Conference';
 import { FormValidationErrors } from '../../../objects/FormValidationErrors';
 import { ModalSettings } from '../../../components/base-modal/entities/ModalSettings';
 import { ReviewFormObject } from '../../../main-panel/conference/entities/ReviewFormObject';
 import { REVIEW_FORM_OPTIONS, REVIEW_FORM_SELECT, REVIEW_FORM_TEXT } from '../entities/constants';
+import {ConferenceManagementService} from '../services/conference-management.service';
 
 @Component({
   selector: 'app-conference-create-modal',
@@ -12,10 +13,11 @@ import { REVIEW_FORM_OPTIONS, REVIEW_FORM_SELECT, REVIEW_FORM_TEXT } from '../en
   styleUrls: ['./conference-create-modal.component.less']
 })
 export class ConferenceCreateModalComponent extends BaseModal {
+
+  @Output() conferenceCreated = new EventEmitter<void>();
   conference: Conference = new Conference();
   formValidationErrors: FormValidationErrors;
   setPassword: boolean = false;
-  reviewFormFields: ReviewFormObject[] = [];
   private reviewFieldId: number = 1;
 
   modalSettings: ModalSettings = {
@@ -30,7 +32,11 @@ export class ConferenceCreateModalComponent extends BaseModal {
       isTextField: true,
       isSelectionField: false
     };
-    this.reviewFormFields.push(newField);
+    this.conference.reviewForm.push(newField);
+  }
+
+  constructor (private conferenceService: ConferenceManagementService) {
+    super();
   }
 
   onFieldTypeChange(selectedValue: string, field: ReviewFormObject) {
@@ -39,12 +45,15 @@ export class ConferenceCreateModalComponent extends BaseModal {
   }
 
   removeField(fieldId: string) {
-    this.reviewFormFields = this.reviewFormFields.filter(field => field.id !== fieldId);
+    this.conference.reviewForm = this.conference.reviewForm.filter(field => field.id !== fieldId);
   }
 
   onSubmit() {
-    if (!this.formValidationErrors.emptyFields) {
-
+    if (!this.formValidationErrors) {
+      this.conferenceService.saveConference({...this.conference}).subscribe(() => {
+        this.closeModal();
+        this.conferenceCreated.emit();
+      });
     }
   }
 

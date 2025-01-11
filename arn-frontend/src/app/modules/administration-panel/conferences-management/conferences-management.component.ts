@@ -33,7 +33,11 @@ export class ConferencesManagementComponent {
   }
 
   addNewConference(): void {
-    this.dialogService.openCustomModal(ConferenceCreateModalComponent);
+    const modalRef = this.dialogService.openCustomModal(ConferenceCreateModalComponent);
+
+    modalRef.instance.conferenceCreated.subscribe(() => {
+      this.arnGridList.refreshGrid();
+    });
   }
 
   onSearchStarted() {

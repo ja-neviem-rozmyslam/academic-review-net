@@ -8,9 +8,9 @@ export const REVIEW_FORM_TEXT = 'Komentár';
 export const REVIEW_FORM_SELECT = 'Známka';
 
 export const TABOPTIONS: TabOption[] = [
-  { value: EDIT, label: 'Upraviť konferenciu', disabled: false},
-  { value: ASSIGN, label: 'Priradiť reviewera', disabled: false},
-  { value: SUBMISSION, label: 'Práce študentov', disabled: false},
+  { value: EDIT, label: 'Upraviť konferenciu', hidden: false},
+  { value: ASSIGN, label: 'Priradiť reviewera', hidden: false},
+  { value: SUBMISSION, label: 'Práce študentov', hidden: false},
 ];
 
 import {SelectOption} from '../../../components/arn-select/entities/SelectOption';

@@ -45,12 +45,10 @@ public class AdministrationService {
         this.submissionRepository = submissionRepository;
     }
 
-    public List<ConferenceDto> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
+    public List<Conference> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
         BooleanBuilder predicate = ConferenceRepositoryImpl.createPredicate(searchObject);
         List<Conference> conferences = conferenceRepository.findAllByPredicate(predicate, sort);
-        return conferences.stream()
-                .map(ConferenceRepositoryImpl::mapToConferenceDto)
-                .collect(Collectors.toList());
+        return conferences;
     }
 
     public List<UserDto> getUserData(UserSearchDto searchObject, Sort sort) {
@@ -125,13 +123,20 @@ public class AdministrationService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> updateConference(Long conferenceId, ConferenceDto conferenceDto) {
-        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
+    public ResponseEntity<?> updateConference(Conference conferenceDto) {
+        Conference conference;
+        if (conferenceDto.getId() != null) {
+            conference = conferenceRepository.findById(conferenceDto.getId()).orElseThrow();
+        } else {
+            conference = new Conference();
+        }
         conference.setConferenceName(conferenceDto.getConferenceName());
         conference.setFaculty(conferenceDto.getFaculty());
         conference.setReviewDeadline(conferenceDto.getReviewDeadline());
         conference.setUploadDeadline(conferenceDto.getUploadDeadline());
-
+        conference.setPassword(conferenceDto.getPassword());
+        conference.setClosed(conferenceDto.isClosed());
+        conference.setReviewForm(conferenceDto.getReviewForm());
         conferenceRepository.save(conference);
 
         return ResponseEntity.ok().build();
