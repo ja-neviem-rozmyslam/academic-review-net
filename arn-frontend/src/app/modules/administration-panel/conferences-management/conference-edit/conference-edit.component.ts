@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ASSIGN, EDIT, SUBMISSION, TABOPTIONS} from '../entities/constants';
-import {ConferenceEditService} from './services/conference-edit.service'
 import {CONFERENCE_COLUMNS} from './entities/columns'
+import {ConferenceManagementService} from '../services/conference-management.service';
 @Component({
   selector: 'app-conference-edit',
   templateUrl: './conference-edit.component.html',
@@ -18,7 +18,7 @@ export class ConferenceEditComponent implements OnInit {
   columns = CONFERENCE_COLUMNS;
   submissions: any;
 
-  constructor(private router: Router, private conferenceEditService: ConferenceEditService) {}
+  constructor(private router: Router, private conferenceService: ConferenceManagementService) {}
 
   ngOnInit(): void {
     this.item = window.history.state.item;
@@ -29,7 +29,7 @@ export class ConferenceEditComponent implements OnInit {
   }
 
   getSubmissions() {
-    this.conferenceEditService.getSubmissions(this.item.id).subscribe({
+    this.conferenceService.getSubmissions(this.item.id).subscribe({
           next: (data) => {
             this.submissions = data.body;
           }
@@ -37,7 +37,7 @@ export class ConferenceEditComponent implements OnInit {
   }
 
   downloadData() {
-    this.conferenceEditService.downloadData(this.item.id).subscribe({
+    this.conferenceService.downloadData(this.item.id).subscribe({
       next: (data) => {
         const blob = new Blob([data], { type: 'application/zip' });
         const url = window.URL.createObjectURL(blob);
@@ -60,7 +60,7 @@ export class ConferenceEditComponent implements OnInit {
   }
 
   updateConference() {
-    this.conferenceEditService.saveConference(this.item.id, this.item).subscribe({
+    this.conferenceService.saveConference(this.item.id, this.item).subscribe({
       next: () => {
         this.showAlert = true;
         this.alertMessage = "Údaje konferencie boli zmenené.";

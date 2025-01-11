@@ -140,7 +140,7 @@ public class AdministrationService {
     public ResponseEntity<?> getConferenceSubmissions(Long conferenceId) {
         List<Submission> submissions = submissionRepository.findByConferencesId(conferenceId);
         List<SubmissionDto> submissionsDto = submissions.stream()
-                .map(this::mapToSubmissionDto)
+                .map(submission -> submissionRepository.mapToSubmissionDto(submission))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(submissionsDto);
     }
@@ -231,32 +231,6 @@ public class AdministrationService {
         } catch (IllegalArgumentException e) {
             return false;
         }
-    }
-
-    public SubmissionDto mapToSubmissionDto(Submission submission) {
-        SubmissionDto dto = new SubmissionDto();
-        dto.setId(submission.getId());
-        dto.setTitle(submission.getThesisTitle());
-
-        if(submission.getReviewerId() != null) {
-            User reviewer = userRepository.findById(submission.getReviewerId()).orElse(null);
-            dto.setReviewer(mapUserToDto(reviewer));
-        }
-
-        User author = userRepository.findById(submission.getAuthorId()).orElse(null);
-
-        if(author != null) {
-            dto.setAuthor(mapUserToDto(author));
-        }
-
-        return dto;
-    }
-
-    private UserDto mapUserToDto(User user) {
-        UserDto dto = new UserDto();
-        dto.setName(user.getName());
-        dto.setSurname(user.getSurname());
-        return dto;
     }
 
     public ResponseEntity<?> deleteUser(UUID userId) {

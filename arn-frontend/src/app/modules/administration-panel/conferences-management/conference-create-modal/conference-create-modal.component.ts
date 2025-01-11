@@ -44,7 +44,7 @@ export class ConferenceCreateModalComponent extends BaseModal {
 
   onSubmit() {
     if (!this.formValidationErrors.emptyFields) {
-      // Handle form submission
+
     }
   }
 
