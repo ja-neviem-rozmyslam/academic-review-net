@@ -4,6 +4,7 @@ import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
 import com.ukf.arn.Administration.Objects.SaveUniversityRequest;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
+import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Universities.UniversityDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,16 @@ public class AdministrationController {
         return ResponseEntity.ok(administrationService.removeUniversity(id, universityDto));
     }
 
+    @PostMapping("/conference/{id}/update")
+    public ResponseEntity<?> updateConference(
+            @PathVariable Long id, @RequestBody ConferenceDto conferenceDto) {
+        return ResponseEntity.ok(administrationService.updateConference(id, conferenceDto));
+    }
+
+    @GetMapping("/conference/{id}/submissions")
+    public ResponseEntity<?> getConferenceSubmissions( @PathVariable Long id) {
+        return ResponseEntity.ok(administrationService.getConferenceSubmissions(id));
+    }
     @PostMapping("/user/{userId}/delete")
     public ResponseEntity<?> deleteUser(@PathVariable UUID userId) {
         return administrationService.deleteUser(userId);

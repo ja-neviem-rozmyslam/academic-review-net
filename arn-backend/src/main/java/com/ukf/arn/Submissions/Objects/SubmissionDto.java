@@ -1,5 +1,7 @@
 package com.ukf.arn.Submissions.Objects;
 
+import com.ukf.arn.Users.Objects.UserDto;
+
 import java.time.LocalDateTime;
 
 public class SubmissionDto {
@@ -11,6 +13,8 @@ public class SubmissionDto {
     private String abstractSk;
     private Long conferenceId;
     private LocalDateTime timestamp;
+    private UserDto author;
+    private UserDto reviewer;
 
     public SubmissionDto() {
     }
@@ -87,4 +91,12 @@ public class SubmissionDto {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
+
+    public UserDto getAuthor() { return author; }
+
+    public void setAuthor(UserDto author) { this.author = author; }
+
+    public UserDto getReviewer() { return reviewer; }
+
+    public void setReviewer(UserDto reviewer) { this.reviewer = reviewer; }
 }
