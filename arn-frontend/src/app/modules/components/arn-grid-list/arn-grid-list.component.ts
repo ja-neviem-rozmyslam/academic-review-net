@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ACTIONS, Column, DataColumn} from './entities/Column';
-import {Observable} from 'rxjs';
+import { ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import {Column, DataColumn, ACTIONS, SelectColumn} from './entities/Column';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-arn-grid-list',
@@ -10,10 +10,7 @@ import {Observable} from 'rxjs';
 export class ArnGridListComponent implements OnInit {
   @Input() data: any[] = [];
   @Input() columns: Column[] = [];
-  @Input() searchMethod: (searchObject: any, sortOptions: {
-    column: string;
-    direction: 'asc' | 'desc'
-  }) => Observable<any>;
+  @Input() searchMethod: (searchObject: any, sortOptions: { column: string; direction: 'asc' | 'desc' }) => Observable<any>;
   @Input() searchObject: any = {};
   @Input() sortable: boolean;
   @Input() initialSort: string;
@@ -25,14 +22,15 @@ export class ArnGridListComponent implements OnInit {
   @Output() doubleClickAction = new EventEmitter<any>();
   @Output() plusButtonAction = new EventEmitter<void>();
 
-  currentSort: { column: string; direction: 'asc' | 'desc' } = {column: '', direction: 'asc'};
+  currentSort: { column: string; direction: 'asc' | 'desc' } = { column: '', direction: 'asc' };
+  private injectorCache = new Map<any, Injector>();
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+
+  constructor(private cdr: ChangeDetectorRef, private injector: Injector) {}
 
   ngOnInit(): void {
     if (this.sortable && this.initialSort) {
-      this.currentSort = {column: this.initialSort, direction: 'asc'};
+      this.currentSort = { column: this.initialSort, direction: 'asc' };
     }
     if (this.initialRefresh) {
       this.refreshGrid();
@@ -62,7 +60,7 @@ export class ArnGridListComponent implements OnInit {
     if (this.currentSort.column === column.name) {
       this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      this.currentSort = {column: column.name, direction: 'asc'};
+      this.currentSort = { column: column.name, direction: 'asc' };
     }
     this.refreshGrid();
   }
@@ -81,6 +79,38 @@ export class ArnGridListComponent implements OnInit {
 
   isDataColumn(column: Column): column is DataColumn {
     return 'name' in column;
+  }
+
+  createInjector(dataItem: any, column: SelectColumn): Injector {
+    const options = column.options || [];
+    if (!this.injectorCache.has(dataItem)) {
+      const injector = Injector.create({
+        providers: [
+          { provide: 'rowData', useValue: dataItem },
+          { provide: 'options', useValue: options.map((option) => option.label) },
+          {
+            provide: 'onSelectionChange',
+            useValue: (selectedValue: string) => this.onComponentSelectionChange(selectedValue, dataItem, column),
+          },
+        ],
+        parent: this.injector,
+      });
+      this.injectorCache.set(dataItem, injector);
+    }
+    return this.injectorCache.get(dataItem)!;
+  }
+
+  onComponentSelectionChange(selectedValue: string, dataItem: any, column: SelectColumn): void {
+    console.log('Selected Value:', selectedValue);
+    console.log('Data Item:', dataItem);
+    console.log('Column:', column.name);
+
+    if (column.onSelectionChange) {
+      column.onSelectionChange(selectedValue, dataItem, column);
+    }
+
+    this.searchObject[column.name] = selectedValue;
+    this.refreshGrid();
   }
 
   protected readonly ACTIONS = ACTIONS;

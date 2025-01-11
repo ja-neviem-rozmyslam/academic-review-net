@@ -33,22 +33,29 @@
       <td *ngFor="let column of columns"
           class="p-4"
           [style.width.%]="calculateWidth(column)">
-        <ng-container *ngIf="column.name && !column.template; else customTemplate">
+        <ng-container *ngIf="column.name && !column.template && !column.component">
           {{ item[column.name] }}
         </ng-container>
-        <ng-template #customTemplate>
-          <span [innerHTML]="column.template ? column.template(item) : ''"></span>
-        </ng-template>
+
+        <ng-container *ngIf="column.template && !column.component">
+          <span [innerHTML]="column.template(item)"></span>
+        </ng-container>
+
+        <ng-container *ngIf="column.component">
+          <ng-container *ngComponentOutlet="column.component; injector: createInjector(item, column)">
+          </ng-container>
+        </ng-container>
+
         <ng-container *ngIf="column.actionType && (!column.actionCondition || column.actionCondition(item))">
-          <span (click)="handleAction(column.actionType, item)"
-                class="cursor-pointer flex items-center justify-center rounded-full hover:bg-gray-100 p-1 element-transition">
-            <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
-              <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
-            </ng-container>
-            <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
-              <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
-            </ng-container>
-          </span>
+    <span (click)="handleAction(column.actionType, item)"
+          class="cursor-pointer flex items-center justify-center rounded-full hover:bg-gray-100 p-1 element-transition">
+      <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
+        <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
+      </ng-container>
+      <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
+        <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
+      </ng-container>
+    </span>
         </ng-container>
       </td>
     </tr>

@@ -1,19 +1,22 @@
-import {Component, Input, Output, EventEmitter, OnInit, HostListener, ElementRef} from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit, Output, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-arn-search-select',
   templateUrl: './arn-search-select.component.html',
-  styleUrl: './arn-search-select.component.less'
+  styleUrls: ['./arn-search-select.component.less']
 })
 export class ArnSearchSelectComponent implements OnInit {
-  @Input() options: string[] = [];
   @Output() selectedOption = new EventEmitter<string>();
 
   searchQuery: string = '';
   filteredOptions: string[] = [];
   showDropdown: boolean = false;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(
+    private elementRef: ElementRef,
+    @Inject('options') public options: string[],
+    @Inject('onSelectionChange') private onSelectionChange: (selectedValue: string) => void
+  ) {}
 
   ngOnInit() {
     this.filteredOptions = [...this.options];
@@ -29,6 +32,7 @@ export class ArnSearchSelectComponent implements OnInit {
     this.searchQuery = option;
     this.showDropdown = false;
     this.selectedOption.emit(option);
+    this.onSelectionChange(option);
   }
 
   @HostListener('document:click', ['$event'])
