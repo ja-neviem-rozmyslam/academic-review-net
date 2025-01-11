@@ -54,7 +54,7 @@ public class AdministrationController {
         return ResponseEntity.ok(administrationService.removeUniversity(id, universityDto));
     }
 
-    @DeleteMapping("/users/{userId}")
+    @PostMapping("/user/{userId}/delete")
     public ResponseEntity<?> deleteUser(@PathVariable UUID userId) {
         return administrationService.deleteUser(userId);
     }

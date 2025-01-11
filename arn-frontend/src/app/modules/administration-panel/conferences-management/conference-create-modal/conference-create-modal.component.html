@@ -1,7 +1,6 @@
 <app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalMaxWidthClass]="'max-w-6xl'">
   <div class="flex flex-col w-full h-[65vh]">
-    <form (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event"
-          class="flex flex-col h-full">
+    <form (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event" class="flex flex-col h-full">
       <div class="flex flex-1 space-x-4">
         <div class="w-[40%] space-y-4">
           <div class="arn-input">
@@ -13,7 +12,8 @@
               class="w-full"
               placeholder="Názov konferencie"
               [(ngModel)]="conference.conferenceName"
-              required/>
+              required
+            />
           </div>
           <div class="arn-input">
             <label for="faculty">Fakulta</label>
@@ -24,7 +24,8 @@
               class="w-full"
               placeholder="Názov fakulty"
               [(ngModel)]="conference.faculty"
-              required/>
+              required
+            />
           </div>
           <div class="arn-input">
             <label for="uploadDeadline">Dátum odovzdania</label>
@@ -33,7 +34,8 @@
               [name]="'uploadDeadline'"
               [dateTime]="true"
               [(selectedDate)]="conference.uploadDeadline"
-              required/>
+              required
+            />
           </div>
           <div class="arn-input">
             <label for="reviewDeadline">Dátum posúdenia</label>
@@ -42,16 +44,18 @@
               [name]="'reviewDeadline'"
               [dateTime]="true"
               [(selectedDate)]="conference.reviewDeadline"
-              required/>
+              required
+            />
           </div>
           <div class="mt-5 flex items-center">
             <input
               id="setPassword"
-              [name]="'setPassword'"
+              name="setPassword"
               aria-describedby="setPassword"
               type="checkbox"
               class="checkbox-custom p-2"
-              [(ngModel)]="setPassword"/>
+              [(ngModel)]="setPassword"
+            />
             <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
               Chcete tejto konferencií nastaviť heslo?
             </label>
@@ -65,49 +69,61 @@
               class="w-full"
               placeholder="Heslo"
               [(ngModel)]="conference.password"
-              required/>
+              required
+            />
           </div>
         </div>
-
         <hr class="w-1 h-[93%] bg-gray-100 border-0 rounded">
-
         <div class="w-[60%]">
           <div class="mb-3">
             <h2 class="text-lg font-semibold">Hodnotiaci formulár</h2>
-            <p class="text-gray-600 text-sm">Tu vytvorte hodnotiaci formulár, na základe ktorého budú recenzenti
-              hodnotiť práce.</p>
+            <p class="text-gray-600 text-sm">Tu vytvorte hodnotiaci formulár, na základe ktorého budú recenzenti hodnotiť práce.</p>
           </div>
           <div class="flex flex-col max-h-[50vh] overflow-y-auto">
-            <div *ngFor="let field of reviewFormFields; let i = index" class="space-y-4">
-              <div class="arn-input">
-                <label [for]="'reviewedCategory-' + i">Kategória hodnotenia</label>
-                <input
-                  type="text"
-                  [id]="'reviewedCategory-' + i"
-                  [(ngModel)]="field.reviewedCategory"
-                  name="reviewedCategory"
-                  class="w-full"
-                  placeholder="Kategória hodnotenia"
-                  required
-                />
-              </div>
-
-              <div class="arn-input">
-                <label [for]="'fieldType-' + i">Typ poľa</label>
-                <select
-                  [id]="'fieldType-' + i"
-                  [(ngModel)]="field.isTextField"
-                  name="fieldType"
-                  class="w-full"
-                  required
-                >
-                  <option [value]="true">Textové pole</option>
-                  <option [value]="false">Výberové pole</option>
-                </select>
-              </div>
+            <div class="space-y-4">
+              @for (field of reviewFormFields; track field) {
+                <div class="flex items-end space-x-2">
+                  <div class="arn-input w-8/12">
+                    <label for="{{ 'reviewedCategory-' + field.id }}" class="text-sm font-medium text-gray-700">
+                      Hodnotený aspekt
+                    </label>
+                    <input
+                      type="text"
+                      [id]="'reviewedCategory-' + field.id"
+                      [(ngModel)]="field.reviewedCategory"
+                      name="{{ 'reviewedCategory-' + field.id }}"
+                      class="w-full border rounded px-2 py-1"
+                      placeholder="Kategória hodnotenia"
+                      autocomplete="off"
+                      required
+                    />
+                  </div>
+                  <div class="w-3/12">
+                    <app-arn-select
+                      [name]="'fieldType' + field.id"
+                      [options]="REVIEW_FORM_OPTIONS"
+                      [selectedOption]="REVIEW_FORM_TEXT"
+                      (selectedOptionChange)="onFieldTypeChange($event, field)"
+                    ></app-arn-select>
+                  </div>
+                  <div class="w-1/12 flex justify-center">
+                    <div
+                      class="p-2 rounded text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
+                      title="Odstrániť doménu"
+                      (click)="removeField(field.id)"
+                    >
+                      <trash-outline-icon/>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
-
-            <button type="button" (click)="addNewField()" class="btn btn-primary mt-4">Pridať nové pole</button>
+            <div
+              class="flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer mt-4"
+              (click)="addNewField()"
+            >
+              <plus-small-outline-icon/>
+            </div>
           </div>
         </div>
       </div>
@@ -115,7 +131,8 @@
         <app-arn-button
           [classes]="'w-full'"
           buttonText="Vytvoriť"
-          type="submit"/>
+          type="submit"
+        />
       </div>
     </form>
   </div>

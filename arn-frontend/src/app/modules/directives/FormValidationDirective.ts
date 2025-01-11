@@ -33,7 +33,6 @@ export class FormValidationDirective {
       if (element && element.type === 'file' && control?.errors?.['required']) {
         this.addError(element, key, 'emptyFields');
       }
-      console.log('Validating:', key, element);
     });
 
     this.validateSelects();

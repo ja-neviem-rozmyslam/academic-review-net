@@ -1,5 +1,5 @@
 <app-arn-toast [showToast]="alertVisible">
-  @if (alertType==="SUCCESS") {
+  @if (alertType === "SUCCESS") {
     <div class="toast-icon text-green-500 bg-green-100 rounded">
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
            viewBox="0 0 20 20">
@@ -8,8 +8,7 @@
       </svg>
       <span class="sr-only">Success</span>
     </div>
-  }
-  @else {
+  } @else {
     <div class="toast-icon text-red-500 bg-red-100">
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
            viewBox="0 0 20 20">
@@ -49,8 +48,7 @@
 
 <div
   class="w-full xl:flex-[1] min-w-0 card-base p-5 border flex flex-col space-y-4 mb-6"
-  *ngFor="let univ of filteredUniversities"
->
+  *ngFor="let univ of filteredUniversities">
   <form appFormValidation (getValidationErrors)="formValidationErrors = $event" (ngSubmit)="saveUniversity(univ.id) ">
     <div class="flex justify-between items-center mb-3 arn-input">
       <input
@@ -58,15 +56,13 @@
         name="university-name"
         [(ngModel)]="univ.name"
         placeholder="Názov univerzity"
-        required
-      />
+        required/>
 
       <div class="flex flex-row">
         <div
           class="p-2 rounded text-red-500 hover:text-red-700 transition hover:bg-red-100 cursor-pointer ml-4"
           (click)="removeUniversity(univ.id)"
-          title="Odstrániť univerzitu"
-        >
+          title="Odstrániť univerzitu">
           <trash-outline-icon/>
         </div>
       </div>
@@ -76,35 +72,32 @@
 
     <div
       class="flex justify-between items-center space-x-4 rounded arn-input mb-2"
-      *ngFor="let dom of univ.domain"
-    >
+      *ngFor="let dom of univ.domain">
       <input
         type="text"
         [attr.name]="'domain-name-' + dom.id"
         name="domain-name-{{dom.id}}"
         [(ngModel)]="dom.domain"
         placeholder="Doména"
-        required
-      />
+        required/>
 
       <div
         class="p-2 rounded text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
         (click)="removeDomainFromUniversity(univ.id, dom.id)"
-        title="Odstrániť doménu"
-      >
+        title="Odstrániť doménu">
         <trash-outline-icon/>
       </div>
     </div>
 
-    <div class="flex items-center justify-center h-10 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer" (click)="addDomainToUniversity(univ.id)">
-      <plus-small-outline-icon />
+    <div
+      class="flex items-center justify-center h-10 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer"
+      (click)="addDomainToUniversity(univ.id)">
+      <plus-small-outline-icon/>
     </div>
 
     <div class="mt-4">
       <app-arn-button
-        [buttonText]="'Aktualizovať údaje'"
-      >
-      </app-arn-button>
+        [buttonText]="'Aktualizovať údaje'" />
     </div>
   </form>
 </div>
