@@ -66,6 +66,10 @@
 @apply border border-gray-200 bg-gray-100 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-2 px-3 rounded-lg;
 @apply element-transition;
 
+  &:disabled {
+  @apply opacity-65 cursor-not-allowed;
+  }
+
   &.white {
   @apply bg-white border-gray-300;
   }

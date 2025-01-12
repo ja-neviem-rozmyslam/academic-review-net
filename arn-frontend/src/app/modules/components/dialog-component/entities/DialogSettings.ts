@@ -8,12 +8,6 @@ export class DialogSettings {
     cancel: string;
   };
 
-  constructor() {
-    this.title = '';
-    this.content = '';
-    this.dialogType = INFO;
-    this.buttonText = { confirm: 'Uložiť', cancel: 'Zrušiť' };
-  }
 }
 
 export const ERROR = 'error';

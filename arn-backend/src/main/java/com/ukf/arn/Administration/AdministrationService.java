@@ -51,6 +51,10 @@ public class AdministrationService {
         return conferences;
     }
 
+    public Conference getConference(Long id) {
+        return conferenceRepository.findById(id).orElseThrow();
+    }
+
     public List<UserDto> getUserData(UserSearchDto searchObject, Sort sort) {
         BooleanBuilder predicate = UserRepositoryImpl.createPredicate(searchObject);
         List<User> users = userRepository.findAllByPredicate(predicate, sort);
@@ -130,6 +134,11 @@ public class AdministrationService {
         } else {
             conference = new Conference();
         }
+
+        if(conference.isClosed()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update closed conference");
+        }
+
         conference.setConferenceName(conferenceDto.getConferenceName());
         conference.setFaculty(conferenceDto.getFaculty());
         conference.setReviewDeadline(conferenceDto.getReviewDeadline());
@@ -139,6 +148,13 @@ public class AdministrationService {
         conference.setReviewForm(conferenceDto.getReviewForm());
         conferenceRepository.save(conference);
 
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> closeConference(Long conferenceId) {
+        Conference conference = conferenceRepository.findById(conferenceId).orElseThrow();
+        conference.setClosed(true);
+        conferenceRepository.save(conference);
         return ResponseEntity.ok().build();
     }
 

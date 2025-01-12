@@ -14,7 +14,7 @@ export class ArnDatePickerComponent implements OnInit {
   @Output() selectedDateChange = new EventEmitter<string>();
 
   ngOnInit() {
-    if (this.selectedDate) {
+    if (this.selectedDate && this.dateTime === false) {
       const dateOnly = this.selectedDate.split(' ')[0];
       this.selectedDate = dateOnly;
     }

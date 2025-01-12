@@ -29,7 +29,7 @@ export class ConferencesManagementComponent {
     this.conferenceManagementService.getConferences(searchObject, sortOptions);
 
   onDoubleClick(item: any): void {
-    this.router.navigate(['/administration/conference', item.id], {state: {item}});
+    this.router.navigate(['/administration/conference', item.id]);
   }
 
   addNewConference(): void {

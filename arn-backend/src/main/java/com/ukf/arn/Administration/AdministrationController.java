@@ -32,6 +32,11 @@ public class AdministrationController {
         return ResponseEntity.ok(administrationService.getConferenceData(searchObject, sort));
     }
 
+    @GetMapping("/conference/{id}")
+    public ResponseEntity<?> getConference(@PathVariable Long id) {
+        return ResponseEntity.ok(administrationService.getConference(id));
+    }
+
     @PostMapping("/user")
     public ResponseEntity<?> getUserData(
             @RequestBody UserSearchDto searchObject,
@@ -61,6 +66,11 @@ public class AdministrationController {
     @PostMapping("/conference/update")
     public ResponseEntity<?> updateConference(@RequestBody Conference conferenceDto) {
         return ResponseEntity.ok(administrationService.updateConference(conferenceDto));
+    }
+
+    @GetMapping("/conference/{id}/close")
+    public ResponseEntity<?> closeConference(@PathVariable Long id) {
+        return ResponseEntity.ok(administrationService.closeConference(id));
     }
 
     @GetMapping("/conference/{id}/submissions")

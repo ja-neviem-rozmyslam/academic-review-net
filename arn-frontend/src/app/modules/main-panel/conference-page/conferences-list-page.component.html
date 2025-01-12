@@ -12,4 +12,6 @@
   }
 </div>
 
-<app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems" (pageChange)="onPageChange($event)"></app-pagination>
+<div class="flex justify-center bottom-0 w-full py-4">
+  <app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems" (pageChange)="onPageChange($event)" />
+</div>

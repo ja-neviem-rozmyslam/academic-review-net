@@ -27,6 +27,16 @@ export class ConferenceManagementService {
     );
   }
 
+  getConferenceById(conferenceId: number): Observable<Conference> {
+    return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}`).pipe(
+      map((data: any) => this.parseConferences([data])[0])
+    );
+  }
+
+  closeConference(conferenceId: number): Observable<any> {
+    return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/close`);
+  }
+
   downloadData(conferenceId: number): Observable<Blob> {
     return this.http.get(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/download`, {
       responseType: 'blob'

@@ -8,7 +8,7 @@ import { FormValidationErrors } from '../objects/FormValidationErrors';
 export class FormValidationDirective {
   private validationErrors: FormValidationErrors = new FormValidationErrors();
 
-  @Output() getValidationErrors = new EventEmitter<{ emptyFields: string[]; invalidEmails: string[] }>();
+  @Output() getValidationErrors = new EventEmitter<FormValidationErrors>();
 
   constructor(private form: NgForm, private renderer: Renderer2, private el: ElementRef) {}
 
