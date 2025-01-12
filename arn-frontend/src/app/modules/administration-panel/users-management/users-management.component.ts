@@ -11,7 +11,6 @@ import {DialogService} from '../../services/dialog.service';
 import {EditUserModalComponent} from "./edit-user-modal/edit-user-modal.component";
 import {RoleService} from '../../services/role.service';
 import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
-import {ModalOptions} from 'flowbite';
 
 @Component({
   selector: 'app-users-management',
@@ -56,7 +55,7 @@ export class UsersManagementComponent implements OnInit {
     this.usersManagementService.getUsers(searchObject, sortOptions);
 
   deleteUser(user: User): void {
-    this.dialogService.openConfirmDialog('Vymazať používateľa',  `Chcete naozaj vymazať používateľa ${user.name}?`, () => {
+    this.dialogService.openConfirmDialog('Vymazať používateľa', `Chcete naozaj vymazať používateľa ${user.name}?`, () => {
       this.usersManagementService.deleteUser(user.id).subscribe(() => {
         this.arnGridList.refreshGrid();
       });
