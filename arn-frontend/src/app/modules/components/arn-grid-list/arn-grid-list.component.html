@@ -42,7 +42,7 @@
         </ng-container>
 
         <ng-container *ngIf="column.options">
-          <app-arn-search-select (optionsChange)="column.onSelectionChange($event, item, column)" [options]="column.options" [initialValue]="column.initialValue(item)"></app-arn-search-select>
+          <app-arn-search-select (selectedOption)="column.onSelectionChange($event, item, column)" [options]="column.options" [initialValue]="column.initialValue(item)"></app-arn-search-select>
         </ng-container>
 
         <ng-container *ngIf="column.actionType && (!column.actionCondition || column.actionCondition(item))">

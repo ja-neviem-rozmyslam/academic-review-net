@@ -209,7 +209,7 @@ export class ConferenceEditComponent implements OnInit {
 
   onSelectionChange(selectedValue: any, dataItem: any) {
     this.isLoading = true;
-    this.conferenceService.assignReviewer(dataItem.id, selectedValue[0].value).subscribe({
+    this.conferenceService.assignReviewer(dataItem.id, selectedValue.value).subscribe({
       next: () => {
         this.showAlert = true;
         this.alertMessage = 'Recenzent bol priradený.';
@@ -217,7 +217,7 @@ export class ConferenceEditComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Failed to assign reviewer:', err);
+        console.error('Nepodarilo sa priradiť recenzenta:', err);
       },
     });
   }

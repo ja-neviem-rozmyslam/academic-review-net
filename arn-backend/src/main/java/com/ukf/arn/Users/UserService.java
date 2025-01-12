@@ -3,6 +3,7 @@ package com.ukf.arn.Users;
 import com.ukf.arn.Entities.Conference;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Conferences.Repository.ConferenceRepository;
+import com.ukf.arn.Entities.University;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Entities.Submission;
 import com.ukf.arn.Submissions.Objects.SubmissionDto;
@@ -100,7 +101,13 @@ public class UserService {
         User user = SecurityConfig.getLoggedInUser();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
-        user.getUniversity().setId(userDto.getUniversityId());
+        if (user.getUniversity() == null) {
+            University university = new University();
+            university.setId(userDto.getUniversityId());
+            user.setUniversity(university);
+        } else {
+            user.getUniversity().setId(userDto.getUniversityId());
+        }
         userRepository.save(user);
         return ResponseEntity.ok("User details updated successfully");
     }

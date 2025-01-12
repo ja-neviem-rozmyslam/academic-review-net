@@ -24,7 +24,7 @@ export class ArnSearchSelectComponent implements OnInit {
 
     if (this.initialValue) {
       this.isInitializing = true;
-      this.selectOption(this.initialValue);
+      this.selectOption(this.initialValue, false);
       this.isInitializing = false;
     }
   }
@@ -34,18 +34,15 @@ export class ArnSearchSelectComponent implements OnInit {
       option.label.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
 
-    if (!this.isInitializing) {
-      this.optionsChange.emit(this.filteredOptions);
-    }
+    this.optionsChange.emit(this.filteredOptions);
   }
 
-  selectOption(option: SelectOptions) {
+  selectOption(option: SelectOptions, emitEvent: boolean = true) {
     this.searchQuery = option.label;
     this.showDropdown = false;
 
-    if (!this.isInitializing) {
+    if (emitEvent) {
       this.selectedOption.emit(option);
-      this.optionsChange.emit([option]);
     }
   }
 
