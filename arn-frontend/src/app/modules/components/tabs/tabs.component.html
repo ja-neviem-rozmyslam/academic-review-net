@@ -1,14 +1,12 @@
 <ul class="inline-flex text-sm font-medium text-gray-500 bg-gray-200 p-1.5 rounded-[.8rem] gap-1.5 w-full">
-  <li *ngFor="let tab of tabs" class="flex-grow">
+  <li *ngFor="let tab of tabs" class="flex-grow" [ngClass]="{'hidden': tab.hidden}">
     <div
-      class="px-6 py-2 rounded-[.6rem] element-transition text-center w-full"
-      (click)="!tab.disabled && setActiveTab(tab.value, tab.disabled)"
-      [class.disabled]="tab.disabled"
+      class="px-6 py-2 rounded-[.6rem] element-transition text-center w-full cursor-pointer"
+      (click)="!tab.hidden && setActiveTab(tab.value, tab.hidden)"
+      [class.disabled]="tab.hidden"
       [ngClass]="{
-        'cursor-pointer': !tab.disabled,
         'bg-white text-black shadow-md': tab.value === activeTab,
-        'text-gray-500 hover:text-black hover:bg-gray-300': tab.value !== activeTab && !tab.disabled,
-        'text-gray-500 cursor-not-allowed': tab.disabled
+        'text-gray-500 hover:text-black hover:bg-gray-300': tab.value !== activeTab
       }">
       {{ tab.label }}
     </div>

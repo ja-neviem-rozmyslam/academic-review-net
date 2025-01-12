@@ -17,4 +17,8 @@ export class ProfileSettingsService {
   updateProfile(userDetails: any): Observable<any> {
     return this.http.post(`/api/users/update-profile`, userDetails);
   }
+
+  updateEditProfile(userDetails: any): Observable<any> {
+    return this.http.post(`/api/users/update-edit-profile`, userDetails);
+  }
 }

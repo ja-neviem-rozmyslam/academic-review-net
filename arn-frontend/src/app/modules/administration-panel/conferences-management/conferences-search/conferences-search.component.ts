@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CONFERENCE_CLOSED_OPTIONS} from '../entities/conference-management-constants';
 import {ConferenceSearchCriteria} from '../entities/ConferenceSearchCriteria';
 import {ConferencesSearchStore} from '../store/conferences-search.store';
+import {CONFERENCE_CLOSED_OPTIONS} from '../entities/constants';
 
 @Component({
   selector: 'app-conferences-search',

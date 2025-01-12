@@ -1,3 +1,5 @@
+import { SelectOptions } from '../../arn-search-select/entities/SelectOptions';
+
 export interface DataColumn {
   title: string;
   name: string;
@@ -11,7 +13,13 @@ export interface ActionColumn {
   width?: number;
 }
 
-export type Column = DataColumn | ActionColumn;
+export interface SelectColumn extends DataColumn {
+  options: SelectOptions[];
+  onSelectionChange: (selectedValue: string, dataItem: any, column: SelectColumn) => void;
+  initialValue?: (dataItem: any) => SelectColumn;
+}
+
+export type Column = DataColumn | ActionColumn | SelectColumn;
 
 export const ACTIONS = {
   EDIT: 'edit',

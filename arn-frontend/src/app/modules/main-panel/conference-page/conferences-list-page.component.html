@@ -1,5 +1,5 @@
 <div class="flex items-center mb-6 w-full lg:w-1/3">
-  <input type="text" class="input-base" placeholder="Vyhladať konferenciu..." [(ngModel)]="searchTerm" (input)="onSearch()">
+  <input type="text" class="input-base white" placeholder="Vyhľadať konferenciu..." [(ngModel)]="searchTerm" (input)="onSearch()">
   <div class="ml-4 p-2.5 flex items-center justify-center rounded-full bg-gray-200 cursor-pointer hover:bg-gray-300 transition-all duration-200 ease-in-out"
        (click)="loadNewConferences()">
     <arrow-path-outline-icon size="23"></arrow-path-outline-icon>
@@ -12,4 +12,6 @@
   }
 </div>
 
-<app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems" (pageChange)="onPageChange($event)"></app-pagination>
+<div class="flex justify-center bottom-0 w-full py-4">
+  <app-pagination [currentPage]="currentPage" [pageSize]="pageSize" [totalItems]="totalItems" (pageChange)="onPageChange($event)" />
+</div>

@@ -28,7 +28,7 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
       email: data.user.email,
       name: data.user.name,
       surname: data.user.surname,
-      universityId: data.user.university.id
+      universityId: data.user.university == null ? 0 : data.user.university.id,
     };
   }
 
@@ -45,7 +45,6 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
   }
 
   updateProfile(): void {
-    //console.log(this.userDetails);
     this.isFetching = true;
     this.profileSettingsService.updateProfile(this.userDetails).pipe().subscribe(() => {
       this.profileUpdated.emit();

@@ -57,15 +57,22 @@
   label {
     @apply block text-sm font-medium text-gray-700 mb-1;
   }
-  input, textarea {
+  input:not([type="checkbox"]), textarea {
     @apply input-base;
   }
 }
 
 .input-base {
-@apply border border-gray-400 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-2 px-3 rounded-lg;
+@apply border border-gray-200 bg-gray-100 text-gray-900 focus:ring-0 focus:border-expressive block w-full p-2 px-3 rounded-lg;
 @apply element-transition;
 
+  &:disabled {
+  @apply opacity-65 cursor-not-allowed;
+  }
+
+  &.white {
+  @apply bg-white border-gray-300;
+  }
   &.invalid {
   @apply border-red-500;
   }
@@ -75,7 +82,7 @@
   }
 
   &::placeholder {
-  @apply text-gray-400 element-transition;
+  @apply text-gray-500 element-transition;
   }
 }
 

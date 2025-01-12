@@ -13,6 +13,6 @@ export class ModalSettings {
     this.showHeader = false;
     this.showFooter = false;
     this.hideCloseButton = false;
-    this.buttonText = { confirm: 'Uložiť', cancel: 'Zrušiť' };
+    this.buttonText = { confirm: 'Potvrdiť', cancel: 'Zrušiť' };
   }
 }

@@ -5,10 +5,11 @@
       (click)="onClear()"
       stroke="1.5"
       title="Vymazať možnosti vyhľadávania"
-      class="cursor-pointer" />
+      class="cursor-pointer hover:bg-gray-200 rounded-2xl pr-2 pl-1 py-1 element-transition" />
   </div>
 
-  <div class="content-wrapper flex-grow">
+  <div class="content-wrapper flex-grow"
+    (keydown)="handleKeydown($event)">
     <ng-content></ng-content>
   </div>
 

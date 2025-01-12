@@ -1,0 +1,42 @@
+<app-arn-searchcriteria
+  (clearSearch)="clearSearchCriteria()"
+  (search)="startSearch.emit()">
+  <div class="space-y-2 h-full">
+    <div class="arn-input">
+      <label for="name">Meno</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="searchObject.name"
+        placeholder="Meno používateľa"/>
+    </div>
+    <div class="arn-input">
+      <label for="email">{{this.searchObject.isAdmin ? 'Prihlasovacie meno' : 'Email'}}</label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        [(ngModel)]="searchObject.email"
+        placeholder="{{this.searchObject.isAdmin ? 'Login používateľa': 'Email používateľa'}}"/>
+    </div>
+    <div class="arn-input" *ngIf="!this.searchObject.isAdmin">
+      <label for="university">Univerzita</label>
+      <app-arn-select
+        id="university"
+        name="university"
+        [(selectedOption)]="searchObject.university"
+        [options]="universityOptions"
+        [placeholder]="'Vyberte univerzitu'"/>
+    </div>
+    <div class="arn-input">
+      <label for="role">Rola</label>
+      <app-arn-select
+        id="role"
+        name="role"
+        [(selectedOption)]="searchObject.role"
+        [options]="userRoleOptions"
+        [placeholder]="'Vyberte rolu  '"/>
+    </div>
+  </div>
+</app-arn-searchcriteria>

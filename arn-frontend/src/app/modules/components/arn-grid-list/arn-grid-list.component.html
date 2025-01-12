@@ -1,9 +1,9 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg h-full">
+<div class="relative overflow-x-auto h-full">
   <table class="w-full text-sm text-left rtl:text-right">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+    <thead class="text-xs uppercase bg-gray-200">
     <tr>
       <th *ngFor="let column of columns"
-          class="p-4 border-b border-gray-300 cursor-pointer"
+          class="p-4 border-b border-gray-300 cursor-pointer bg-gray-200 top-0 sticky"
           [style.width.%]="calculateWidth(column)"
           [class.sortable]="isDataColumn(column)"
           (click)="toggleSort(column)">
@@ -28,29 +28,41 @@
     </thead>
     <tbody *ngIf="data">
     <tr *ngFor="let item of data"
-        class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
+        class="odd:bg-white even:bg-gray-50 border-b border-gray-200 cursor-pointer"
         (dblclick)="onDoubleClick(item)">
       <td *ngFor="let column of columns"
-          class="p-4"
+          [ngClass]="{ 'p-1': column.actionType, 'p-4': !column.actionType }"
           [style.width.%]="calculateWidth(column)">
-        <ng-container *ngIf="column.name && !column.template; else customTemplate">
+        <ng-container *ngIf="column.name && !column.template && !column.options">
           {{ item[column.name] }}
         </ng-container>
-        <ng-template #customTemplate>
-          <span [innerHTML]="column.template ? column.template(item) : ''"></span>
-        </ng-template>
+
+        <ng-container *ngIf="column.template">
+          <span [innerHTML]="column.template(item)"></span>
+        </ng-container>
+
+        <ng-container *ngIf="column.options">
+          <app-arn-search-select (selectedOption)="column.onSelectionChange($event, item, column)" [options]="column.options" [initialValue]="column.initialValue(item)"></app-arn-search-select>
+        </ng-container>
+
         <ng-container *ngIf="column.actionType && (!column.actionCondition || column.actionCondition(item))">
-            <span (click)="handleAction(column.actionType, item)" class="cursor-pointer">
-              <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
-                <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
-              </ng-container>
-              <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
-                <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
-              </ng-container>
-            </span>
+    <span (click)="handleAction(column.actionType, item)"
+          class="cursor-pointer flex items-center justify-center rounded-full hover:bg-gray-100 p-1 element-transition">
+      <ng-container *ngIf="column.actionType === ACTIONS.EDIT">
+        <pencil-outline-icon stroke="1.5" size="20" color="black"></pencil-outline-icon>
+      </ng-container>
+      <ng-container *ngIf="column.actionType === ACTIONS.DELETE">
+        <trash-outline-icon stroke="1.5" size="20" color="black"></trash-outline-icon>
+      </ng-container>
+    </span>
         </ng-container>
       </td>
     </tr>
     </tbody>
   </table>
+  <plus-outline-icon *ngIf="addPlusButton"
+                     (click)="plusButtonAction.emit()"
+                     size="30"
+                     stroke="1.5"
+                     class="absolute right-4 bottom-4 bg-gray-100 rounded-xl border-2 p-1 cursor-pointer hover:bg-gray-200 element-transition transform hover:scale-125"/>
 </div>

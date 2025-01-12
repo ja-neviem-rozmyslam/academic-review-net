@@ -1,19 +1,21 @@
-<div class="h-[60vh] flex space-x-6">
-  <div class="w-[25%]">
+<div class="h-[94vh] flex space-x-2 card-base overflow-hidden">
+  <div class="max-w-[30%] w-[30%] p-4">
     <app-conferences-search
       [searchObject]="conferenceSearchCriteria$ | async"
       (startSearch)="onSearchStarted()"/>
   </div>
 
-  <div class="w-full">
+  <div class="w-full relative">
     <app-arn-grid-list
       [columns]="columns"
       [initialRefresh]="true"
       [sortable]="true"
+      [addPlusButton]="true"
       [searchObject]="conferenceSearchCriteria$ | async"
       [initialSort]="'conferenceName'"
       [searchMethod]="search"
-      (doubleClickAction)="onDoubleClick($event)"
-    />
+      (plusButtonAction)="addNewConference()"
+      (doubleClickAction)="onDoubleClick($event)">
+    </app-arn-grid-list>
   </div>
 </div>

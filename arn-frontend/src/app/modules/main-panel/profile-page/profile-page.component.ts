@@ -33,10 +33,14 @@ export class ProfilePageComponent implements OnInit {
     const roles = this.userDetails.user.roles;
 
     const isStudent = roles.includes('S');
-    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').disabled = !isStudent;
+    this.tabOptions.find(tab => tab.value === 'SUBMISSIONS').hidden = !isStudent;
 
     const isReviewer = roles.includes('R');
-    this.tabOptions.find(tab => tab.value === 'REVIEWS').disabled = !isReviewer;
+    this.tabOptions.find(tab => tab.value === 'REVIEWS').hidden = !isReviewer;
+
+    if (!isStudent && isReviewer) {
+      this.selectedOption = 'REVIEWS';
+    }
   }
 
   getSubmissionByConferenceId(conferenceId: number) {
@@ -47,8 +51,13 @@ export class ProfilePageComponent implements OnInit {
     this.router.navigate(['/main/my-theses']);
   }
 
-  navigateToConferencePage(conferenceId: number) {
-    this.router.navigate(['/main/conferences', conferenceId]);
+  navigateToConferencePage(conferenceId: number, submissionId?: number) {
+    if (submissionId) {
+      this.router.navigate(['/main/submissions', submissionId]);
+    }
+    else {
+      this.router.navigate(['/main/conferences', conferenceId])
+    }
   }
 
   fetchUserDetails(): Observable<any> {
@@ -71,12 +80,13 @@ export class ProfilePageComponent implements OnInit {
     const modalRef = this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
       backdrop: 'dynamic',
+      closable: false,
     }, this.userDetails);
 
     modalRef.instance.profileUpdated.subscribe(() => {
       this.fetchUserDetails().subscribe({
         complete: () => {
-          this.alertMessage = 'Profil bol úspešne aktualizovaný.';
+          this.alertMessage = 'Profil bol úspešne aktualizovaný';
           this.showAlert = true;
           setTimeout(() => {
             this.showAlert = false;
@@ -88,7 +98,7 @@ export class ProfilePageComponent implements OnInit {
     modalRef.instance.passwordResetSent.subscribe(() => {
       this.fetchUserDetails().subscribe({
         complete: () => {
-          this.alertMessage = 'E-mail na zmenu hesla bol odoslaný.';
+          this.alertMessage = 'E-mail na zmenu hesla bol odoslaný';
           this.showAlert = true;
           setTimeout(() => {
             this.showAlert = false;

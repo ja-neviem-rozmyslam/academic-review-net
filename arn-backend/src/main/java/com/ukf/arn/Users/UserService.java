@@ -3,6 +3,7 @@ package com.ukf.arn.Users;
 import com.ukf.arn.Entities.Conference;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Conferences.Repository.ConferenceRepository;
+import com.ukf.arn.Entities.University;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Entities.Submission;
 import com.ukf.arn.Submissions.Objects.SubmissionDto;
@@ -10,11 +11,13 @@ import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Users.Objects.UpdateRequest;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Objects.UserDetailsDto;
+import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,8 +101,15 @@ public class UserService {
         User user = SecurityConfig.getLoggedInUser();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
-        user.getUniversity().setId(userDto.getUniversityId());
+        if (user.getUniversity() == null) {
+            University university = new University();
+            university.setId(userDto.getUniversityId());
+            user.setUniversity(university);
+        } else {
+            user.getUniversity().setId(userDto.getUniversityId());
+        }
         userRepository.save(user);
         return ResponseEntity.ok("User details updated successfully");
     }
+
 }

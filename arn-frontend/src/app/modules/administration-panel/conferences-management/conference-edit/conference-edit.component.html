@@ -1,0 +1,201 @@
+<app-arn-toast [showToast]="showAlert">
+  <div class="toast-icon text-green-500 bg-green-100 rounded">
+    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+         viewBox="0 0 20 20">
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+    </svg>
+    <span class="sr-only">Success</span>
+  </div>
+  <div class="ms-3 text-sm font-normal">{{ alertMessage }}</div>
+</app-arn-toast>
+
+<div class="mb-4">
+  <app-tabs
+    [tabs]="tabOptions"
+    [activeTab]="selectedOption"
+    (tabChanged)="selectedOption = $event"
+  ></app-tabs>
+</div>
+<div class="w-full card-base p-4 relative overflow-hidden">
+  <app-arn-loader [isVisible]="isLoading"></app-arn-loader>
+  @if (selectedOption === EDIT && conference) {
+    <div class="flex justify-between">
+      <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
+      <div class="space-x-6">
+        <app-arn-button
+          [type]="'button'"
+          [buttonText]="'Stiahnuť práce'"
+          (buttonClick)="downloadData()">
+        </app-arn-button>
+        <app-arn-button *ngIf="!conference.closed"
+          [type]="'button'"
+          [buttonText]="'Zavrieť konferenciu'"
+          (buttonClick)="closeConference()"
+          [customColor]="'#cb3d3d'">
+        </app-arn-button>
+      </div>
+    </div>
+    <form appFormValidation (ngSubmit)="updateConference()" (getValidationErrors)="formValidationErrors = $event">
+      <div class="space-y-5">
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="arn-input">
+            <label for="conferenceName">Názov konferencie</label>
+            <input
+              type="text"
+              id="conferenceName"
+              name="conferenceName"
+              placeholder="Názov konferencie"
+              [(ngModel)]='conference.conferenceName'
+              [disabled]="conference.closed"
+              class="w-full p-2 border border-gray-300 rounded" required/>
+          </div>
+
+          <div class="arn-input">
+            <label for="faculty">Fakulta</label>
+            <input
+              type="text"
+              id="faculty"
+              name="faculty"
+              placeholder="Fakulta"
+              [(ngModel)]='conference.faculty'
+              [disabled]="conference.closed"
+              class="w-full p-2 border border-gray-300 rounded" required/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="arn-input">
+            <label for="uploadDeadline">Dátum nahrávania (od)</label>
+            <app-arn-date-picker
+              id="uploadDeadline"
+              [name]="'uploadDeadline'"
+              [dateTime]="true"
+              [disabled]="conference.closed"
+              [(selectedDate)]='conference.uploadDeadline' required/>
+          </div>
+          <div class="arn-input">
+            <label for="reviewDeadline">Termín posudozvania (od)</label>
+            <app-arn-date-picker
+              id="reviewDeadline"
+              [name]="'reviewDeadline'"
+              [dateTime]="true"
+              [disabled]="conference.closed"
+              [(selectedDate)]='conference.reviewDeadline' required/>
+          </div>
+        </div>
+
+        <div class="flex flex-row space-x-12">
+          <div class="flex flex-col space-y-4 w-5/12">
+            <div class="flex items-center">
+              <input
+                id="setPassword"
+                name="setPassword"
+                aria-describedby="setPassword"
+                type="checkbox"
+                class="checkbox-custom p-2"
+                [disabled]="conference.closed"
+                [(ngModel)]="setPassword"/>
+              <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
+                Chcete tejto konferencií nastaviť heslo?
+              </label>
+            </div>
+            <div *ngIf="setPassword" class="arn-input w-full">
+              <input
+                type="text"
+                id="conferencePassword"
+                name="conferencePassword"
+                class="w-full"
+                placeholder="Heslo"
+                [(ngModel)]="conference.password"
+                required/>
+            </div>
+          </div>
+
+          <div class="w-7/12" *ngIf="!isReviewFormDisabled() || (isReviewFormDisabled() && conference.reviewForm.length > 0)">
+            <div class="mb-3">
+              <h2 class="text-lg font-semibold">Hodnotiaci formulár</h2>
+              <p class="text-gray-600 text-sm" *ngIf="!isReviewFormDisabled()">
+                Tu vytvorte hodnotiaci formulár, na základe ktorého budú recenzenti
+                hodnotiť práce.</p>
+            </div>
+            <div class="flex flex-col max-h-[45vh] overflow-y-auto scroll-smooth">
+              <div class="space-y-4">
+                <div *ngFor="let field of conference.reviewForm" class="flex items-end space-x-2">
+                  <div class="arn-input w-8/12">
+                    <label for="{{ 'reviewedCategory-' + field.id }}" class="text-sm font-medium text-gray-700">
+                      Hodnotený aspekt
+                    </label>
+                    <input
+                      type="text"
+                      [id]="'reviewedCategory-' + field.id"
+                      [(ngModel)]="field.reviewedCategory"
+                      name="{{ 'reviewedCategory-' + field.id }}"
+                      class="w-full border rounded px-2 py-1"
+                      placeholder="Kategória hodnotenia"
+                      autocomplete="off"
+                      required
+                      [disabled]="isReviewFormDisabled()"/>
+                  </div>
+                  <div class="w-3/12">
+                    <app-arn-select
+                      [name]="'fieldType' + field.id"
+                      [options]="REVIEW_FORM_OPTIONS"
+                      [selectedOption]="getSelectedOption(field)"
+                      (selectedOptionChange)="onFieldTypeChange($event, field)"
+                      [disabled]="isReviewFormDisabled()"/>
+                  </div>
+                  <div class="w-1/12 flex justify-center" *ngIf="!isReviewFormDisabled()">
+                    <div
+                      class="p-2 rounded-lg text-red-500 hover:text-red-700 hover:bg-red-100 transition cursor-pointer"
+                      title="Odstrániť doménu"
+                      (click)="removeField(field.id)"
+                      [class.cursor-not-allowed]="isReviewFormDisabled()"
+                      [class.text-gray-400]="isReviewFormDisabled()">
+                      <trash-outline-icon/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!isReviewFormDisabled()"
+                   class="flex items-center justify-center p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition arn-input cursor-pointer mt-4"
+                   (click)="addNewField()"
+                   [class.bg-gray-100]="isReviewFormDisabled()">
+                <plus-small-outline-icon/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between items-center mt-6">
+        <app-arn-button
+          [type]="'button'"
+          [buttonText]="'Späť'"
+          (buttonClick)="viewConferences()">
+        </app-arn-button>
+
+        <app-arn-button
+          [buttonText]="'Aktualizovať konferenciu'"
+          [disabled]="conference.closed"
+          [type]="'submit'">
+        </app-arn-button>
+      </div>
+    </form>
+
+  } @else if (ASSIGN) {
+
+    <div class="w-full relative">
+      <app-arn-grid-list
+        [data]="submissions"
+        [columns]="columns"
+        [initialRefresh]="true"
+        [sortable]="true"
+        [initialSort]="'title'">
+      </app-arn-grid-list>
+    </div>
+
+  } @else if (SUBMISSION) {
+
+  }
+</div>

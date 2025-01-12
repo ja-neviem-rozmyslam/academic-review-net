@@ -15,7 +15,7 @@ public class JwtUtil {
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(User user) {
-        return generateJwt(user.getEmail(), user.getRoles(), 1000 * 60 * 30);
+        return generateJwt(user.getEmail(), user.getRoles(), 1000 * 60 * 60);
     }
 
     public String generateRefreshToken(User user) {
