@@ -9,8 +9,8 @@ import {combineLatest, take, tap} from 'rxjs';
 import {Column} from '../../components/arn-grid-list/entities/Column';
 import {DialogService} from '../../services/dialog.service';
 import {EditUserModalComponent} from "../../components/edit-user-modal/edit-user-modal.component";
-import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
 import {RoleService} from '../../services/role.service';
+import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
 
 @Component({
   selector: 'app-users-management',
