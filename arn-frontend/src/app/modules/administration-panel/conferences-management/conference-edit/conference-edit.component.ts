@@ -9,7 +9,7 @@ import {
   SUBMISSION,
   TABOPTIONS
 } from '../entities/constants';
-import {CONFERENCE_COLUMNS} from './entities/columns'
+import {CONFERENCE_COLUMNS} from './entities/constants'
 import {ConferenceManagementService} from '../services/conference-management.service';
 import {Conference} from '../../../main-panel/conference-page/entities/Conference';
 import {ReviewFormObject} from '../../../main-panel/conference/entities/ReviewFormObject';

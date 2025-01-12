@@ -1,4 +1,5 @@
-import { Component, EventEmitter, HostListener, Inject, OnInit, Output, ElementRef } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, ElementRef, Input } from '@angular/core';
+import { SelectOptions } from './entities/SelectOptions';
 
 @Component({
   selector: 'app-arn-search-select',
@@ -6,33 +7,32 @@ import { Component, EventEmitter, HostListener, Inject, OnInit, Output, ElementR
   styleUrls: ['./arn-search-select.component.less']
 })
 export class ArnSearchSelectComponent implements OnInit {
-  @Output() selectedOption = new EventEmitter<string>();
+  @Output() selectedOption = new EventEmitter<SelectOptions>();
+  @Output() optionsChange = new EventEmitter<SelectOptions[]>();
+  @Input() options: SelectOptions[] = [];
 
   searchQuery: string = '';
-  filteredOptions: string[] = [];
+  filteredOptions: SelectOptions[] = [];
   showDropdown: boolean = false;
 
-  constructor(
-    private elementRef: ElementRef,
-    @Inject('options') public options: string[],
-    @Inject('onSelectionChange') private onSelectionChange: (selectedValue: string) => void
-  ) {}
+  constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
-    this.filteredOptions = [...this.options];
+    this.filteredOptions = this.options;
   }
 
   filterOptions() {
     this.filteredOptions = this.options.filter(option =>
-      option.toLowerCase().includes(this.searchQuery.toLowerCase())
+        option.label.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
+    this.optionsChange.emit(this.filteredOptions);
   }
 
-  selectOption(option: string) {
-    this.searchQuery = option;
+  selectOption(option: SelectOptions) {
+    this.searchQuery = option.label;
     this.showDropdown = false;
     this.selectedOption.emit(option);
-    this.onSelectionChange(option);
+    this.optionsChange.emit([option]);
   }
 
   @HostListener('document:click', ['$event'])

@@ -1,6 +1,4 @@
 import {Column} from '../../../../components/arn-grid-list/entities/Column';
-import {ArnSearchSelectComponent} from '../../../../components/arn-search-select/arn-search-select.component';
-
 export const CONFERENCE_COLUMNS: Column[] = [
   {
     title: 'Názov práce',
@@ -18,17 +16,15 @@ export const CONFERENCE_COLUMNS: Column[] = [
   {
     title: 'Recenzent',
     name: 'reviewer',
-    width: 20,
-    component: ArnSearchSelectComponent,
+    width: 30,
     options: [
       { label: 'Žiadny', value: '1' },
-      { label: 'Janko Hraško', value: '2' },
+      { label: 'Janko asd', value: '2' },
       { label: 'Peter Vrátny', value: '3' },
       { label: 'Mária Nováková', value: '4' },
     ],
-    onSelectionChange: (selectedValue, dataItem) => {
-      console.log(`Selected "${selectedValue}" for "${dataItem.title}"`);
-      dataItem.reviewer = selectedValue;
+    onSelectionChange: (event) => {
+      console.log(event);
     },
   }
 ];

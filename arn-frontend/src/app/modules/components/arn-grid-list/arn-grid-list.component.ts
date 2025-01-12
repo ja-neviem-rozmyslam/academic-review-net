@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
-import {Column, DataColumn, ACTIONS, SelectColumn} from './entities/Column';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Column, DataColumn, ACTIONS} from './entities/Column';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -23,10 +23,9 @@ export class ArnGridListComponent implements OnInit {
   @Output() plusButtonAction = new EventEmitter<void>();
 
   currentSort: { column: string; direction: 'asc' | 'desc' } = { column: '', direction: 'asc' };
-  private injectorCache = new Map<any, Injector>();
 
 
-  constructor(private cdr: ChangeDetectorRef, private injector: Injector) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (this.sortable && this.initialSort) {
@@ -79,38 +78,6 @@ export class ArnGridListComponent implements OnInit {
 
   isDataColumn(column: Column): column is DataColumn {
     return 'name' in column;
-  }
-
-  createInjector(dataItem: any, column: SelectColumn): Injector {
-    const options = column.options || [];
-    if (!this.injectorCache.has(dataItem)) {
-      const injector = Injector.create({
-        providers: [
-          { provide: 'rowData', useValue: dataItem },
-          { provide: 'options', useValue: options.map((option) => option.label) },
-          {
-            provide: 'onSelectionChange',
-            useValue: (selectedValue: string) => this.onComponentSelectionChange(selectedValue, dataItem, column),
-          },
-        ],
-        parent: this.injector,
-      });
-      this.injectorCache.set(dataItem, injector);
-    }
-    return this.injectorCache.get(dataItem)!;
-  }
-
-  onComponentSelectionChange(selectedValue: string, dataItem: any, column: SelectColumn): void {
-    console.log('Selected Value:', selectedValue);
-    console.log('Data Item:', dataItem);
-    console.log('Column:', column.name);
-
-    if (column.onSelectionChange) {
-      column.onSelectionChange(selectedValue, dataItem, column);
-    }
-
-    this.searchObject[column.name] = selectedValue;
-    this.refreshGrid();
   }
 
   protected readonly ACTIONS = ACTIONS;

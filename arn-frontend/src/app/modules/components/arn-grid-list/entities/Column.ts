@@ -1,5 +1,4 @@
-import { Type } from '@angular/core';
-import {ArnSearchSelectComponent} from '../../arn-search-select/arn-search-select.component';
+import { SelectOptions } from '../../arn-search-select/entities/SelectOptions';
 
 export interface DataColumn {
   title: string;
@@ -15,14 +14,8 @@ export interface ActionColumn {
 }
 
 export interface SelectColumn extends DataColumn {
-  component: Type<ArnSearchSelectComponent>;
-  options: SelectOption[];
+  options: SelectOptions[];
   onSelectionChange: (selectedValue: string, dataItem: any, column: SelectColumn) => void;
-}
-
-export interface SelectOption {
-  label: string;
-  value: string;
 }
 
 export type Column = DataColumn | ActionColumn | SelectColumn;

@@ -33,17 +33,16 @@
       <td *ngFor="let column of columns"
           [ngClass]="{ 'p-1': column.actionType, 'p-4': !column.actionType }"
           [style.width.%]="calculateWidth(column)">
-        <ng-container *ngIf="column.name && !column.template && !column.component">
+        <ng-container *ngIf="column.name && !column.template && !column.options">
           {{ item[column.name] }}
         </ng-container>
 
-        <ng-container *ngIf="column.template && !column.component">
+        <ng-container *ngIf="column.template">
           <span [innerHTML]="column.template(item)"></span>
         </ng-container>
 
-        <ng-container *ngIf="column.component">
-          <ng-container *ngComponentOutlet="column.component; injector: createInjector(item, column)">
-          </ng-container>
+        <ng-container *ngIf="column.options">
+          <app-arn-search-select (optionsChange)="column.onSelectionChange($event)" [options]="column.options"></app-arn-search-select>
         </ng-container>
 
         <ng-container *ngIf="column.actionType && (!column.actionCondition || column.actionCondition(item))">
