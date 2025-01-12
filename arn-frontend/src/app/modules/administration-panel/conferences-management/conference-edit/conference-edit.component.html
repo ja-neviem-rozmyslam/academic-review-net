@@ -24,12 +24,12 @@
       <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
       <div class="space-x-6">
         <app-arn-button
-          type="button"
+          [type]="'button'"
           [buttonText]="'Stiahnuť práce'"
           (buttonClick)="downloadData()">
         </app-arn-button>
         <app-arn-button *ngIf="!conference.closed"
-          type="button"
+          [type]="'button'"
           [buttonText]="'Zavrieť konferenciu'"
           (buttonClick)="closeConference()"
           [customColor]="'#cb3d3d'">
@@ -170,7 +170,7 @@
       </div>
       <div class="flex justify-between items-center mt-6">
         <app-arn-button
-          type="button"
+          [type]="'button'"
           [buttonText]="'Späť'"
           (buttonClick)="viewConferences()">
         </app-arn-button>
@@ -178,7 +178,7 @@
         <app-arn-button
           [buttonText]="'Aktualizovať konferenciu'"
           [disabled]="conference.closed"
-          type="submit">
+          [type]="'submit'">
         </app-arn-button>
       </div>
     </form>
