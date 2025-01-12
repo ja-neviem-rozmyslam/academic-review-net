@@ -4,5 +4,5 @@ export interface UserDetails {
   name: string;
   surname: string;
   universityId: number;
-  roles?: string;
+  roles?: string[];
 }

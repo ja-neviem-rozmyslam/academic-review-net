@@ -4,6 +4,8 @@ import {UserDetails} from '../../../main-panel/profile-page/profile-settings/ent
 import {EmailDomain} from '../../../components/registration-panel/entities/EmailDomain';
 import {EmailDomainService} from '../../../components/registration-panel/services/email-domain.service';
 import {UsersManagementService} from '../services/users-management.service';
+import {UserRoles} from '../../../constants';
+import {FormValidationErrors} from '../../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-edit-user-modal',
@@ -19,21 +21,22 @@ export class EditUserModalComponent extends BaseModal implements OnInit{
   universitiesSelectOptions: any[];
   isFetching = true;
 
+  formValidationErrors: FormValidationErrors;
+
   constructor(@Inject('modalData') public data: any,private usersManagementService: UsersManagementService, private emailDomainService: EmailDomainService) {
     super();
 
     this.userDetails = {
-      id:data.user.id,
-      email: data.user.email,
-      name: data.user.name,
-      surname: data.user.surname,
-      universityId: data.user.university.id,
-      roles: data.user.roles
+      id: data.id,
+      email: data.email,
+      name: data.name,
+      surname: data.surname,
+      universityId: data.university.id,
+      roles: data.roles
     };
   }
 
   ngOnInit() {
-    //console.log(this.userDetails)
     this.emailDomainService.getAllDomains().pipe().subscribe((domains: EmailDomain[]) => {
       this.emailDomains = domains;
       this.universitiesSelectOptions = this.emailDomains.map(university => ({
@@ -46,11 +49,25 @@ export class EditUserModalComponent extends BaseModal implements OnInit{
   }
 
   updateUserProfile(): void {
-    this.isFetching = true;
-    this.usersManagementService.editUser(this.userDetails).pipe().subscribe(() => {
-      this.profileUpdated.emit();
-      this.closeModal();
-    });
+    if (!this.formValidationErrors && this.userDetails.roles.length > 0) {
+      this.isFetching = true;
+      this.usersManagementService.editUser(this.userDetails).pipe().subscribe(() => {
+        this.profileUpdated.emit();
+        this.closeModal();
+      });
+    }
   }
 
+
+  onRoleChange(checkboxEvent: any, selectedRole: string): void {
+    if (checkboxEvent.currentTarget.checked) {
+      if (!this.userDetails.roles.includes(selectedRole)) {
+        this.userDetails.roles.push(selectedRole);
+      }
+    } else {
+      this.userDetails.roles = this.userDetails.roles.filter(role => role !== selectedRole);
+    }
+  }
+
+  protected readonly UserRoles = UserRoles;
 }

@@ -68,7 +68,7 @@ export class UsersManagementComponent implements OnInit {
       placement: 'center',
       backdrop: 'dynamic',
       closable: false,
-    }, { user } );
+    }, {...user});
     modalRef.instance.profileUpdated.subscribe(() => {
       this.arnGridList.refreshGrid();
     });
