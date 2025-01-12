@@ -1,4 +1,4 @@
-<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalWidthClass]="'max-w-xl'">
+<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalMaxWidthClass]="'max-w-xl'">
 
   <app-arn-loader [isVisible]="isFetching"></app-arn-loader>
 
@@ -8,45 +8,47 @@
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
+        <label class="block text-sm font-medium mb-1" for="name">
           Meno:
+        </label>
           <input
             type="text"
+            id="name"
             placeholder="Meno"
             [(ngModel)]="userDetails.name"
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
       </div>
 
       <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
+        <label class="block text-sm font-medium mb-1" for="surname">
           Priezvisko:
+        </label>
           <input
             type="text"
+            id="surname"
             placeholder="Priezvisko"
             [(ngModel)]="userDetails.surname"
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
       </div>
     </div>
 
     <div class="w-full mb-4">
       <label for="university" class="block text-sm font-medium mb-1">
         Univerzita:
+      </label>
         <app-arn-select
                       id="university"
                       [options]="universitiesSelectOptions"
                       [placeholder]="'Univerzita'"
                       [required]="true"
                       [(selectedOption)]="userDetails.universityId"></app-arn-select>
-      </label>
     </div>
 
     <div class="mb-4 arn-input">
       <app-arn-button [buttonText]="'Resetovať heslo'" [classes]="'w-full'"
-                      (buttonClick)="sendPasswordReset();"></app-arn-button>
+                      (buttonClick)="sendPasswordReset()"></app-arn-button>
       <p class="text-sm text-gray-500">Po kliknutí vám pošleme email s odkazom na resetovanie hesla.</p>
     </div>
 

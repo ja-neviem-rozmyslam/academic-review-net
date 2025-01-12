@@ -94,7 +94,7 @@
       </div>
       <div class="text-sm space-y-2">
         <div><i class="fas fa-envelope"></i> {{ userDetails.user.email }}</div>
-        <div><i class="fas fa-university"></i> {{ userDetails.user.university.name }}</div>
+        <div><i class="fas fa-university"></i> {{ userDetails.user.university === null ? '' : userDetails.user.university.name }}</div>
       </div>
       <app-arn-button
         class="w-full"

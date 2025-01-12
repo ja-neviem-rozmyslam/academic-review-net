@@ -11,7 +11,7 @@ import com.ukf.arn.Entities.University;
 import com.ukf.arn.Universities.UniversityService;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Users.Objects.UserDto;
-import com.ukf.arn.Users.UserRepository;
+import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.config.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

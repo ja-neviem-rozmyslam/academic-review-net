@@ -17,6 +17,11 @@ import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.compon
 import {
   ConferencesManagementComponent
 } from './modules/administration-panel/conferences-management/conferences-management.component';
+import {UsersManagementComponent} from './modules/administration-panel/users-management/users-management.component';
+import {ConferenceEditComponent} from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component'
+import {
+  UniversityManagementComponent
+} from './modules/administration-panel/university-management/university-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -38,7 +43,24 @@ export const routes: Routes = [
       },
       {
         path: 'conference-management',
-        component: ConferencesManagementComponent
+        component: ConferencesManagementComponent,
+      },
+      {
+        path: 'users-management',
+        component: UsersManagementComponent
+      },
+      {
+        path: 'admin-management',
+        component: UsersManagementComponent,
+        data: { isAdminSearch: true }
+      },
+      {
+        path: 'conference/:conferenceID',
+        component: ConferenceEditComponent
+      },
+      {
+        path: 'university-management',
+        component: UniversityManagementComponent
       }
     ]
   },

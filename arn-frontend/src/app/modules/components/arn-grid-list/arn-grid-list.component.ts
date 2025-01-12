@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ACTIONS, Column, DataColumn} from './entities/Column';
-import {Observable} from 'rxjs';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Column, DataColumn, ACTIONS} from './entities/Column';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-arn-grid-list',
@@ -10,27 +10,26 @@ import {Observable} from 'rxjs';
 export class ArnGridListComponent implements OnInit {
   @Input() data: any[] = [];
   @Input() columns: Column[] = [];
-  @Input() searchMethod: (searchObject: any, sortOptions: {
-    column: string;
-    direction: 'asc' | 'desc'
-  }) => Observable<any>;
+  @Input() searchMethod: (searchObject: any, sortOptions: { column: string; direction: 'asc' | 'desc' }) => Observable<any>;
   @Input() searchObject: any = {};
   @Input() sortable: boolean;
   @Input() initialSort: string;
   @Input() initialRefresh: boolean = false;
+  @Input() addPlusButton: boolean = false;
 
   @Output() editAction = new EventEmitter<any>();
   @Output() deleteAction = new EventEmitter<any>();
   @Output() doubleClickAction = new EventEmitter<any>();
+  @Output() plusButtonAction = new EventEmitter<void>();
 
-  currentSort: { column: string; direction: 'asc' | 'desc' } = {column: '', direction: 'asc'};
+  currentSort: { column: string; direction: 'asc' | 'desc' } = { column: '', direction: 'asc' };
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (this.sortable && this.initialSort) {
-      this.currentSort = {column: this.initialSort, direction: 'asc'};
+      this.currentSort = { column: this.initialSort, direction: 'asc' };
     }
     if (this.initialRefresh) {
       this.refreshGrid();
@@ -60,7 +59,7 @@ export class ArnGridListComponent implements OnInit {
     if (this.currentSort.column === column.name) {
       this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      this.currentSort = {column: column.name, direction: 'desc'};
+      this.currentSort = { column: column.name, direction: 'asc' };
     }
     this.refreshGrid();
   }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Conference} from './entities/Conference';
+import {ConferenceDto} from './entities/ConferenceDto';
 import {ConferenceService} from './service/conference.service';
 import {ConferenceStore} from './store/conferences-store.service';
 import {Observable} from 'rxjs';
@@ -13,9 +13,9 @@ import {SubmissionService} from '../conference/services/submission.service';
   providers: [ConferenceService]
 })
 export class ConferencesListPageComponent implements OnInit {
-  conferences$: Observable<Conference[]> = this.conferenceStore.conferences$;
-  filteredConferences$: Observable<Conference[]> = this.conferences$;
-  currentPageConferences: Conference[] = [];
+  conferences$: Observable<ConferenceDto[]> = this.conferenceStore.conferences$;
+  filteredConferences$: Observable<ConferenceDto[]> = this.conferences$;
+  currentPageConferences: ConferenceDto[] = [];
   searchTerm: string = '';
   currentPage: number = 1;
   pageSize: number = 6;
@@ -57,7 +57,7 @@ export class ConferencesListPageComponent implements OnInit {
     });
   }
 
-  updateCurrentPageConferences(conferences: Conference[]): void {
+  updateCurrentPageConferences(conferences: ConferenceDto[]): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.currentPageConferences = conferences.slice(startIndex, endIndex);

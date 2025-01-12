@@ -13,6 +13,13 @@ export class ArnSearchcriteriaComponent {
     this.clearSearch.emit();
   }
 
+  handleKeydown(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement;
+    if (event.key === 'Enter' && target.tagName.toLowerCase() === 'input') {
+      this.onSearch();
+    }
+  }
+
   onSearch(): void {
     this.search.emit();
   }

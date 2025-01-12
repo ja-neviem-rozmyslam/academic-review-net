@@ -10,6 +10,7 @@ import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.domain.Sort.Direction;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,12 +45,12 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
     }
 
     @Override
-    public List<Conference> findAllByPredicate(BooleanBuilder predicate, OrderSpecifier orderSpecifier) {
+    public List<Conference> findAllByPredicate(BooleanBuilder predicate, Sort sort) {
         return new JPAQuery<>(entityManager)
                 .select(CONFERENCE)
                 .from(CONFERENCE)
                 .where(predicate)
-                .orderBy(orderSpecifier)
+                .orderBy(buildSort(sort))
                 .fetch();
     }
 
@@ -104,11 +105,9 @@ public class ConferenceRepositoryImpl implements ConferenceRepositoryCustom {
                     return buildOrderSpecifier(CONFERENCE.faculty, sort.getDirection());
                 case "closed":
                     return buildOrderSpecifier(CONFERENCE.closed, sort.getDirection());
-                default:
-                    return null;
             }
         }
-        return null;
+        return buildOrderSpecifier(CONFERENCE.conferenceName, Direction.ASC);
     }
 
     public static ConferenceDto mapToConferenceDto(Conference conference) {

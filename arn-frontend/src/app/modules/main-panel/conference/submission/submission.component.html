@@ -119,9 +119,9 @@
     </div>
 
     <div class="flex w-full mt-4 gap-3">
-      <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button [type]="'submit'" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
       <app-arn-button *ngIf="submissionOptions.isUploaded"
-                      type="button"
+                      [type]="'button'"
                       [buttonText]="'Zrušiť'"
                       [classes]="'h-full'"
                       [customColor]="'#da3c3c'"

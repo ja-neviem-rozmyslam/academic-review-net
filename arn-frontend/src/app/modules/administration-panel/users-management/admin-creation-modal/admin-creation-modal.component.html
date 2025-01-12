@@ -1,0 +1,53 @@
+<app-base-modal [modal]="modalInstance" [modalSettings]="modalSettings" [modalMaxWidthClass]="'max-w-xl'">
+  <form (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event"
+        class="flex flex-col w-full">
+    <div class="space-y-4">
+      <div class="arn-input">
+        <label for="userName">Meno administrátora</label>
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          placeholder="Meno"
+          [(ngModel)]="user.name"
+          required/>
+      </div>
+      <div class="arn-input">
+        <label for="userSurname">Priezvisko administrátora</label>
+        <input
+          type="text"
+          id="userSurname"
+          name="userSurname"
+          placeholder="Priezvisko"
+          [(ngModel)]="user.surname"
+          required/>
+      </div>
+      <div class="arn-input">
+        <label for="userLogin">Prihlasovacie meno administrátora</label>
+        <input
+          type="text"
+          id="userLogin"
+          name="userLogin"
+          placeholder="Prihlasovacie meno"
+          [(ngModel)]="user.email"
+          required/>
+      </div>
+      <div class="arn-input">
+        <label for="userPassword">Heslo administrátora</label>
+        <input
+          type="text"
+          id="userPassword"
+          name="userPassword"
+          placeholder="Heslo"
+          [(ngModel)]="user.password"
+          required/>
+      </div>
+      <div class="flex items-center h-0.5">
+        <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
+      </div>
+      <div>
+        <app-arn-button [buttonText]="'Vytvoriť'" [classes]="'w-full'" [type]="'submit'"/>
+      </div>
+    </div>
+  </form>
+</app-base-modal>

@@ -1,5 +1,6 @@
 <button type="submit"
         class="button-base h-full"
+        type="{{ type}}"
         [disabled]="disabled"
         [ngClass]="[negativeColor ? 'negative-color' : 'default-color', classes]"
         [style.background-color]="customColor || 'default-color'"

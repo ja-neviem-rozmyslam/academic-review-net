@@ -15,6 +15,14 @@ public class EmailDomain {
     @JoinColumn(name = "university_id")
     private University university;
 
+    public EmailDomain(String emailDomain, University university) {
+        this.emailDomain = emailDomain;
+        this.university = university;
+    }
+
+    public EmailDomain() {
+    }
+
     public Long getId() {
         return id;
     }

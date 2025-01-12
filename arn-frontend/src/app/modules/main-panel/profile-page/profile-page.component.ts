@@ -37,6 +37,10 @@ export class ProfilePageComponent implements OnInit {
 
     const isReviewer = roles.includes('R');
     this.tabOptions.find(tab => tab.value === 'REVIEWS').hidden = !isReviewer;
+
+    if (!isStudent && isReviewer) {
+      this.selectedOption = 'REVIEWS';
+    }
   }
 
   getSubmissionByConferenceId(conferenceId: number) {
@@ -76,6 +80,7 @@ export class ProfilePageComponent implements OnInit {
     const modalRef = this.dialogService.openCustomModal(ProfileSettingsComponent, {
       placement: 'center',
       backdrop: 'dynamic',
+      closable: false,
     }, this.userDetails);
 
     modalRef.instance.profileUpdated.subscribe(() => {

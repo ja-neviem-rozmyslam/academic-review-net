@@ -137,4 +137,6 @@ public class User implements Serializable {
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+
 }

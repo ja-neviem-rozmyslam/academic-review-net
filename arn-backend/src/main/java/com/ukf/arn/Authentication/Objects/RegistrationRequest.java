@@ -5,7 +5,7 @@ public class RegistrationRequest {
     private String surname;
     private String email;
     private String password;
-    private int universityId;
+    private Long universityId;
 
     public String getName() {
         return name;
@@ -39,11 +39,11 @@ public class RegistrationRequest {
         this.password = password;
     }
 
-    public int getUniversityId() {
+    public Long getUniversityId() {
         return universityId;
     }
 
-    public void setUniversityId(int universityId) {
+    public void setUniversityId(Long universityId) {
         this.universityId = universityId;
     }
 }
