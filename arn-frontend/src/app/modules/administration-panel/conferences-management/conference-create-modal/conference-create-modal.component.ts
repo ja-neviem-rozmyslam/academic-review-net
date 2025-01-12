@@ -13,8 +13,8 @@ import {ConferenceManagementService} from '../services/conference-management.ser
   styleUrls: ['./conference-create-modal.component.less']
 })
 export class ConferenceCreateModalComponent extends BaseModal {
-
   @Output() conferenceCreated = new EventEmitter<void>();
+
   conference: Conference = new Conference();
   formValidationErrors: FormValidationErrors;
   setPassword: boolean = false;

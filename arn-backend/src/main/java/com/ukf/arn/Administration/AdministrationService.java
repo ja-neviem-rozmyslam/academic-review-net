@@ -7,6 +7,7 @@ import com.ukf.arn.Administration.Objects.UserSearchDto;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Conferences.Repository.ConferenceRepository;
 import com.ukf.arn.Conferences.Repository.ConferenceRepositoryImpl;
+import com.ukf.arn.ConstantsKatalog;
 import com.ukf.arn.EmailDomain.EmailDomainDto;
 import com.ukf.arn.EmailDomain.EmailDomainRepository;
 import com.ukf.arn.Entities.*;
@@ -19,6 +20,7 @@ import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.Users.Repository.UserRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -36,13 +38,21 @@ public class AdministrationService {
     private final UniversityRepository universityRepository;
     private final EmailDomainRepository emailDomainRepository;
     private final SubmissionRepository submissionRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdministrationService(ConferenceRepository conferenceRepository, UserRepository userRepository, UniversityRepository universityRepository, EmailDomainRepository emailDomainRepository, SubmissionRepository submissionRepository) {
+    public AdministrationService(ConferenceRepository conferenceRepository,
+                                 UserRepository userRepository,
+                                 PasswordEncoder passwordEncoder,
+                                 UniversityRepository universityRepository,
+                                 EmailDomainRepository emailDomainRepository,
+                                 SubmissionRepository submissionRepository) {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
+        this.passwordEncoder = passwordEncoder;
         this.emailDomainRepository = emailDomainRepository;
         this.submissionRepository = submissionRepository;
+
     }
 
     public List<Conference> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
@@ -113,6 +123,20 @@ public class AdministrationService {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> createAdminUser(User userDto) {
+        User user = new User();
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Admin s takýmto prihlasovacím menom už existuje");
+        }
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRoles(Collections.singletonList(ConstantsKatalog.Role.ADMIN.getCode()));
+        user.setVerified(true);
+        return ResponseEntity.ok(userRepository.save(user));
     }
 
     public ResponseEntity<?> removeUniversity(Long universityId, UniversityDto universityDto) {

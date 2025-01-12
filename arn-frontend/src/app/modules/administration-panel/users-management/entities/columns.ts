@@ -1,8 +1,8 @@
 import { ACTIONS, Column } from '../../../components/arn-grid-list/entities/Column';
 import { User } from '../../../objects/User';
-import {UserPrettyNames, UserRoles} from '../../../constants';
+import { UserPrettyNames, UserRoles } from '../../../constants';
 
-export function getUserColumns(isAdminSearch: boolean): Column[] {
+export function getUserColumns(isAdminSearch: boolean, isSuperAdmin: boolean): Column[] {
   const columns: Column[] = [
     {
       title: 'Meno',
@@ -24,15 +24,6 @@ export function getUserColumns(isAdminSearch: boolean): Column[] {
       template: (dataItem: User) => {
         return dataItem.roles.map(role => UserPrettyNames[role]).join(', ');
       },
-    },
-    {
-      actionType: ACTIONS.EDIT,
-      width: 5,
-    },
-    {
-      actionType: ACTIONS.DELETE,
-      actionCondition: (dataItem: any) => (!dataItem.verified) || (isAdminSearch && dataItem.roles.length === 1 && dataItem.roles[0] === UserRoles.ADMIN),
-      width: 5,
     }
   ];
 
@@ -45,6 +36,20 @@ export function getUserColumns(isAdminSearch: boolean): Column[] {
         return dataItem.university?.name;
       },
     });
+  }
+
+  if (!isAdminSearch || isSuperAdmin) {
+    columns.push(
+      {
+        actionType: ACTIONS.EDIT,
+        width: 5,
+      },
+      {
+        actionType: ACTIONS.DELETE,
+        actionCondition: (dataItem: any) => (!dataItem.verified) || (isAdminSearch && dataItem.roles.length === 1 && dataItem.roles[0] === UserRoles.ADMIN),
+        width: 5,
+      }
+    );
   }
 
   return columns;

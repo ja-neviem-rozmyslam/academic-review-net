@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {UserDto} from '../entities/UserDto';
 
 
 @Injectable({
@@ -22,6 +23,10 @@ export class UsersManagementService {
       headers: {'Content-Type': 'application/json'},
       params: params
     });
+  }
+
+  createAdminUser(user: UserDto): Observable<void> {
+    return this.http.post<void>(`${this.ADMIN_USER_ENDPOINT}/createAdmin`, user);
   }
 
   deleteUser(userId: string): Observable<void> {

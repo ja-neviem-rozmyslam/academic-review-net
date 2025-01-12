@@ -6,6 +6,7 @@ import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
 import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
+import com.ukf.arn.Entities.User;
 import com.ukf.arn.Universities.UniversityDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -94,4 +95,8 @@ public class AdministrationController {
         return administrationService.deleteUser(userId);
     }
 
+    @PostMapping("/user/createAdmin")
+    public ResponseEntity<?> createAdmin(@RequestBody User user) {
+        return administrationService.createAdminUser(user);
+    }
 }

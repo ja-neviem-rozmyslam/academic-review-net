@@ -9,6 +9,8 @@ import {combineLatest, take, tap} from 'rxjs';
 import {Column} from '../../components/arn-grid-list/entities/Column';
 import {DialogService} from '../../services/dialog.service';
 import {EditUserModalComponent} from "../../components/edit-user-modal/edit-user-modal.component";
+import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
+import {RoleService} from '../../services/role.service';
 
 @Component({
   selector: 'app-users-management',
@@ -20,12 +22,14 @@ export class UsersManagementComponent implements OnInit {
   @ViewChild(ArnGridListComponent) arnGridList: ArnGridListComponent;
 
   isAdminSearch: boolean;
+  isUserSuperAdmin: boolean = false;
   columns: Column[];
   usersSearchCriteria$ = this.usersSearchStore.searchCriteria$;
 
   constructor(private usersManagementService: UsersManagementService,
               private route: ActivatedRoute,
               private usersSearchStore: UsersSearchStore,
+              private roleService: RoleService,
               private dialogService: DialogService) {
   }
 
@@ -34,7 +38,8 @@ export class UsersManagementComponent implements OnInit {
       take(1),
       tap(([routeData, criteria]) => {
         this.isAdminSearch = routeData['isAdminSearch'] || false;
-        this.columns = getUserColumns(this.isAdminSearch);
+        this.isUserSuperAdmin = this.roleService.isSuperAdmin();
+        this.columns = getUserColumns(this.isAdminSearch, this.isUserSuperAdmin);
         this.usersSearchStore.patchState({
           searchCriteria: {
             ...criteria,
@@ -61,7 +66,10 @@ export class UsersManagementComponent implements OnInit {
   }
 
   addNewAdmin(): void {
-    console.log('Add new admin');
+    const modalRef = this.dialogService.openCustomModal(AdminCreationModalComponent);
+    modalRef.instance.adminCreated.subscribe(() => {
+      this.arnGridList.refreshGrid();
+    });
   }
 
   onSearchStarted() {

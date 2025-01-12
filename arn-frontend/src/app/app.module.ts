@@ -66,6 +66,7 @@ import { ConferenceCreateModalComponent } from './modules/administration-panel/c
 import { ArnSearchSelectComponent } from './modules/components/arn-search-select/arn-search-select.component';
 import { EditUserModalComponent } from './modules/components/edit-user-modal/edit-user-modal.component';
 import { EmailDomainService } from './modules/components/registration-panel/services/email-domain.service';
+import { AdminCreationModalComponent } from './modules/administration-panel/users-management/admin-creation-modal/admin-creation-modal.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { EmailDomainService } from './modules/components/registration-panel/serv
     UniversityManagementComponent,
     ConferenceCreateModalComponent,
     ArnSearchSelectComponent,
-    EditUserModalComponent
+    EditUserModalComponent,
+    AdminCreationModalComponent
   ],
   imports: [
     BrowserModule,
