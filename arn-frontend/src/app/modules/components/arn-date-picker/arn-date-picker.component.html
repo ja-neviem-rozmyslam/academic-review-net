@@ -1,0 +1,8 @@
+<div class="relative w-full">
+  <input [type]="dateTime ? 'datetime-local' : 'date'"
+         [attr.name]="name"
+         [(ngModel)]="selectedDate"
+         (ngModelChange)="selectedDateChange.emit($event)"
+         [required]="required"
+         [disabled]="disabled">
+</div>

@@ -94,7 +94,7 @@
       </div>
       <div class="text-sm space-y-2">
         <div><i class="fas fa-envelope"></i> {{ userDetails.user.email }}</div>
-        <div><i class="fas fa-university"></i> {{ userDetails.user.university.name }}</div>
+        <div><i class="fas fa-university"></i> {{ userDetails.user.university === null ? '' : userDetails.user.university.name }}</div>
       </div>
       <app-arn-button
         class="w-full"
@@ -159,7 +159,7 @@
     <div class="card-base p-5 border flex flex-col">
       <h2 class="text-3xl font-bold mb-4">Práce na hodnotenie</h2>
       <div *ngFor="let submission of userDetails.submissionsToReview" class="p-3 flex justify-between items-center item"
-           (click)="navigateToConferencePage(submission.conferenceId)">
+           (click)="navigateToConferencePage(submission.conferenceId, submission.id)">
         <div>
           <h3 class="text-lg font-bold">{{ submission.title }}</h3>
           <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>

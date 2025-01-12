@@ -72,11 +72,33 @@ public class ConferenceService {
             return ResponseEntity.badRequest().body("Nemáte prístup k tejto konferencii.");
         }
 
-        Submission submission = submissionRepository.findByConferenceIdAndUserId(conferenceId, user.getId());
-        ConferenceDetail conferenceDetail = getConferenceDetail(submission != null ? submission : null, conference, includeCoAuthors);
+        Submission submission = submissionRepository.findByConferencesIdAndAuthorId(conferenceId, user.getId());
+
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference, includeCoAuthors);
 
         return ResponseEntity.ok(conferenceDetail);
     }
+
+    public ResponseEntity<?> getSubmissionData(Long submissionId, boolean includeCoAuthors) {
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
+        User user = SecurityConfig.getLoggedInUser();
+
+        if (submission == null) {
+            return ResponseEntity.badRequest().body("Príspevok neexistuje.");
+        }
+
+        if (!submission.getAuthorId().equals(user.getId()) &&
+                (submission.getReviewerId() == null || !submission.getReviewerId().equals(user.getId()))) {
+            return ResponseEntity.badRequest().body("Nemáte prístup k tomuto príspevku.");
+        }
+
+        Long conferenceId = submission.getConferencesId();
+        Conference conference = conferenceRepository.findById(conferenceId).orElse(null);
+        ConferenceDetail conferenceDetail = getConferenceDetail(submission, conference, includeCoAuthors);
+
+        return ResponseEntity.ok(conferenceDetail);
+    }
+
 
     private static ConferenceDetail getConferenceDetail(Submission submission, Conference conference, boolean includeCoAuthors) {
         ConferenceDetail conferenceDetail = new ConferenceDetail();

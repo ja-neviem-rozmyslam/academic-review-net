@@ -20,6 +20,10 @@ export class ThesisCardComponent {
   }
 
   openConference() {
-    this.router.navigate(['/main/conferences', this.thesis.conferenceId]);
+    if (this.thesis.id) {
+      this.router.navigate(['/main/submissions', this.thesis.id]);
+    } else {
+      this.router.navigate(['/main/conferences', this.thesis.conferenceId]);
+    }
   }
 }

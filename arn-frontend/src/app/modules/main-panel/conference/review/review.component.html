@@ -39,9 +39,9 @@
         required/>
     </div>
     <div class="flex w-full mt-4 gap-3">
-      <app-arn-button type="submit" [buttonText]="'Odoslať posudok'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button [type]="'submit'" [buttonText]="'Odoslať posudok'" [classes]="'h-full'"></app-arn-button>
       <app-arn-button *ngIf = "reviewOptions.isReviewed"
-                      type="button"
+                      [type]="'button'"
                       [buttonText]="'Zrušiť'"
                       [classes]="'h-full'"
                       [customColor]="'#da3c3c'"
@@ -53,7 +53,7 @@
 <ng-template #reviewReadTemplate>
   <div class="space-y-4">
     <div class="arn-input" *ngFor="let field of conferenceDetail.review">
-      <p>
+      <p class="font-bold">
         {{ field.reviewedCategory }}
       </p>
       <p>

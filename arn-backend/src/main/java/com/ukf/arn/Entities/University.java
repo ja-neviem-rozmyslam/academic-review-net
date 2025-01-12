@@ -16,6 +16,10 @@ public class University implements Serializable {
     @Column(name = "university_name")
     private String name;
 
+    public University(String name) {
+        this.name = name;
+    }
+
     public University() {
     }
 

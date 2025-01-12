@@ -21,6 +21,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   error$: Observable<HttpErrorResponse> = this.store.select(selectError);
   loginInfo: Login = new Login('', '');
   rememberMe: boolean = false;
+  isFetching: boolean = false;
   errorMessage: string;
 
   isAdminLogin: boolean = false;
@@ -51,16 +52,17 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.formValidationErrors) {
-      if (this.formValidationErrors.emptyFields.length > 0) {
+      if (this.formValidationErrors.emptyFields?.length > 0) {
         this.errorMessage = 'Všetky polia musia byť vyplnené';
         return;
       }
-      if (this.formValidationErrors.invalidEmails.length > 0) {
+      if (this.formValidationErrors.invalidEmails?.length > 0) {
         this.errorMessage = 'Neplatný formát emailu';
         this.loginInfo.email = '';
         return;
       }
     } else {
+      this.isFetching = true;
       if (this.rememberMe)
         localStorage.setItem(this.storageIdentifier, this.loginInfo.email);
       else
@@ -82,6 +84,7 @@ export class LoginPanelComponent implements OnInit, OnDestroy {
   private initErrorHandling() {
     this.errorSubscription = this.error$.subscribe((error: HttpErrorResponse | null | undefined) => {
       if(error) {
+        this.isFetching = false;
         this.errorMessage = this.utilityService.handleResponseError(error);
         this.store.dispatch(resetError());
       }

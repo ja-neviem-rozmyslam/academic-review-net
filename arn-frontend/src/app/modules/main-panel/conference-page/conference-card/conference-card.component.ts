@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Conference} from '../entities/Conference';
+import {ConferenceDto} from '../entities/ConferenceDto';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DialogService} from '../../../services/dialog.service';
 import {ConferenceJoinModalComponent} from './conference-join-modal/conference-join-modal.component';
@@ -10,7 +10,7 @@ import {ConferenceJoinModalComponent} from './conference-join-modal/conference-j
   styleUrl: './conference-card.component.less'
 })
 export class ConferenceCardComponent {
-  @Input() conference: Conference;
+  @Input() conference: ConferenceDto;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

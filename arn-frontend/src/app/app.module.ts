@@ -5,8 +5,8 @@ import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LoginPanelComponent} from './modules/components/login-panel/login-panel.component';
 import {
-  AdministrationPanelComponent
-} from './modules/administration-panel/administration-panel/administration-panel.component';
+  AdministrationPageComponent
+} from './modules/administration-panel/administration-panel/administration-page.component';
 import {SidemenuComponent} from './modules/components/sidemenu/sidemenu.component';
 import {FormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -52,12 +52,27 @@ import {PaginationComponent} from './modules/components/pagination/pagination.co
 import { MyThesesComponent } from './modules/main-panel/my-theses/my-theses.component';
 import { ThesisCardComponent } from './modules/main-panel/my-theses/thesis-card/thesis-card.component';
 import { ProfileSettingsComponent } from './modules/main-panel/profile-page/profile-settings/profile-settings.component';
+import { ArnGridListComponent } from './modules/components/arn-grid-list/arn-grid-list.component';
+import { ArnDatePickerComponent } from './modules/components/arn-date-picker/arn-date-picker.component';
+import { ConferencesManagementComponent } from './modules/administration-panel/conferences-management/conferences-management.component';
+import { ConferencesSearchComponent } from './modules/administration-panel/conferences-management/conferences-search/conferences-search.component';
+import { ArnSearchcriteriaComponent } from './modules/components/arn-searchcriteria/arn-searchcriteria.component';
+import {ArnLoaderComponent} from './modules/components/arn-loader/arn-loader.component';
+import { UsersManagementComponent } from './modules/administration-panel/users-management/users-management.component';
+import { UsersSearchComponent } from './modules/administration-panel/users-management/users-search/users-search.component';
+import { ConferenceEditComponent } from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component';
+import { UniversityManagementComponent } from './modules/administration-panel/university-management/university-management.component';
+import { ConferenceCreateModalComponent } from './modules/administration-panel/conferences-management/conference-create-modal/conference-create-modal.component';
+import { ArnSearchSelectComponent } from './modules/components/arn-search-select/arn-search-select.component';
+import { EditUserModalComponent } from './modules/administration-panel/users-management/edit-user-modal/edit-user-modal.component';
+import { EmailDomainService } from './modules/components/registration-panel/services/email-domain.service';
+import { AdminCreationModalComponent } from './modules/administration-panel/users-management/admin-creation-modal/admin-creation-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPanelComponent,
-    AdministrationPanelComponent,
+    AdministrationPageComponent,
     SidemenuComponent,
     DialogComponent,
     ArnButtonComponent,
@@ -83,7 +98,23 @@ import { ProfileSettingsComponent } from './modules/main-panel/profile-page/prof
     ProfilePageComponent,
     MyThesesComponent,
     ThesisCardComponent,
-    ProfileSettingsComponent],
+    ProfileSettingsComponent,
+    ArnGridListComponent,
+    ArnDatePickerComponent,
+    ConferencesManagementComponent,
+    ConferencesSearchComponent,
+    ArnSearchcriteriaComponent,
+    ArnLoaderComponent,
+    ArnSearchcriteriaComponent,
+    UsersManagementComponent,
+    UsersSearchComponent,
+    ConferenceEditComponent,
+    UniversityManagementComponent,
+    ConferenceCreateModalComponent,
+    ArnSearchSelectComponent,
+    EditUserModalComponent,
+    AdminCreationModalComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -102,7 +133,8 @@ import { ProfileSettingsComponent } from './modules/main-panel/profile-page/prof
     },
     AuthEffects,
     DialogService,
-    ConferenceStore
+    ConferenceStore,
+    EmailDomainService
   ],
   bootstrap: [AppComponent]
 })

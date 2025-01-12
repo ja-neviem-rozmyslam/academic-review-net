@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdministrationPanelComponent } from './modules/administration-panel/administration-panel/administration-panel.component';
+import { AdministrationPageComponent } from './modules/administration-panel/administration-panel/administration-page.component';
 import { LoginPanelComponent } from './modules/components/login-panel/login-panel.component';
 import { ForgotPasswordComponent } from './modules/components/password-management/forgot-password/forgot-password.component';
 import { PasswordChangeComponent } from './modules/components/password-management/password-change/password-change.component';
@@ -14,6 +14,14 @@ import {ConferencesListPageComponent} from './modules/main-panel/conference-page
 import {ConferencePageComponent} from './modules/main-panel/conference/conference-page.component';
 import {ProfilePageComponent} from './modules/main-panel/profile-page/profile-page.component';
 import {MyThesesComponent} from './modules/main-panel/my-theses/my-theses.component';
+import {
+  ConferencesManagementComponent
+} from './modules/administration-panel/conferences-management/conferences-management.component';
+import {UsersManagementComponent} from './modules/administration-panel/users-management/users-management.component';
+import {ConferenceEditComponent} from './modules/administration-panel/conferences-management/conference-edit/conference-edit.component'
+import {
+  UniversityManagementComponent
+} from './modules/administration-panel/university-management/university-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPanelComponent, canActivate: [LoginGuard]},
@@ -24,10 +32,37 @@ export const routes: Routes = [
   { path: 'verification', component: VerifyPageComponent },
 
   { path: 'administration',
-    component: AdministrationPanelComponent,
+    component: AdministrationPageComponent,
     canActivate: [RoleGuard],
     data: { roles: [UserRoles.SUPERADMIN, UserRoles.ADMIN] },
-    children: []
+    children: [
+      {
+        path: '',
+        redirectTo: 'conference-management',
+        pathMatch: 'full'
+      },
+      {
+        path: 'conference-management',
+        component: ConferencesManagementComponent,
+      },
+      {
+        path: 'users-management',
+        component: UsersManagementComponent
+      },
+      {
+        path: 'admin-management',
+        component: UsersManagementComponent,
+        data: { isAdminSearch: true }
+      },
+      {
+        path: 'conference/:conferenceID',
+        component: ConferenceEditComponent
+      },
+      {
+        path: 'university-management',
+        component: UniversityManagementComponent
+      }
+    ]
   },
   {
     path: 'main',
@@ -46,6 +81,10 @@ export const routes: Routes = [
       },
       {
         path: 'conferences/:id',
+        component: ConferencePageComponent
+      },
+      {
+        path: 'submissions/:submissionId',
         component: ConferencePageComponent
       },
       {

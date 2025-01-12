@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 mt-20 mb-10" *ngIf="uploadedFiles">
+    <div class="flex flex-col sm:flex-row gap-4 mt-20 mb-10" *ngIf="uploadedFiles.length > 0">
       <div *ngFor="let file of uploadedFiles"
            class="flex items-center gap-4 p-4 bg-gray-200 rounded-2xl cursor-pointer w-full sm:w-80"
            (click)="downloadFile(file)">
@@ -50,6 +50,7 @@
 </ng-template>
 
 <ng-template #submissionFormTemplate>
+  <app-arn-loader [isVisible]="this.isLoading"></app-arn-loader>
   <form class="space-y-4 flex-grow" (ngSubmit)="onSubmit()" appFormValidation (getValidationErrors)="formValidationErrors = $event">
     <div class="arn-input">
       <label for="nadpis-zaverecnej-prace">Nadpis záverečnej práce</label>
@@ -79,7 +80,7 @@
         id="spolu-autori"
         name="coauthors"
         placeholder="Vypíšte spoluautorov"
-        [(ngModel)]="submissionForm.coauthors" required/>
+        [(ngModel)]="submissionForm.coauthors" />
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
@@ -118,13 +119,53 @@
     </div>
 
     <div class="flex w-full mt-4 gap-3">
-      <app-arn-button type="submit" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
+      <app-arn-button [type]="'submit'" [buttonText]="'Odovzdať Prácu'" [classes]="'h-full'"></app-arn-button>
       <app-arn-button *ngIf="submissionOptions.isUploaded"
-                      type="button"
+                      [type]="'button'"
                       [buttonText]="'Zrušiť'"
                       [classes]="'h-full'"
                       [customColor]="'#da3c3c'"
                       (buttonClick)="showInReadMode = true"></app-arn-button>
     </div>
   </form>
+</ng-template>
+
+<ng-template #skeletonTemplate>
+<div class="space-y-5 flex-grow">
+  <div class="arn-input animate-pulse">
+    <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+    <div class="h-10 bg-gray-300 rounded"></div>
+  </div>
+
+  <div class="arn-input animate-pulse">
+    <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+    <div class="h-10 bg-gray-300 rounded"></div>
+  </div>
+
+  <div class="arn-input animate-pulse">
+    <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+    <div class="h-10 bg-gray-300 rounded"></div>
+  </div>
+
+  <div class="flex flex-col gap-4 sm:flex-row sm:gap-8 w-full">
+    <div class="arn-input sm:w-1/2 animate-pulse">
+      <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+      <div class="h-56 bg-gray-300 rounded"></div>
+    </div>
+    <div class="arn-input sm:w-1/2 animate-pulse">
+      <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+      <div class="h-56 bg-gray-300 rounded"></div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4 w-full animate-pulse">
+    <div class="h-28 bg-gray-300 rounded"></div>
+    <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+  </div>
+
+  <div class="flex w-full gap-3 animate-pulse">
+    <div class="h-10 w-32 bg-gray-300 rounded"></div>
+    <div class="h-10 w-32 bg-gray-300 rounded"></div>
+  </div>
+</div>
 </ng-template>

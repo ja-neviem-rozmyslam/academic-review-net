@@ -3,6 +3,10 @@ package com.ukf.arn.Submissions.Repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Entities.Submission;
+import com.ukf.arn.Entities.User;
+import com.ukf.arn.Submissions.Objects.SubmissionDto;
+import com.ukf.arn.Users.Repository.UserRepository;
+import com.ukf.arn.Users.Repository.UserRepositoryImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -17,6 +21,12 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final UserRepository userRepository;
+
+    public SubmissionRepositoryCustomImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Submission findByConferenceIdAndUserId(Long conferenceId, UUID userId) {
@@ -40,5 +50,24 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                         .and(forReview ? SUBMISSION.reviewerId.eq(userId) : SUBMISSION.authorId.eq(userId)))
                 .where(USER.id.eq(userId))
                 .fetch();
+    }
+
+    public SubmissionDto mapToSubmissionDto(Submission submission) {
+        SubmissionDto dto = new SubmissionDto();
+        dto.setId(submission.getId());
+        dto.setTitle(submission.getThesisTitle());
+
+        if(submission.getReviewerId() != null) {
+            User reviewer = userRepository.findById(submission.getReviewerId()).orElse(null);
+            dto.setReviewer(UserRepositoryImpl.mapToUserDto(reviewer));
+        }
+
+        User author = userRepository.findById(submission.getAuthorId()).orElse(null);
+
+        if(author != null) {
+            dto.setAuthor(UserRepositoryImpl.mapToUserDto(author));
+        }
+
+        return dto;
     }
 }

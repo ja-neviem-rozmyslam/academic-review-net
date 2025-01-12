@@ -21,6 +21,7 @@ export class RegistrationPanelComponent implements OnInit {
   emailDomains: EmailDomain[];
   universitiesSelectOptions: SelectOption[];
   errorMessage: string;
+  isFetching: boolean = false;
 
   constructor(private authService: AuthService, private utilityService: UtilityService,
               private router: Router, private emailDomainService: EmailDomainService) {
@@ -58,6 +59,7 @@ export class RegistrationPanelComponent implements OnInit {
         return;
       }
     } else {
+      this.isFetching = true;
       this.authService.registration(this.registrationInfo).subscribe(
         () => {
           this.errorMessage = null;
@@ -70,8 +72,9 @@ export class RegistrationPanelComponent implements OnInit {
           } as NavigationExtras);
         },
         (error: HttpErrorResponse) => {
-          this.utilityService.handleResponseError(error);
+          this.errorMessage = this.utilityService.handleResponseError(error);
         }
+      ).add(() => this.isFetching = false
       );
     }
   }

@@ -63,12 +63,11 @@ public class User implements Serializable {
     @PrePersist
     public void prePersist() {
         id = UUID.randomUUID();
-        //registrationDate = LocalDateTime.now();
     }
 
     @JsonIgnore
     public boolean isAdmin() {
-        return roles.contains(ADMIN) || roles.contains(SUPERADMIN);
+        return roles.contains(ADMIN.getCode()) || roles.contains(SUPERADMIN.getCode());
     }
 
     public UUID getId() {
@@ -138,4 +137,6 @@ public class User implements Serializable {
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+
 }

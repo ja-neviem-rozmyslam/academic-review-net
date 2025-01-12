@@ -8,12 +8,15 @@ import {BaseModal} from '../base-modal/entities/BaseModal';
   styleUrl: './dialog.component.less'
 })
 export class DialogComponent extends BaseModal {
-  dialogSettings: DialogSettings = new DialogSettings();
+  dialogSettings: DialogSettings;
 
   setDialogInstance(dialogSettings: DialogSettings) {
     this.dialogSettings = dialogSettings;
     if (dialogSettings.dialogType === CONFIRM) {
       this.modalSettings.showFooter = true;
+      if (dialogSettings.buttonText) {
+        this.modalSettings.buttonText = dialogSettings.buttonText;
+      }
     }
   }
 
@@ -29,7 +32,6 @@ export class DialogComponent extends BaseModal {
         return 'text-lightRed';
       case WARNING:
         return 'text-lightYellow';
-      case CONFIRM:
       case INFO:
         return 'text-lightGreen';
       default:

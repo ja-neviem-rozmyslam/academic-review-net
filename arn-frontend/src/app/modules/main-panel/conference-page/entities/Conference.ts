@@ -1,11 +1,12 @@
-export interface Conference {
-  id: number;
-  conferenceName: string;
-  faculty: string;
-  joined: boolean;
-  uploadDeadline: string;
-  reviewDeadline: string;
-  creationDate: string;
-  reviewForm: string;
-  hasPassword: boolean;
+import {ReviewFormObject} from '../../conference/entities/ReviewFormObject';
+
+export class Conference {
+  id?: number = null;
+  conferenceName: string = '';
+  password?: string = null;
+  uploadDeadline: string = '';
+  reviewDeadline: string = '';
+  faculty: string = '';
+  reviewForm: ReviewFormObject[] = [];
+  closed?: boolean = false;
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef, ViewChild, EventEmitter, Output} from '@angular/core';
 import {SubmissionService} from '../services/submission.service';
 import {SubmissionForm} from '../entities/SubmissionForm';
 import {SelectOption} from '../../../components/arn-select/entities/SelectOption';
@@ -7,6 +7,7 @@ import {ConferenceDetail} from '../entities/ConferenceDetail';
 import {UserRoles} from '../../../constants';
 import {saveAs} from 'file-saver';
 import {FormValidationErrors} from '../../../objects/FormValidationErrors';
+import {ConferenceStore} from '../../conference-page/store/conferences-store.service';
 
 @Component({
   selector: 'app-submission',
@@ -19,37 +20,47 @@ export class SubmissionComponent implements OnInit {
   @Input() roleInConference: string;
   @Input() submissionOptions: any;
 
+  @Output() submissionUpdated = new EventEmitter<string>();
+
+
   @ViewChild('submissionReadTemplate', {static: true}) submissionReadTemplate: TemplateRef<any>;
   @ViewChild('submissionFormTemplate', {static: true}) submissionFormTemplate: TemplateRef<any>;
   @ViewChild('noSubmissionTemplate', {static: true}) noSubmissionTemplate: TemplateRef<any>;
+  @ViewChild('skeletonTemplate', {static: true}) skeletonTemplate: TemplateRef<any>;
+  @ViewChild('loadingTemplate', {static: true}) loadingTemplate: TemplateRef<any>;
 
   submissionForm: SubmissionForm = new SubmissionForm();
   invalidFileAmount = false;
   uploadedFiles: File[] = [];
   showInReadMode: boolean;
+  isFetching = false;
+  isLoading = false;
 
   formValidationErrors: FormValidationErrors;
 
   constructor(
-    private submissionService: SubmissionService) {
+    private submissionService: SubmissionService, private conferencesStore: ConferenceStore) {
   }
 
   ngOnInit(): void {
+    this.conferencesStore.initThesisCategories();
     this.showInReadMode = this.submissionOptions.isUploaded;
     if (this.showInReadMode) {
       this.retrieveFiles(this.conferenceDetail.submission.id);
     }
+
   }
 
   onSubmit(): void {
     this.invalidFileAmount = this.uploadedFiles.length !== 2;
-    if (!this.invalidFileAmount && this.formValidationErrors.emptyFields.length === 0) {
+    if (!this.invalidFileAmount && !this.formValidationErrors) {
       this.submissionForm.conferenceId = this.conferenceDetail.id;
       this.uploadSubmission();
     }
   }
 
   uploadSubmission(): void {
+    this.isLoading = true;
     this.submissionService.saveSubmission(this.submissionForm, this.uploadedFiles).subscribe(
       (result) => this.handleSubmissionSuccess(result as Submission),
       (error) => console.error('Upload error:', error)
@@ -59,7 +70,9 @@ export class SubmissionComponent implements OnInit {
   handleSubmissionSuccess(savedSubmission: Submission): void {
     this.conferenceDetail.submission = savedSubmission;
     this.submissionForm = new SubmissionForm();
+    this.submissionUpdated.emit('Práca bola úspešne odovzdaná');
     this.showInReadMode = true;
+    this.isLoading = false;
   }
 
   getFileShortName(fileName: string): string {
@@ -96,9 +109,11 @@ export class SubmissionComponent implements OnInit {
   }
 
   openEditForm(): void {
+    this.isFetching = true;
+    this.showInReadMode = false;
     this.submissionService.getSubmission(this.conferenceDetail.submission.id).subscribe((submissionResponse) => {
       this.submissionForm = submissionResponse;
-      this.showInReadMode = false;
+      this.isFetching = false;
     });
   }
 
@@ -108,6 +123,9 @@ export class SubmissionComponent implements OnInit {
   }
 
   getTemplate(): any {
+    if (this.isFetching) {
+      return this.skeletonTemplate;
+    }
     if (this.roleInConference === UserRoles.STUDENT) {
       if (this.showInReadMode) {
         return this.submissionReadTemplate;
@@ -117,7 +135,7 @@ export class SubmissionComponent implements OnInit {
         return this.noSubmissionTemplate;
       }
     } else if (this.roleInConference === UserRoles.REVIEWER) {
-      if (this.showInReadMode) {
+      if (this.showInReadMode && !this.submissionOptions.isBeforeDeadline) {
         return this.submissionReadTemplate;
       } else {
         return this.noSubmissionTemplate;
