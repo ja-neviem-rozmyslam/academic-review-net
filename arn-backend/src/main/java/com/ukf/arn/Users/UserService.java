@@ -112,14 +112,4 @@ public class UserService {
         return ResponseEntity.ok("User details updated successfully");
     }
 
-    public ResponseEntity<?> updateEditUserDetails(UpdateRequest userDto) {
-        User user = SecurityConfig.getLoggedInUser();
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.getUniversity().setId(userDto.getUniversityId());
-        user.setRoles(userDto.getRoles());
-        userRepository.save(user);
-        return ResponseEntity.ok("User details updated successfully");
-    }
-
 }

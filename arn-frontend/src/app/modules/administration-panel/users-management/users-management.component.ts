@@ -8,9 +8,10 @@ import {ActivatedRoute} from '@angular/router';
 import {combineLatest, take, tap} from 'rxjs';
 import {Column} from '../../components/arn-grid-list/entities/Column';
 import {DialogService} from '../../services/dialog.service';
-import {EditUserModalComponent} from "../../components/edit-user-modal/edit-user-modal.component";
+import {EditUserModalComponent} from "./edit-user-modal/edit-user-modal.component";
 import {RoleService} from '../../services/role.service';
 import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
+import {ModalOptions} from 'flowbite';
 
 @Component({
   selector: 'app-users-management',
@@ -20,6 +21,7 @@ import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation
 })
 export class UsersManagementComponent implements OnInit {
   @ViewChild(ArnGridListComponent) arnGridList: ArnGridListComponent;
+
 
   isAdminSearch: boolean;
   isUserSuperAdmin: boolean = false;
@@ -62,7 +64,14 @@ export class UsersManagementComponent implements OnInit {
   }
 
   editUser(user: User): void {
-    this.dialogService.openCustomModal(EditUserModalComponent, undefined, { user } );
+    const modalRef = this.dialogService.openCustomModal(EditUserModalComponent, {
+      placement: 'center',
+      backdrop: 'dynamic',
+      closable: false,
+    }, { user } );
+    modalRef.instance.profileUpdated.subscribe(() => {
+      this.arnGridList.refreshGrid();
+    });
   }
 
   addNewAdmin(): void {

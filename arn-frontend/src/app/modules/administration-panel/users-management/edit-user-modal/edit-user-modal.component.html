@@ -5,55 +5,55 @@
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Meno:
-          <input
+        <label for = "meno" class="block text-sm font-medium mb-1">Meno:</label>
+          <input id = "meno"
             type="text"
             placeholder="Meno"
             [(ngModel)]="userDetails.name"
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
       </div>
 
       <div class="arn-input">
-        <label class="block text-sm font-medium mb-1">
-          Priezvisko:
-          <input
+        <label for = "priezvisko" class="block text-sm font-medium mb-1">Priezvisko:</label>
+          <input id = "priezvisko"
             type="text"
             placeholder="Priezvisko"
             [(ngModel)]="userDetails.surname"
             class="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
       </div>
     </div>
 
     <div class="w-full mb-4">
-      <label for="university" class="block text-sm font-medium mb-1">
-        Univerzita:
+      <label for="university" class="block text-sm font-medium mb-1">Univerzita:</label>
         <app-arn-select
           id="university"
           [options]="universitiesSelectOptions"
           [placeholder]="'Univerzita'"
           [required]="true"
           [(selectedOption)]="userDetails.universityId"></app-arn-select>
-      </label>
     </div>
 
-    <div class="flex justify-between items-center mt-4">
-      <app-arn-button
-        [buttonText]="'Aktualizovať údaje'"
-        (buttonClick)="updateEditProfile()"
-        [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
-      </app-arn-button>
 
+
+    <div class="flex justify-between items-center mt-4">
       <app-arn-button
         [buttonText]="'Zrušiť'"
         (buttonClick)="closeModal()"
         [customColor]="'#da3c3c'"
         [classes]="'bg-gray-200 text-gray-700 hover:bg-gray-300'">
       </app-arn-button>
+
+      <app-arn-button
+        [buttonText]="'Aktualizovať údaje'"
+        (buttonClick)="updateUserProfile()"
+        [classes]="'bg-gray-800 text-white hover:bg-gray-700'">
+      </app-arn-button>
+    </div>
+
+    <div>
+
     </div>
 
 

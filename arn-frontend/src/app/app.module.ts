@@ -64,7 +64,7 @@ import { ConferenceEditComponent } from './modules/administration-panel/conferen
 import { UniversityManagementComponent } from './modules/administration-panel/university-management/university-management.component';
 import { ConferenceCreateModalComponent } from './modules/administration-panel/conferences-management/conference-create-modal/conference-create-modal.component';
 import { ArnSearchSelectComponent } from './modules/components/arn-search-select/arn-search-select.component';
-import { EditUserModalComponent } from './modules/components/edit-user-modal/edit-user-modal.component';
+import { EditUserModalComponent } from './modules/administration-panel/users-management/edit-user-modal/edit-user-modal.component';
 import { EmailDomainService } from './modules/components/registration-panel/services/email-domain.service';
 import { AdminCreationModalComponent } from './modules/administration-panel/users-management/admin-creation-modal/admin-creation-modal.component';
 

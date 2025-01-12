@@ -32,4 +32,8 @@ export class UsersManagementService {
   deleteUser(userId: string): Observable<void> {
     return this.http.post<void>(`${this.ADMIN_USER_ENDPOINT}/${userId}/delete`, {});
   }
+
+  editUser(user: any): Observable<void> {
+    return this.http.post<void>(`${this.ADMIN_USER_ENDPOINT}/updateUserProfile`, user);
+  }
 }

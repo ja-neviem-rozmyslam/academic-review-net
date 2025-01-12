@@ -1,8 +1,10 @@
 package com.ukf.arn.Users.Objects;
 
 import java.util.List;
+import java.util.UUID;
 
 public class UpdateRequest {
+    private UUID id;
     private String email;
     private String name;
     private String surname;
@@ -55,5 +57,13 @@ public class UpdateRequest {
     public List<String> getRoles() {return roles;}
 
     public void setRoles(List<String> roles) {this.roles = roles;}
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
 }

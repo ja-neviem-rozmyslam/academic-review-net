@@ -15,9 +15,11 @@ import com.ukf.arn.Submissions.Objects.SubmissionDto;
 import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Universities.UniversityDto;
 import com.ukf.arn.Universities.UniversityRepository;
+import com.ukf.arn.Users.Objects.UpdateRequest;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.Users.Repository.UserRepositoryImpl;
+import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -304,4 +306,21 @@ public class AdministrationService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the user");
         }
     }
+
+    public ResponseEntity<?> EditUserProfileUpdate(UpdateRequest userDto) {
+        if (userDto.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is required");
+        }
+        User user = userRepository.findUserById(userDto.getId());
+        if(user !=null) {
+            user.setName(userDto.getName());
+            user.setSurname(userDto.getSurname());
+            user.getUniversity().setId(userDto.getUniversityId());
+            user.setRoles(userDto.getRoles());
+            return ResponseEntity.ok(userRepository.save(user));
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
+
 }

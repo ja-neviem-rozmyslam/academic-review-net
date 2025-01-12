@@ -26,8 +26,4 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUserDetails(userDto));
     }
 
-    @PostMapping(value = "/update-edit-profile", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateEditUserData(@RequestBody UpdateRequest userDto) {
-        return ResponseEntity.ok(userService.updateEditUserDetails(userDto));
-    }
 }

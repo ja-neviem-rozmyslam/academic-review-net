@@ -9,6 +9,7 @@ import com.ukf.arn.Entities.Conference;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Universities.UniversityDto;
 import org.apache.coyote.Response;
+import com.ukf.arn.Users.Objects.UpdateRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -108,5 +109,9 @@ public class AdministrationController {
     @PostMapping("/user/createAdmin")
     public ResponseEntity<?> createAdmin(@RequestBody User user) {
         return administrationService.createAdminUser(user);
+    }
+    @PostMapping("/user/updateUserProfile")
+    public ResponseEntity<?> updateEditUserData(@RequestBody UpdateRequest userDto) {
+        return ResponseEntity.ok(administrationService.EditUserProfileUpdate(userDto));
     }
 }
