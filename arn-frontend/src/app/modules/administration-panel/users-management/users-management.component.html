@@ -11,7 +11,7 @@
       [initialRefresh]="true"
       [sortable]="true"
       [initialSort]="'name'"
-      [addPlusButton]="isUserSuperAdmin"
+      [addPlusButton]="isAdminSearch && isUserSuperAdmin"
       [searchObject]="usersSearchCriteria$ | async"
       [searchMethod]="search"
       (plusButtonAction)="addNewAdmin()"
