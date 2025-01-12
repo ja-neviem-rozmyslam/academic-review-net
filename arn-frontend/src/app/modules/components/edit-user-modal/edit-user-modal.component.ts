@@ -43,10 +43,9 @@ export class EditUserModalComponent extends BaseModal implements OnInit{
     });
   }
 
-  updateProfile(): void {
-    //console.log(this.userDetails);
+  updateEditProfile(): void {
     this.isFetching = true;
-    this.profileSettingsService.updateProfile(this.userDetails).pipe().subscribe(() => {
+    this.profileSettingsService.updateEditProfile(this.userDetails).pipe().subscribe(() => {
       this.profileUpdated.emit();
       this.closeModal();
     });

@@ -57,7 +57,7 @@ export class UsersManagementComponent implements OnInit {
   }
 
   editUser(user: User): void {
-    this.dialogService.openCustomModal(EditUserModalComponent);
+    this.dialogService.openCustomModal(EditUserModalComponent, undefined, { user } );
   }
 
   addNewAdmin(): void {

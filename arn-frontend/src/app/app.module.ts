@@ -65,6 +65,7 @@ import { UniversityManagementComponent } from './modules/administration-panel/un
 import { ConferenceCreateModalComponent } from './modules/administration-panel/conferences-management/conference-create-modal/conference-create-modal.component';
 import { ArnSearchSelectComponent } from './modules/components/arn-search-select/arn-search-select.component';
 import { EditUserModalComponent } from './modules/components/edit-user-modal/edit-user-modal.component';
+import { EmailDomainService } from './modules/components/registration-panel/services/email-domain.service';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { EditUserModalComponent } from './modules/components/edit-user-modal/edi
     },
     AuthEffects,
     DialogService,
-    ConferenceStore
+    ConferenceStore,
+    EmailDomainService
   ],
   bootstrap: [AppComponent]
 })
