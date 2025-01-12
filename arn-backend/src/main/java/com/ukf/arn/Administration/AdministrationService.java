@@ -190,6 +190,21 @@ public class AdministrationService {
         return ResponseEntity.ok(submissionsDto);
     }
 
+    public ResponseEntity<?> getReviewers() {
+        List<User> reviewers = userRepository.findAllByRole(ConstantsKatalog.Role.REVIEWER.getCode());
+        List<UserDto> reviewerDtos = reviewers.stream()
+                .map(UserRepositoryImpl::mapToUserDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(reviewerDtos);
+    }
+
+    public ResponseEntity<?> assignReviewer(Long submissionId, UUID reviewerId) {
+        Submission submission = submissionRepository.findById(submissionId).orElseThrow();
+        submission.setReviewerId(reviewerId);
+        submissionRepository.save(submission);
+        return ResponseEntity.ok().build();
+    }
+
     public byte[] downloadConferenceSubmissions(Long conferenceId) {
         try {
             String conferenceFolderPath = "conferences/" + conferenceId;

@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserRepositoryCustom {
     List<User> findAllByPredicate(BooleanBuilder predicate, Sort sort);
     String getNameAndSurnameById(String uuid);
+    List<User> findAllByRole(String role);
 }

@@ -17,7 +17,8 @@
     (tabChanged)="selectedOption = $event"
   ></app-tabs>
 </div>
-<div class="w-full card-base p-4">
+<div class="w-full card-base p-4 relative overflow-hidden">
+  <app-arn-loader [isVisible]="isLoading"></app-arn-loader>
   @if (selectedOption === EDIT && conference) {
     <div class="flex justify-between">
       <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>

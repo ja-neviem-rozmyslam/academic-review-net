@@ -16,6 +16,7 @@ export interface ActionColumn {
 export interface SelectColumn extends DataColumn {
   options: SelectOptions[];
   onSelectionChange: (selectedValue: string, dataItem: any, column: SelectColumn) => void;
+  initialValue?: (dataItem: any) => SelectColumn;
 }
 
 export type Column = DataColumn | ActionColumn | SelectColumn;

@@ -61,4 +61,12 @@ export class ConferenceManagementService {
       return conference;
     });
   }
+
+  assignReviewer(submissionId: number, reviewerId: string) {
+    return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${submissionId}/assign-reviewer/${reviewerId}`, {});
+  }
+
+  getReviewers(): Observable<any> {
+    return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/reviewers`);
+  }
 }

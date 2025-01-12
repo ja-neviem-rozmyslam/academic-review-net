@@ -10,29 +10,43 @@ export class ArnSearchSelectComponent implements OnInit {
   @Output() selectedOption = new EventEmitter<SelectOptions>();
   @Output() optionsChange = new EventEmitter<SelectOptions[]>();
   @Input() options: SelectOptions[] = [];
+  @Input() initialValue?: SelectOptions;
 
   searchQuery: string = '';
   filteredOptions: SelectOptions[] = [];
   showDropdown: boolean = false;
+  private isInitializing: boolean = true;
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit() {
     this.filteredOptions = this.options;
+
+    if (this.initialValue) {
+      this.isInitializing = true;
+      this.selectOption(this.initialValue);
+      this.isInitializing = false;
+    }
   }
 
   filterOptions() {
     this.filteredOptions = this.options.filter(option =>
-        option.label.toLowerCase().includes(this.searchQuery.toLowerCase())
+      option.label.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
-    this.optionsChange.emit(this.filteredOptions);
+
+    if (!this.isInitializing) {
+      this.optionsChange.emit(this.filteredOptions);
+    }
   }
 
   selectOption(option: SelectOptions) {
     this.searchQuery = option.label;
     this.showDropdown = false;
-    this.selectedOption.emit(option);
-    this.optionsChange.emit([option]);
+
+    if (!this.isInitializing) {
+      this.selectedOption.emit(option);
+      this.optionsChange.emit([option]);
+    }
   }
 
   @HostListener('document:click', ['$event'])

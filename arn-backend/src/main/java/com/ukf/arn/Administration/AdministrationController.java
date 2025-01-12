@@ -8,6 +8,7 @@ import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Universities.UniversityDto;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +96,15 @@ public class AdministrationController {
         return administrationService.deleteUser(userId);
     }
 
+    @PostMapping("/conference/{submissionId}/assign-reviewer/{reviewerId}")
+    public ResponseEntity<?> assignReviewer(@PathVariable Long submissionId, @PathVariable UUID reviewerId) {
+        return ResponseEntity.ok(administrationService.assignReviewer(submissionId, reviewerId));
+    }
+
+    @GetMapping("/conference/reviewers")
+    public ResponseEntity<?> getReviewers() {
+        return ResponseEntity.ok(administrationService.getReviewers());
+    }
     @PostMapping("/user/createAdmin")
     public ResponseEntity<?> createAdmin(@RequestBody User user) {
         return administrationService.createAdminUser(user);

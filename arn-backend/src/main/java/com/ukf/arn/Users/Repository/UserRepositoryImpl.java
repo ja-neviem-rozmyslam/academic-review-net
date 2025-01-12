@@ -75,6 +75,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return predicate;
     }
 
+    public List<User> findAllByRole(String role) {
+        return new JPAQuery<>(entityManager)
+                .select(USER)
+                .from(USER)
+                .where(USER.roles.any().eq(role))
+                .fetch();
+    }
+
     public static OrderSpecifier[] buildSort(Sort sort) {
         if (sort != null) {
             switch (sort.getColumn()) {
