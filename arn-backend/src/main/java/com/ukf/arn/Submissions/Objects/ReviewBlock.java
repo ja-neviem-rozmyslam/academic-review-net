@@ -1,9 +1,13 @@
 package com.ukf.arn.Submissions.Objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ReviewBlock {
     private String id;
     private String reviewedCategory;
     private String reviewValue;
+
+    @JsonProperty("isSelectable")
     private boolean isSelectable;
 
     public ReviewBlock() {}

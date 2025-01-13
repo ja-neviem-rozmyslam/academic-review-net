@@ -25,7 +25,19 @@
         </div>
       </div>
 
-      <div class="w-full mb-4">
+      <div class="arn-input" *ngIf="isAdminEdit">
+        <label for="login" class="block text-sm font-medium mb-1">Prihlasovacie Údaje</label>
+        <div class="flex space-x-4">
+          <input id="login"
+                 type="text"
+                 name="login"
+                 placeholder="Prihlasovacie meno"
+                 [(ngModel)]="userDetails.email"
+                 class="w-full p-2 border border-gray-300 rounded" required/>
+        </div>
+      </div>
+
+      <div class="w-full mb-4" *ngIf="!isAdminEdit">
         <label for="university" class="block text-sm font-medium mb-1">Univerzita</label>
         <app-arn-select
           id="university"
@@ -36,7 +48,7 @@
           [(selectedOption)]="userDetails.universityId"></app-arn-select>
       </div>
 
-      <div class="flex space-x-6">
+      <div class="flex space-x-6" *ngIf="!isAdminEdit">
         <div class="arn-input justify-items-center">
           <label for="student">Študent</label>
           <input type="checkbox"

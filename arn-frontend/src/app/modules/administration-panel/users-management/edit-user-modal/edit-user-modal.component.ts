@@ -21,19 +21,23 @@ export class EditUserModalComponent extends BaseModal implements OnInit{
   universitiesSelectOptions: any[];
   isFetching = true;
 
+  isAdminEdit = false;
+
   formValidationErrors: FormValidationErrors;
 
   constructor(@Inject('modalData') public data: any,private usersManagementService: UsersManagementService, private emailDomainService: EmailDomainService) {
     super();
 
     this.userDetails = {
-      id: data.id,
-      email: data.email,
-      name: data.name,
-      surname: data.surname,
-      universityId: data.university.id,
-      roles: data.roles
+      id: data.user.id,
+      email: data.user.email,
+      name: data.user.name,
+      surname: data.user.surname,
+      universityId: data.user.university ? data.user.university.id : null,
+      roles: data.user.roles
     };
+
+    this.isAdminEdit = data.isAdminEdit;
   }
 
   ngOnInit() {
