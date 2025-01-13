@@ -11,6 +11,7 @@ import {DialogService} from '../../services/dialog.service';
 import {EditUserModalComponent} from "./edit-user-modal/edit-user-modal.component";
 import {RoleService} from '../../services/role.service';
 import {AdminCreationModalComponent} from './admin-creation-modal/admin-creation-modal.component';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-users-management',
@@ -67,7 +68,7 @@ export class UsersManagementComponent implements OnInit {
       placement: 'center',
       backdrop: 'dynamic',
       closable: false,
-    }, {...user});
+    }, {user: _.cloneDeep(user), isAdminEdit: this.isAdminSearch});
     modalRef.instance.profileUpdated.subscribe(() => {
       this.arnGridList.refreshGrid();
     });

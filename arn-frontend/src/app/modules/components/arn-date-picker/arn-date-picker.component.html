@@ -4,5 +4,7 @@
          [(ngModel)]="selectedDate"
          (ngModelChange)="selectedDateChange.emit($event)"
          [required]="required"
-         [disabled]="disabled">
+         [disabled]="disabled"
+         [min]="minDate"
+         [max]="maxDate">
 </div>

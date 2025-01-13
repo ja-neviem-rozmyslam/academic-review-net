@@ -31,6 +31,7 @@
               id="uploadDeadline"
               [name]="'uploadDeadline'"
               [dateTime]="true"
+              [maxDate]="conference.reviewDeadline"
               [(selectedDate)]="conference.uploadDeadline"
               required/>
           </div>
@@ -40,6 +41,7 @@
               id="reviewDeadline"
               [name]="'reviewDeadline'"
               [dateTime]="true"
+              [minDate]="conference.uploadDeadline"
               [(selectedDate)]="conference.reviewDeadline"
               required/>
           </div>
