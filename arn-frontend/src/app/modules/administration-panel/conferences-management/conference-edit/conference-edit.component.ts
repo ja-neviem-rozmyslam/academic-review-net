@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   ASSIGN,
   EDIT,
@@ -9,11 +9,11 @@ import {
   SUBMISSION,
   TABOPTIONS,
 } from '../entities/constants';
-import { ConferenceManagementService } from '../services/conference-management.service';
-import { Conference } from '../../../main-panel/conference-page/entities/Conference';
-import { ReviewFormObject } from '../../../main-panel/conference/entities/ReviewFormObject';
-import { FormValidationErrors } from '../../../objects/FormValidationErrors';
-import { DialogService } from '../../../services/dialog.service';
+import {ConferenceManagementService} from '../services/conference-management.service';
+import {Conference} from '../../../main-panel/conference-page/entities/Conference';
+import {ReviewFormObject} from '../../../main-panel/conference/entities/ReviewFormObject';
+import {FormValidationErrors} from '../../../objects/FormValidationErrors';
+import {DialogService} from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-conference-edit',
@@ -40,7 +40,8 @@ export class ConferenceEditComponent implements OnInit {
     private conferenceService: ConferenceManagementService,
     private dialogService: DialogService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const conferenceId = this.route.snapshot.paramMap.get('conferenceID');
@@ -89,7 +90,7 @@ export class ConferenceEditComponent implements OnInit {
         initialValue: (row) => {
           return row.reviewer === null
             ? null
-            : { label: `${row.reviewer.name} ${row.reviewer.surname}`, value: row.reviewer.id };
+            : {label: `${row.reviewer.name} ${row.reviewer.surname}`, value: row.reviewer.id};
         },
       },
     ];
@@ -175,7 +176,7 @@ export class ConferenceEditComponent implements OnInit {
   downloadData() {
     this.conferenceService.downloadData(this.conference.id).subscribe({
       next: (data) => {
-        const blob = new Blob([data], { type: 'application/zip' });
+        const blob = new Blob([data], {type: 'application/zip'});
         const url = window.URL.createObjectURL(blob);
 
         const a = document.createElement('a');
@@ -197,7 +198,7 @@ export class ConferenceEditComponent implements OnInit {
 
   updateConference() {
     if (!this.formValidationErrors) {
-      this.conferenceService.saveConference({ ...this.conference }).subscribe({
+      this.conferenceService.saveConference({...this.conference}).subscribe({
         next: () => {
           this.showAlert = true;
           this.alertMessage = 'Údaje konferencie boli zmenené.';

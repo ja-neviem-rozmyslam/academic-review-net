@@ -67,21 +67,23 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div class="arn-input">
-            <label for="uploadDeadline">Dátum nahrávania (od)</label>
+            <label for="uploadDeadline">Dátum nahrávania (do)</label>
             <app-arn-date-picker
               id="uploadDeadline"
               [name]="'uploadDeadline'"
               [dateTime]="true"
               [disabled]="conference.closed"
+              [maxDate]="conference.reviewDeadline"
               [(selectedDate)]='conference.uploadDeadline' required/>
           </div>
           <div class="arn-input">
-            <label for="reviewDeadline">Termín posudozvania (od)</label>
+            <label for="reviewDeadline">Termín posudozvania (do)</label>
             <app-arn-date-picker
               id="reviewDeadline"
               [name]="'reviewDeadline'"
               [dateTime]="true"
               [disabled]="conference.closed"
+              [minDate]="conference.uploadDeadline"
               [(selectedDate)]='conference.reviewDeadline' required/>
           </div>
         </div>
