@@ -196,7 +196,30 @@ public class SubmissionService {
     }
 
     private void saveFilesToFolder(MultipartFile[] files, String folderPath) throws IOException {
+
+        Set<String> uploadedFileNames = new HashSet<>();
         for (MultipartFile file : files) {
+            uploadedFileNames.add(file.getOriginalFilename());
+        }
+
+        Path folder = Paths.get(folderPath);
+        if (Files.exists(folder)) {
+            Files.list(folder).forEach(existingFile -> {
+                if (!uploadedFileNames.contains(existingFile.getFileName().toString())) {
+                    try {
+                        Files.delete(existingFile);
+                    } catch (IOException e) {
+                        System.err.println("Error deleting file: " + existingFile.getFileName() + " - " + e.getMessage());
+                    }
+                }
+            });
+        }
+
+
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                continue;
+            }
             Path destination = Paths.get(folderPath, file.getOriginalFilename());
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         }
