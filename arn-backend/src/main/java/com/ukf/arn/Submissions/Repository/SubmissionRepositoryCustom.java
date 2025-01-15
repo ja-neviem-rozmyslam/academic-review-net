@@ -13,4 +13,6 @@ public interface SubmissionRepositoryCustom {
     List<Tuple> findUserSubmissions(UUID userId, boolean forReview);
 
     SubmissionDto mapToSubmissionDto(Submission submission);
+
+    List<Submission> findByUser(UUID userId, boolean forReview);
 }

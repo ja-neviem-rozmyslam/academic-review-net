@@ -44,7 +44,7 @@ public class UserService {
         userDTO.setUniversity(user.getUniversity());
         userDTO.setRoles(user.getRoles());
 
-        List<Conference> conferences = conferenceRepository.findAllByUsersIdOrderByUploadDeadline(user.getId());
+        List<Conference> conferences = conferenceRepository.findAllByUsersIdAndClosedFalseOrderByUploadDeadline(user.getId());
         List<ConferenceDto> conferenceDTOs = conferences.stream()
                 .map(conference -> new ConferenceDto(
                         conference.getId(),
@@ -60,38 +60,8 @@ public class UserService {
                 ))
                 .collect(Collectors.toList());
 
-        List<Submission> submissions = submissionRepository.findByAuthorId(user.getId());
-        List<SubmissionDto> submissionDtos;
-
-
-        submissionDtos = submissions.stream()
-                .map(submission -> {
-                    SubmissionDto dto = new SubmissionDto(
-                            submission.getId(),
-                            submission.getThesisTitle(),
-                            submission.getThesesType(),
-                            submission.getAbstractEn(),
-                            submission.getAbstractSk()
-                    );
-                    dto.setConferenceId(submission.getConferencesId());
-                    dto.setTimestamp(submission.getTimestamp());
-                    return dto;
-                })
-                .collect(Collectors.toList());
-
-        List<Submission> submissionsToReview = submissionRepository.findByReviewerId(user.getId());
-        List<SubmissionDto> submissionDtosToReview;
-
-        submissionDtosToReview = submissionsToReview.stream()
-                .map(submission -> {
-                    SubmissionDto dto = new SubmissionDto();
-                    dto.setConferenceId(submission.getConferencesId());
-                    dto.setId(submission.getId());
-                    dto.setTitle(submission.getThesisTitle());
-                    dto.setTimestamp(submission.getTimestamp());
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        List<SubmissionDto> submissionDtos = mapSubmissionsToDto(submissionRepository.findByUser(user.getId(), false));
+        List<SubmissionDto> submissionDtosToReview = mapSubmissionsToDto(submissionRepository.findByUser(user.getId(), true));
 
         UserDetailsDto userDetailsDTO = new UserDetailsDto(userDTO, conferenceDTOs, submissionDtos, submissionDtosToReview);
         return userDetailsDTO;
@@ -110,6 +80,20 @@ public class UserService {
         }
         userRepository.save(user);
         return ResponseEntity.ok("User details updated successfully");
+    }
+
+    private List<SubmissionDto> mapSubmissionsToDto(List<Submission> submissions) {
+        return submissions.stream()
+                .map(submission -> {
+                    SubmissionDto dto = new SubmissionDto();
+                    dto.setConferenceId(submission.getConferencesId());
+                    dto.setId(submission.getId());
+                    dto.setTitle(submission.getThesisTitle());
+                    dto.setTimestamp(submission.getTimestamp());
+                    dto.setReviewed(submission.getReview() != null);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 }

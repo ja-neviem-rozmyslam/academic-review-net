@@ -16,6 +16,8 @@ public class SubmissionDto {
     private UserDto author;
     private UserDto reviewer;
 
+    private boolean isReviewed;
+
     public SubmissionDto() {
     }
 
@@ -99,4 +101,12 @@ public class SubmissionDto {
     public UserDto getReviewer() { return reviewer; }
 
     public void setReviewer(UserDto reviewer) { this.reviewer = reviewer; }
+
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
+    }
 }
