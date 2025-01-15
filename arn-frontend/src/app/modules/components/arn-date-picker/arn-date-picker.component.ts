@@ -11,6 +11,8 @@ export class ArnDatePickerComponent implements OnInit {
   @Input() disabled: boolean = false;
   @Input() selectedDate: string = '';
   @Input() dateTime: boolean = false;
+  @Input() minDate: string = '';
+  @Input() maxDate: string = '';
   @Output() selectedDateChange = new EventEmitter<string>();
 
   ngOnInit() {

@@ -312,11 +312,15 @@ public class AdministrationService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is required");
         }
         User user = userRepository.findUserById(userDto.getId());
-        if(user !=null) {
+        if(user != null) {
             user.setName(userDto.getName());
             user.setSurname(userDto.getSurname());
-            user.getUniversity().setId(userDto.getUniversityId());
-            user.setRoles(userDto.getRoles());
+            if (user.isAdmin()) {
+                user.setEmail(userDto.getEmail());
+            } else {
+                user.getUniversity().setId(userDto.getUniversityId());
+                user.setRoles(userDto.getRoles());
+            }
             return ResponseEntity.ok(userRepository.save(user));
         }
         else
