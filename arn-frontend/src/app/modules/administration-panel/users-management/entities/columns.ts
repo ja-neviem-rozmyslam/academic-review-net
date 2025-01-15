@@ -42,12 +42,12 @@ export function getUserColumns(isAdminSearch: boolean, isSuperAdmin: boolean): C
     columns.push(
       {
         actionType: ACTIONS.EDIT,
-        width: 5,
+        width: 3,
       },
       {
         actionType: ACTIONS.DELETE,
         actionCondition: (dataItem: any) => (!dataItem.verified) || (isAdminSearch && dataItem.roles.length === 1 && dataItem.roles[0] === UserRoles.ADMIN),
-        width: 5,
+        width: 3,
       }
     );
   }
