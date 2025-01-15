@@ -12,9 +12,5 @@ import java.util.UUID;
 public interface SubmissionRepository extends JpaRepository<Submission, Long>, SubmissionRepositoryCustom {
     Submission findByConferencesIdAndAuthorId(Long conferenceId, UUID authorId);
 
-    List<Submission> findByAuthorId(UUID authorId);
-
-    List<Submission> findByReviewerId(UUID reviewerId);
-
     List<Submission> findByConferencesId(Long conferenceId);
 }

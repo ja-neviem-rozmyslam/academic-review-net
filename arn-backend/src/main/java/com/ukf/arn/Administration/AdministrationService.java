@@ -187,7 +187,7 @@ public class AdministrationService {
     public ResponseEntity<?> getConferenceSubmissions(Long conferenceId) {
         List<Submission> submissions = submissionRepository.findByConferencesId(conferenceId);
         List<SubmissionDto> submissionsDto = submissions.stream()
-                .map(submission -> submissionRepository.mapToSubmissionDto(submission))
+                .map(submission -> submissionRepository.    mapToSubmissionDto(submission))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(submissionsDto);
     }
@@ -318,7 +318,7 @@ public class AdministrationService {
             if (user.isAdmin()) {
                 user.setEmail(userDto.getEmail());
             } else {
-                user.getUniversity().setId(userDto.getUniversityId());
+                universityRepository.findById(userDto.getUniversityId()).ifPresent(user::setUniversity);
                 user.setRoles(userDto.getRoles());
             }
             return ResponseEntity.ok(userRepository.save(user));

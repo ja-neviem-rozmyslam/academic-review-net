@@ -14,11 +14,21 @@ export class EmailDomainService {
 
   getAllDomains(): Observable<EmailDomain[]> {
     return this.http.get<any[]>(`${this.PASSWORD_API_ENDPOINT}`).pipe(
-      map(response => response.map(domain => ({
-        universityId: domain.universityId,
-        universityName: domain.universityName,
-        domain: domain.domain
-      } as EmailDomain)))
+      map(response => {
+        const universityMap = response.reduce((acc, domain) => {
+          if (!acc[domain.universityId]) {
+            acc[domain.universityId] = {
+              universityId: domain.universityId,
+              universityName: domain.universityName,
+              domains: []
+            };
+          }
+          acc[domain.universityId].domains.push(domain.domain);
+          return acc;
+        }, {});
+
+        return Object.values(universityMap) as EmailDomain[];
+      })
     );
   }
 }

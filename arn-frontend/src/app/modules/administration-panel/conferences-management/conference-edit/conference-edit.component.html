@@ -14,11 +14,10 @@
   <app-tabs
     [tabs]="tabOptions"
     [activeTab]="selectedOption"
-    (tabChanged)="selectedOption = $event"
-  ></app-tabs>
+    (tabChanged)="selectedOption = $event" />
 </div>
-<div class="w-full card-base p-4 relative overflow-hidden">
-  <app-arn-loader [isVisible]="isLoading"></app-arn-loader>
+<div class="w-full card-base relative overflow-hidden h-[88vh] flex flex-col" [ngClass]="{'p-4': selectedOption === EDIT}">
+  <app-arn-loader [isVisible]="isLoading" />
   @if (selectedOption === EDIT && conference) {
     <div class="flex justify-between">
       <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
@@ -29,16 +28,15 @@
           (buttonClick)="downloadData()">
         </app-arn-button>
         <app-arn-button *ngIf="!conference.closed"
-          [type]="'button'"
-          [buttonText]="'Zavrieť konferenciu'"
-          (buttonClick)="closeConference()"
-          [customColor]="'#cb3d3d'">
+                        [type]="'button'"
+                        [buttonText]="'Zavrieť konferenciu'"
+                        (buttonClick)="closeConference()"
+                        [customColor]="'#cb3d3d'">
         </app-arn-button>
       </div>
     </div>
-    <form appFormValidation (ngSubmit)="updateConference()" (getValidationErrors)="formValidationErrors = $event">
+    <form appFormValidation (ngSubmit)="updateConference()" (getValidationErrors)="formValidationErrors = $event" class="flex-grow flex flex-col justify-between">
       <div class="space-y-5">
-
         <div class="grid grid-cols-2 gap-4">
           <div class="arn-input">
             <label for="conferenceName">Názov konferencie</label>
@@ -196,8 +194,6 @@
         [initialSort]="'title'">
       </app-arn-grid-list>
     </div>
-
-  } @else if (SUBMISSION) {
 
   }
 </div>

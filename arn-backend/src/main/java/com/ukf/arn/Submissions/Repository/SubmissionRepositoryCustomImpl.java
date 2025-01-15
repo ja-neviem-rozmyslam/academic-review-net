@@ -52,6 +52,18 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .fetch();
     }
 
+    @Override
+    public List<Submission> findByUser(UUID userId, boolean forReview) {
+        return new JPAQuery<>(entityManager)
+                .select(SUBMISSION)
+                .from(SUBMISSION)
+                .join(CONFERENCE)
+                .on(SUBMISSION.conferencesId.eq(CONFERENCE.id))
+                .where((forReview ? SUBMISSION.reviewerId.eq(userId) : SUBMISSION.authorId.eq(userId))
+                        .and(CONFERENCE.closed.isFalse()))
+                .fetch();
+    }
+
     public SubmissionDto mapToSubmissionDto(Submission submission) {
         SubmissionDto dto = new SubmissionDto();
         dto.setId(submission.getId());

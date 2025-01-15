@@ -29,6 +29,7 @@ export class RegistrationPanelComponent implements OnInit {
 
   ngOnInit() {
     this.emailDomainService.getAllDomains().pipe().subscribe((domains: EmailDomain[]) => {
+      console.log(domains);
       this.emailDomains = domains;
       this.universitiesSelectOptions = this.emailDomains.map(university => ({
         value: university.universityId,
@@ -40,7 +41,9 @@ export class RegistrationPanelComponent implements OnInit {
 
   findRelevantUniversity() {
     const domain = this.registrationInfo.email.split('@')[1] || '';
-    const matchingUniversity = this.universitiesSelectOptions.find(option => domain.includes(option.selectObject.domain));
+    const matchingUniversity = this.universitiesSelectOptions.find(option =>
+      option.selectObject.domains.some(d => domain.includes(d))
+    );
 
     if (matchingUniversity) {
       this.registrationInfo.universityId = Number(matchingUniversity.value);
