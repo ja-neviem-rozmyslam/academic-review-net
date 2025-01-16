@@ -21,6 +21,15 @@ public class ConstantsKatalog {
     public static final String PRIMARY_COLOR = "#171920";
     public static final String FOOTER_TEXT_COLOR = "#b8c2cc";
 
+    public static final Map<String, String> REVIEW_RATING_OPTIONS = Map.of(
+            "1", "Výborné",
+            "2", "Dobré",
+            "3", "Priemerné",
+            "4", "Dostačujúce",
+            "5", "Nedostatočné"
+    );
+
+
     public enum Role {
         STUDENT("S", "Študent"),
         REVIEWER("R", "Recenzent"),

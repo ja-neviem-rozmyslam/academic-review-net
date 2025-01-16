@@ -4,11 +4,9 @@ import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
 import com.ukf.arn.Administration.Objects.SaveUniversityRequest;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
-import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Entities.Conference;
 import com.ukf.arn.Entities.User;
 import com.ukf.arn.Universities.UniversityDto;
-import org.apache.coyote.Response;
 import com.ukf.arn.Users.Objects.UpdateRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -77,7 +75,7 @@ public class AdministrationController {
     }
 
     @GetMapping("/conference/{id}/submissions")
-    public ResponseEntity<?> getConferenceSubmissions( @PathVariable Long id) {
+    public ResponseEntity<?> getConferenceSubmissions(@PathVariable Long id) {
         return ResponseEntity.ok(administrationService.getConferenceSubmissions(id));
     }
 
@@ -92,6 +90,7 @@ public class AdministrationController {
                 .headers(headers)
                 .body(zipBytes);
     }
+
     @PostMapping("/user/{userId}/delete")
     public ResponseEntity<?> deleteUser(@PathVariable UUID userId) {
         return administrationService.deleteUser(userId);
@@ -106,10 +105,12 @@ public class AdministrationController {
     public ResponseEntity<?> getReviewers() {
         return ResponseEntity.ok(administrationService.getReviewers());
     }
+
     @PostMapping("/user/createAdmin")
     public ResponseEntity<?> createAdmin(@RequestBody User user) {
         return administrationService.createAdminUser(user);
     }
+
     @PostMapping("/user/updateUserProfile")
     public ResponseEntity<?> updateEditUserData(@RequestBody UpdateRequest userDto) {
         return ResponseEntity.ok(administrationService.EditUserProfileUpdate(userDto));
