@@ -14,11 +14,10 @@
   <app-tabs
     [tabs]="tabOptions"
     [activeTab]="selectedOption"
-    (tabChanged)="selectedOption = $event"
-  ></app-tabs>
+    (tabChanged)="selectedOption = $event" />
 </div>
-<div class="w-full card-base p-4 relative overflow-hidden">
-  <app-arn-loader [isVisible]="isLoading"></app-arn-loader>
+<div class="w-full card-base relative overflow-hidden h-[88vh] flex flex-col" [ngClass]="{'p-4': selectedOption === EDIT}">
+  <app-arn-loader [isVisible]="isLoading" />
   @if (selectedOption === EDIT && conference) {
     <div class="flex justify-between">
       <h2 class="text-lg font-semibold">Upraviť Konferenciu</h2>
@@ -29,16 +28,15 @@
           (buttonClick)="downloadData()">
         </app-arn-button>
         <app-arn-button *ngIf="!conference.closed"
-          [type]="'button'"
-          [buttonText]="'Zavrieť konferenciu'"
-          (buttonClick)="closeConference()"
-          [customColor]="'#cb3d3d'">
+                        [type]="'button'"
+                        [buttonText]="'Zavrieť konferenciu'"
+                        (buttonClick)="closeConference()"
+                        [customColor]="'#cb3d3d'">
         </app-arn-button>
       </div>
     </div>
-    <form appFormValidation (ngSubmit)="updateConference()" (getValidationErrors)="formValidationErrors = $event">
+    <form appFormValidation (ngSubmit)="updateConference()" (getValidationErrors)="formValidationErrors = $event" class="flex-grow flex flex-col justify-between">
       <div class="space-y-5">
-
         <div class="grid grid-cols-2 gap-4">
           <div class="arn-input">
             <label for="conferenceName">Názov konferencie</label>
@@ -90,13 +88,13 @@
 
         <div class="flex flex-row space-x-12">
           <div class="flex flex-col space-y-4 w-5/12">
-            <div class="flex items-center">
+            <div class="flex items-center arn-input">
               <input
                 id="setPassword"
                 name="setPassword"
                 aria-describedby="setPassword"
                 type="checkbox"
-                class="checkbox-custom p-2"
+                class="p-2"
                 [disabled]="conference.closed"
                 [(ngModel)]="setPassword"/>
               <label for="setPassword" class="text-sm font-medium text-gray-700 ml-2">
@@ -110,6 +108,7 @@
                 name="conferencePassword"
                 class="w-full"
                 placeholder="Heslo"
+                [disabled]="conference.closed"
                 [(ngModel)]="conference.password"
                 required/>
             </div>
@@ -189,15 +188,12 @@
 
     <div class="w-full relative">
       <app-arn-grid-list
-        [data]="submissions"
         [columns]="columns"
         [initialRefresh]="true"
         [sortable]="true"
-        [initialSort]="'title'">
-      </app-arn-grid-list>
+        [initialSort]="'title'"
+        [searchMethod]="search" />
     </div>
-
-  } @else if (SUBMISSION) {
 
   }
 </div>

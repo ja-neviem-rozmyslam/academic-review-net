@@ -6,7 +6,6 @@ import {
   REVIEW_FORM_OPTIONS,
   REVIEW_FORM_SELECT,
   REVIEW_FORM_TEXT,
-  SUBMISSION,
   TABOPTIONS,
 } from '../entities/constants';
 import {ConferenceManagementService} from '../services/conference-management.service';
@@ -14,6 +13,7 @@ import {Conference} from '../../../main-panel/conference-page/entities/Conferenc
 import {ReviewFormObject} from '../../../main-panel/conference/entities/ReviewFormObject';
 import {FormValidationErrors} from '../../../objects/FormValidationErrors';
 import {DialogService} from '../../../services/dialog.service';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-conference-edit',
@@ -31,7 +31,6 @@ export class ConferenceEditComponent implements OnInit {
   showAlert: boolean;
   alertMessage: string;
   columns = [];
-  submissions: any;
   reviewFieldId = 1;
   formValidationErrors: FormValidationErrors;
 
@@ -54,7 +53,6 @@ export class ConferenceEditComponent implements OnInit {
             const lastField = this.conference.reviewForm[this.conference.reviewForm.length - 1];
             this.reviewFieldId = parseInt(lastField?.id, 10) + 1 || 1;
           }
-          this.getSubmissions();
           this.initializeColumns();
         },
         error: () => {
@@ -78,7 +76,7 @@ export class ConferenceEditComponent implements OnInit {
         name: 'author',
         width: 30,
         template: (row) => {
-          return row.author === null ? 'Žiadny' : `${row.author.name} ${row.author.surname}`;
+          return row.author === null ? 'Žiadny' : `${row.author.surname}, ${row.author.name}`;
         },
       },
       {
@@ -90,7 +88,7 @@ export class ConferenceEditComponent implements OnInit {
         initialValue: (row) => {
           return row.reviewer === null
             ? null
-            : {label: `${row.reviewer.name} ${row.reviewer.surname}`, value: row.reviewer.id};
+            : {label: `${row.reviewer.surname}, ${row.reviewer.name}`, value: row.reviewer.id};
         },
       },
     ];
@@ -107,7 +105,7 @@ export class ConferenceEditComponent implements OnInit {
           const reviewerColumn = this.columns.find((col) => col.name === 'reviewer');
           if (reviewerColumn) {
             reviewerColumn.options = reviewers.map((reviewer) => ({
-              label: `${reviewer.name} ${reviewer.surname}`,
+              label: `${reviewer.surname}, ${reviewer.name}`,
               value: reviewer.id,
             }));
           }
@@ -122,7 +120,7 @@ export class ConferenceEditComponent implements OnInit {
 
 
   isReviewFormDisabled(): boolean {
-    return new Date() > new Date(this.conference.reviewDeadline);
+    return new Date() > new Date(this.conference.uploadDeadline);
   }
 
   getSelectedOption(reviewField: ReviewFormObject) {
@@ -165,13 +163,12 @@ export class ConferenceEditComponent implements OnInit {
     this.conference.reviewForm = this.conference.reviewForm.filter((field) => field.id !== fieldId);
   }
 
-  getSubmissions() {
-    this.conferenceService.getSubmissions(this.conference.id).subscribe({
-      next: (data) => {
-        this.submissions = data.body;
-      },
-    });
-  }
+  search = (_, sortOptions) => {
+    if (this.conference && this.conference.id) {
+      return this.conferenceService.getSubmissions(this.conference.id, sortOptions);
+    }
+    return of([]);
+  };
 
   downloadData() {
     this.conferenceService.downloadData(this.conference.id).subscribe({
@@ -225,7 +222,5 @@ export class ConferenceEditComponent implements OnInit {
 
   protected readonly EDIT = EDIT;
   protected readonly ASSIGN = ASSIGN;
-  protected readonly SUBMISSION = SUBMISSION;
   protected readonly REVIEW_FORM_OPTIONS = REVIEW_FORM_OPTIONS;
-  protected readonly REVIEW_FORM_TEXT = REVIEW_FORM_TEXT;
 }

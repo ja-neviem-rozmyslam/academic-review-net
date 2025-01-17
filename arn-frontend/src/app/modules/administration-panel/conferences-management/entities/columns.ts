@@ -10,22 +10,22 @@ export const CONFERENCE_COLUMNS: Column[] = [
   {
     title: 'Fakulta',
     name: 'faculty',
-    width: 30,
+    width: 25,
   },
   {
-    title: 'Termín odovzdania',
+    title: 'Termín odovzdania (do)',
     name: 'uploadDeadline',
-    width: 20,
+    width: 17,
   },
   {
-    title: 'Termín posudzovania',
+    title: 'Termín posudzovania (do)',
     name: 'reviewDeadline',
-    width: 20,
+    width: 18,
   },
   {
     title: 'Stav',
     name: 'closed',
-    width: 10,
+    width: 8,
     template: (dataItem: any) => {
       const statusOption = CONFERENCE_CLOSED_OPTIONS.find(option => option.value === dataItem.closed);
       return `<span class="${dataItem.closed ? 'text-red-700' : 'text-green-800'}">${statusOption?.display}</span>`;

@@ -4,6 +4,7 @@ import {ProfileSettingsService} from './service/profile-settings.service';
 import {EmailDomain} from '../../../components/registration-panel/entities/EmailDomain';
 import {EmailDomainService} from '../../../components/registration-panel/services/email-domain.service';
 import {UserDetails} from './entities/UserDetails';
+import {FormValidationErrors} from '../../../objects/FormValidationErrors';
 
 @Component({
   selector: 'app-profile-settings',
@@ -20,6 +21,7 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
   emailDomains: EmailDomain[];
   universitiesSelectOptions: any[];
   isFetching = true;
+  formValidationErrors: FormValidationErrors;
 
   constructor(@Inject('modalData') public data: any, private profileSettingsService: ProfileSettingsService, private emailDomainService: EmailDomainService) {
     super();
@@ -45,6 +47,9 @@ export class ProfileSettingsComponent extends BaseModal implements OnInit {
   }
 
   updateProfile(): void {
+    if (this.formValidationErrors) {
+      return;
+    }
     this.isFetching = true;
     this.profileSettingsService.updateProfile(this.userDetails).pipe().subscribe(() => {
       this.profileUpdated.emit();

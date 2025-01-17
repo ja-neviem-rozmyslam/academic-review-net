@@ -1,27 +1,32 @@
 <div class="relative w-full arn-input">
   <input
+    #dropdownInput
     type="text"
     class="block w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
     placeholder="Search..."
     [(ngModel)]="searchQuery"
     (input)="filterOptions()"
-    (focus)="showDropdown = true"
+    (focus)="showDropdown = true; updateDropdownPosition()"
   />
 
   <div
-    class="absolute z-10 mt-1 w-full bg-white border border-gray-300 shadow max-h-48 overflow-y-auto rounded-lg"
+    class="fixed z-10 bg-white border border-gray-300 shadow max-h-48 overflow-y-auto rounded-lg"
     *ngIf="showDropdown"
+    [style.top.px]="dropdownPosition.top + 8"
+    [style.left.px]="dropdownPosition.left"
+    [style.width.px]="dropdownPosition.width"
   >
     <ul>
       <li
-        *ngFor="let option of filteredOptions"
+        *ngFor="let option of filteredOptions; let i = index"
+        [class.bg-blue-100]="isHighlighted(i)"
         class="px-3 py-2 hover:bg-blue-100 cursor-pointer"
         (click)="selectOption(option)"
       >
         {{ option.label }}
       </li>
       <li *ngIf="filteredOptions.length === 0" class="px-3 py-2 text-gray-500">
-        No results found
+        Neboli nájdené žiadne výsledky
       </li>
     </ul>
   </div>

@@ -149,8 +149,8 @@
           <h3 class="text-lg font-bold">{{ submission.title }}</h3>
           <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
         </div>
-        <span class="text-xs px-2 py-1 rounded-full font-medium border">
-          Čaká na hodnotenie
+        <span class="text-xs px-2 py-1 rounded-full font-medium border" [ngClass]="submission.reviewed ? 'bg-green-200 border-green-300 text-green-700' : 'bg-blue-200 border-blue-300 text-blue-700'">
+          {{ submission.reviewed ? 'Posúdená' : 'Odovzdaná čaká na posúdenie' }}
       </span>
       </div>
     </div>
@@ -164,11 +164,10 @@
           <h3 class="text-lg font-bold">{{ submission.title }}</h3>
           <p class="text-sm text-gray-500">{{ submission.timestamp  | date:'dd.MM.yyyy' }}</p>
         </div>
-        <span class="text-xs px-2 py-1 rounded-full font-medium border">
-          Čaká na hodnotenie
+        <span class="text-xs px-2 py-1 rounded-full font-medium border" [ngClass]="submission.reviewed ? 'bg-green-200 border-green-300 text-green-700' : 'bg-red-200 border-red-300 text-red-700'">
+          {{ submission.reviewed ? 'Posúdená' : 'Čaká na posúdenie' }}
       </span>
       </div>
     </div>
   }
-
 </div>
