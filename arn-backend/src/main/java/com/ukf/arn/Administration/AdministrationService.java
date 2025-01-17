@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.ukf.arn.Administration.Objects.ConferenceSearchDto;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
-import com.ukf.arn.Conferences.Objects.ConferenceDto;
 import com.ukf.arn.Conferences.Repository.ConferenceRepository;
 import com.ukf.arn.Conferences.Repository.ConferenceRepositoryImpl;
 import com.ukf.arn.ConstantsKatalog;
@@ -19,18 +18,13 @@ import com.ukf.arn.Users.Objects.UpdateRequest;
 import com.ukf.arn.Users.Objects.UserDto;
 import com.ukf.arn.Users.Repository.UserRepository;
 import com.ukf.arn.Users.Repository.UserRepositoryImpl;
-import com.ukf.arn.config.SecurityConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Service
 public class AdministrationService {
@@ -41,20 +35,22 @@ public class AdministrationService {
     private final EmailDomainRepository emailDomainRepository;
     private final SubmissionRepository submissionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileDownloadService fileDownloadService;
 
     public AdministrationService(ConferenceRepository conferenceRepository,
                                  UserRepository userRepository,
                                  PasswordEncoder passwordEncoder,
                                  UniversityRepository universityRepository,
                                  EmailDomainRepository emailDomainRepository,
-                                 SubmissionRepository submissionRepository) {
+                                 SubmissionRepository submissionRepository,
+                                 FileDownloadService fileDownloadService) {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailDomainRepository = emailDomainRepository;
         this.submissionRepository = submissionRepository;
-
+        this.fileDownloadService = fileDownloadService;
     }
 
     public List<Conference> getConferenceData(ConferenceSearchDto searchObject, Sort sort) {
@@ -161,7 +157,7 @@ public class AdministrationService {
             conference = new Conference();
         }
 
-        if(conference.isClosed()) {
+        if (conference.isClosed()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update closed conference");
         }
 
@@ -184,12 +180,8 @@ public class AdministrationService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getConferenceSubmissions(Long conferenceId) {
-        List<Submission> submissions = submissionRepository.findByConferencesId(conferenceId);
-        List<SubmissionDto> submissionsDto = submissions.stream()
-                .map(submission -> submissionRepository.    mapToSubmissionDto(submission))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(submissionsDto);
+    public List<SubmissionDto> getConferenceSubmissions(Long conferenceId, Sort sort) {
+        return submissionRepository.findSubmissionsForConference(conferenceId, sort);
     }
 
     public ResponseEntity<?> getReviewers() {
@@ -208,91 +200,7 @@ public class AdministrationService {
     }
 
     public byte[] downloadConferenceSubmissions(Long conferenceId) {
-        try {
-            String conferenceFolderPath = "conferences/" + conferenceId;
-
-            File conferenceFolder = new File(conferenceFolderPath);
-            if (!conferenceFolder.exists() || !conferenceFolder.isDirectory()) {
-                throw new RuntimeException("Konferencia nemá žiadne odovzdané práce: " + conferenceFolderPath);
-            }
-
-            Map<String, String> uuidToUserNameMap = getUserMappingFromService(conferenceFolder);
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-                addFilesToZip(conferenceFolder, zipOutputStream, conferenceFolder.toPath(), uuidToUserNameMap);
-                zipOutputStream.finish();
-            }
-
-            return byteArrayOutputStream.toByteArray();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Problém so zipovaním súborov", e);
-        }
-    }
-
-    private void addFilesToZip(File folder, ZipOutputStream zipOutputStream, Path basePath, Map<String, String> uuidToUserNameMap) throws IOException {
-        for (File file : folder.listFiles()) {
-            if (file.isFile()) {
-                Path relativePath = basePath.relativize(file.toPath());
-
-                String zipEntryPath = replaceUuidWithUserName(relativePath.toString(), uuidToUserNameMap);
-
-                try (FileInputStream fileInputStream = new FileInputStream(file)) {
-                    zipOutputStream.putNextEntry(new ZipEntry(zipEntryPath.replace("\\", "/")));
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                        zipOutputStream.write(buffer, 0, bytesRead);
-                    }
-
-                    zipOutputStream.closeEntry();
-                }
-            } else if (file.isDirectory()) {
-                addFilesToZip(file, zipOutputStream, basePath, uuidToUserNameMap);
-            }
-        }
-    }
-
-    private Map<String, String> getUserMappingFromService(File conferenceFolder) {
-        Map<String, String> uuidToUserNameMap = new HashMap<>();
-
-        for (File subFolder : conferenceFolder.listFiles()) {
-            if (subFolder.isDirectory()) {
-                String uuid = subFolder.getName();
-
-                String userName = null;
-                if (isValidUUID(uuid)) {
-                    userName = userRepository.getNameAndSurnameById(uuid);
-                }
-
-                uuidToUserNameMap.put(uuid, Objects.requireNonNullElse(userName, uuid));
-            }
-        }
-
-        return uuidToUserNameMap;
-    }
-
-    private String replaceUuidWithUserName(String path, Map<String, String> uuidToUserNameMap) {
-        for (Map.Entry<String, String> entry : uuidToUserNameMap.entrySet()) {
-            String uuid = entry.getKey();
-            String userName = entry.getValue();
-
-            if (path.contains(uuid)) {
-                return path.replace(uuid, userName);
-            }
-        }
-        return path;
-    }
-
-    private boolean isValidUUID(String uuid) {
-        try {
-            UUID.fromString(uuid);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        return fileDownloadService.downloadConferenceSubmissions(conferenceId);
     }
 
     public ResponseEntity<?> deleteUser(UUID userId) {
@@ -312,7 +220,7 @@ public class AdministrationService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is required");
         }
         User user = userRepository.findUserById(userDto.getId());
-        if(user != null) {
+        if (user != null) {
             user.setName(userDto.getName());
             user.setSurname(userDto.getSurname());
             if (user.isAdmin()) {
@@ -322,8 +230,7 @@ public class AdministrationService {
                 user.setRoles(userDto.getRoles());
             }
             return ResponseEntity.ok(userRepository.save(user));
-        }
-        else
+        } else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
