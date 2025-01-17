@@ -41,16 +41,25 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
 
     @Override
     public List<Tuple> findUserSubmissions(UUID userId, boolean forReview) {
-        return new JPAQuery<Tuple>(entityManager)
+        JPAQuery<Tuple> query = new JPAQuery<>(entityManager)
                 .select(SUBMISSION, CONFERENCE.closed, CONFERENCE.id)
                 .from(CONFERENCE)
-                .leftJoin(CONFERENCE.users, USER)
-                .leftJoin(SUBMISSION)
-                .on(SUBMISSION.conferencesId.eq(CONFERENCE.id)
-                        .and(forReview ? SUBMISSION.reviewerId.eq(userId) : SUBMISSION.authorId.eq(userId)))
-                .where(USER.id.eq(userId))
+                .leftJoin(CONFERENCE.users, USER);
+
+        if (forReview) {
+            query.innerJoin(SUBMISSION)
+                    .on(SUBMISSION.conferencesId.eq(CONFERENCE.id)
+                            .and(SUBMISSION.reviewerId.eq(userId)));
+        } else {
+            query.leftJoin(SUBMISSION)
+                    .on(SUBMISSION.conferencesId.eq(CONFERENCE.id)
+                            .and(SUBMISSION.authorId.eq(userId)));
+        }
+
+        return query.where(USER.id.eq(userId))
                 .fetch();
     }
+
 
     @Override
     public List<Submission> findByUser(UUID userId, boolean forReview) {
