@@ -48,8 +48,14 @@ export class ConferenceManagementService {
     return this.http.post<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/update`, conference);
   }
 
-  getSubmissions(conferenceId: number): Observable<any> {
-    return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/submissions`);
+  getSubmissions(conferenceId: number, sortOptions: any): Observable<any> {
+    const params = {
+      column: sortOptions.column,
+      direction: sortOptions.direction
+    };
+    return this.http.get<any>(`${this.ADMIN_CONFERENCE_ENDPOINT}/${conferenceId}/submissions`, {
+      params: params
+    });
   }
 
 

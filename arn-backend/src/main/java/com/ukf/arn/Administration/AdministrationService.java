@@ -180,12 +180,8 @@ public class AdministrationService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getConferenceSubmissions(Long conferenceId) {
-        List<Submission> submissions = submissionRepository.findByConferencesId(conferenceId);
-        List<SubmissionDto> submissionsDto = submissions.stream()
-                .map(submission -> submissionRepository.mapToSubmissionDto(submission))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(submissionsDto);
+    public List<SubmissionDto> getConferenceSubmissions(Long conferenceId, Sort sort) {
+        return submissionRepository.findSubmissionsForConference(conferenceId, sort);
     }
 
     public ResponseEntity<?> getReviewers() {

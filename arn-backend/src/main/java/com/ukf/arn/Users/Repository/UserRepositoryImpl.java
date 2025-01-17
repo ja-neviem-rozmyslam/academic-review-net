@@ -2,7 +2,6 @@ package com.ukf.arn.Users.Repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-//import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.ukf.arn.Administration.Objects.Sort;
 import com.ukf.arn.Administration.Objects.UserSearchDto;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 
-import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
 import static com.ukf.arn.ConstantsKatalog.Role.*;
 import static com.ukf.arn.ConstantsKatalog.USER;
 import static com.ukf.arn.Entities.SqlUtils.*;

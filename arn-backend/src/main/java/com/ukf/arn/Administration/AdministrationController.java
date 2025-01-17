@@ -75,8 +75,8 @@ public class AdministrationController {
     }
 
     @GetMapping("/conference/{id}/submissions")
-    public ResponseEntity<?> getConferenceSubmissions(@PathVariable Long id) {
-        return ResponseEntity.ok(administrationService.getConferenceSubmissions(id));
+    public ResponseEntity<?> getConferenceSubmissions(@PathVariable Long id, Sort sort) {
+        return ResponseEntity.ok(administrationService.getConferenceSubmissions(id, sort));
     }
 
     @GetMapping("/conference/{id}/download")
