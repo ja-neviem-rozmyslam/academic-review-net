@@ -123,7 +123,7 @@ services:
     networks:
       - sw-ing
     ports:
-      - 3000:80
+      - 4200:80
     depends_on:
       - backend
 
