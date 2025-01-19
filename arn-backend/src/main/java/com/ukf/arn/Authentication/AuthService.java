@@ -116,7 +116,7 @@ public class AuthService {
         User userObj = userRepository.findByEmail(loginRequest.getEmail()).orElse(null);
 
         if (userObj == null) {
-            return ResponseEntity.badRequest().body("Používateľ s takýmto emailom neexistuje");
+            return ResponseEntity.badRequest().body(isAdminLogin ? "Administrátor s takýmto prihlasovacím menom neexistuje" : "Používateľ s takýmto emailom neexistuje");
         }
         if (!userObj.isVerified()) {
             return ResponseEntity.badRequest().body("Používateľ nie je overený");
