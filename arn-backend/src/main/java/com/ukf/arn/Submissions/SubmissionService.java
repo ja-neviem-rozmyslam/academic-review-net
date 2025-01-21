@@ -21,12 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ukf.arn.ConstantsKatalog.CONFERENCE;
 import static com.ukf.arn.ConstantsKatalog.SUBMISSION;
@@ -192,7 +194,16 @@ public class SubmissionService {
         if (!Files.exists(path)) {
             return ResponseEntity.status(404).body("No files found for this submission.");
         }
-        return ResponseEntity.ok(path.toFile().listFiles());
+        File[] files = path.toFile().listFiles();
+        if (files == null) {
+            return ResponseEntity.status(404).body("No files found for this submission.");
+        }
+
+        List<String> relativePaths = Arrays.stream(files)
+                .map(file -> path.relativize(file.toPath()).toString())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(relativePaths);
     }
 
     private void saveFilesToFolder(MultipartFile[] files, String folderPath) throws IOException {
@@ -214,7 +225,6 @@ public class SubmissionService {
                 }
             });
         }
-
 
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
