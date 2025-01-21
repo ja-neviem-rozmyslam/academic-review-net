@@ -22,6 +22,8 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_SENDER: ${MAIL_SENDER}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+    volumes:
+      - conferences:/app/conferences
     networks:
       - sw-ing
     ports:
@@ -64,4 +66,5 @@ services:
       - sw-ing
 
 volumes:
+  conferences:
   dev_swing_db:
