@@ -4,13 +4,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-CREATE SCHEMA IF NOT EXISTS `arn_noddedoil` DEFAULT CHARACTER SET utf8mb4 ;
-USE `arn_noddedoil` ;
+CREATE SCHEMA IF NOT EXISTS `arn` DEFAULT CHARACTER SET utf8mb4 ;
+USE `arn` ;
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`universities`
+-- Table `arn`.`universities`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`universities` (
+CREATE TABLE IF NOT EXISTS `arn`.`universities` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `university_name` VARCHAR(512) NOT NULL,
     PRIMARY KEY (`id`))
@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`universities` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`users`
+-- Table `arn`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`users` (
+CREATE TABLE IF NOT EXISTS `arn`.`users` (
     `id` VARCHAR(36) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `surname` VARCHAR(255) NOT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`users` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`conferences`
+-- Table `arn`.`conferences`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`conferences` (
+CREATE TABLE IF NOT EXISTS `arn`.`conferences` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `conference_name` VARCHAR(45) NOT NULL,
     `password` VARCHAR(45) NULL,
@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`conferences` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`thesis_types`
+-- Table `arn`.`thesis_types`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`thesis_types` (
+CREATE TABLE IF NOT EXISTS `arn`.`thesis_types` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`id`))
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`thesis_types` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`uploaded_theses`
+-- Table `arn`.`uploaded_theses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`uploaded_theses` (
+CREATE TABLE IF NOT EXISTS `arn`.`uploaded_theses` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `thesis_title` VARCHAR(255) NOT NULL,
     `type_id` BIGINT NOT NULL,
@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`uploaded_theses` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`email_domains`
+-- Table `arn`.`email_domains`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`email_domains` (
+CREATE TABLE IF NOT EXISTS `arn`.`email_domains` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `email_domain` VARCHAR(45) NOT NULL,
     `university_id` BIGINT NOT NULL,
@@ -97,9 +97,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`email_domains` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`users_in_conferences`
+-- Table `arn`.`users_in_conferences`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`users_in_conferences` (
+CREATE TABLE IF NOT EXISTS `arn`.`users_in_conferences` (
     `user_id` VARCHAR(36) NOT NULL,
     `conference_id` BIGINT NOT NULL,
     PRIMARY KEY (`user_id`, `conference_id`),
@@ -109,9 +109,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`users_in_conferences` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`roles`
+-- Table `arn`.`roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`roles` (
+CREATE TABLE IF NOT EXISTS `arn`.`roles` (
     `user_id` VARCHAR(36) NOT NULL,
     `role_ident` VARCHAR(2) NOT NULL,
     PRIMARY KEY (`user_id`, `role_ident`),
@@ -120,9 +120,9 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`roles` (
 
 
 -- -----------------------------------------------------
--- Table `arn_noddedoil`.`tokens`
+-- Table `arn`.`tokens`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`tokens` (
+CREATE TABLE IF NOT EXISTS `arn`.`tokens` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `token` VARCHAR(255) NOT NULL,
     `user_id` VARCHAR(36) NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `arn_noddedoil`.`tokens` (
     INDEX `fk_password_reset_tokens_users1_idx` (`user_id` ASC) VISIBLE)
     ENGINE = InnoDB;
 
-USE `arn_noddedoil` ;
+USE `arn` ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
