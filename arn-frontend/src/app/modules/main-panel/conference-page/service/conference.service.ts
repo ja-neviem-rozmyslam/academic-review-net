@@ -10,7 +10,6 @@ import {ConferenceDetail} from '../../conference/entities/ConferenceDetail';
 })
 export class ConferenceService {
   CONFERENCE_API_ENDPOINT = 'api/conferences';
-  endpoint: string;
 
   constructor(private http: HttpClient) {
   }
@@ -23,22 +22,22 @@ export class ConferenceService {
     return this.http.get(`${this.CONFERENCE_API_ENDPOINT}`);
   }
 
-  getData(endpoint: string, id: number, includeCoAuthors = false): Observable<any> {
+  getData(id: number, includeCoAuthors = false, endpoint = ''): Observable<any> {
     const params: Record<string, string> = {
       includeCoAuthors: includeCoAuthors.toString(),
     };
 
-    return this.http.get<any>(`${this.CONFERENCE_API_ENDPOINT}/${endpoint}/${id}`, { params }).pipe(
+    return this.http.get<any>(`${this.CONFERENCE_API_ENDPOINT}/${endpoint}${id}`, { params }).pipe(
       map(data => this.parseConferenceDetail(data))
     );
   }
 
   getConferenceData(conferenceId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
-    return this.getData('', conferenceId, includeCoAuthors);
+    return this.getData(conferenceId, includeCoAuthors);
   }
 
   getSubmissionData(submissionId: number, includeCoAuthors = false): Observable<ConferenceDetail> {
-    return this.getData('submission', submissionId, includeCoAuthors);
+    return this.getData(submissionId, includeCoAuthors, 'submission/');
   }
 
 
