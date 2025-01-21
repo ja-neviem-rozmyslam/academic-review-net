@@ -60,6 +60,9 @@
   input:not([type="checkbox"]), textarea {
     @apply input-base;
   }
+  input[type="checkbox"] {
+    @apply checkbox-custom;
+  }
 }
 
 .input-base {
@@ -94,4 +97,9 @@
   @apply bg-primary border-primary;
     animation: checkmarkAnimation 0.3s ease-out;
   }
+
+  &:disabled {
+  @apply opacity-65 cursor-not-allowed;
+  }
+
 }
