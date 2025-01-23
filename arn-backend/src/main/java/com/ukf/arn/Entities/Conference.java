@@ -131,7 +131,7 @@ public class Conference implements Serializable {
 
     @JsonIgnore
     public boolean hasPassword() {
-        return password != null;
+        return password != null && !password.isEmpty();
     }
 
     @JsonIgnore

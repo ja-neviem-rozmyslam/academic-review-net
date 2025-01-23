@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ComponentStore} from '@ngrx/component-store';
 import {ConferenceState} from './ConferenceState';
 import {ConferenceService} from '../service/conference.service';
-import {Observable, switchMap, tap, withLatestFrom} from 'rxjs';
+import {distinctUntilChanged, Observable, switchMap, tap, withLatestFrom} from 'rxjs';
 import {SubmissionService} from '../../conference/services/submission.service';
 
 @Injectable()
@@ -101,21 +101,14 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
   }
 
   private updateMyConferencesField(field: keyof ConferenceState['myConferences'], value$: Observable<any>) {
-    return this.select((state) => state.myConferences[field]).pipe(
-      switchMap((currentFieldData) => {
-        if (currentFieldData.length === 0) {
-          return value$.pipe(
-            tap((value) => {
-              this.patchState((state) => ({
-                myConferences: {
-                  ...state.myConferences,
-                  [field]: value,
-                },
-              }));
-            })
-          );
-        }
-        return [];
+    return value$.pipe(
+      tap((value) => {
+        this.patchState((state) => ({
+          myConferences: {
+            ...state.myConferences,
+            [field]: value,
+          },
+        }));
       })
     );
   }
