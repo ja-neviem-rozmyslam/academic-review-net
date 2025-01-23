@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ComponentStore} from '@ngrx/component-store';
 import {ConferenceState} from './ConferenceState';
 import {ConferenceService} from '../service/conference.service';
-import {distinctUntilChanged, Observable, switchMap, tap, withLatestFrom} from 'rxjs';
+import {Observable, switchMap, tap, withLatestFrom} from 'rxjs';
 import {SubmissionService} from '../../conference/services/submission.service';
 
 @Injectable()
