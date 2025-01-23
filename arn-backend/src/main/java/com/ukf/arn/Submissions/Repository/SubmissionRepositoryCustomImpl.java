@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Sort.Direction;
 
 import static com.ukf.arn.ConstantsKatalog.*;
-import static com.ukf.arn.Entities.SqlUtils.buildOrderSpecifier;
 import static com.ukf.arn.Entities.SqlUtils.buildOrderSpecifiers;
 
 @Repository
@@ -52,8 +51,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                             .and(SUBMISSION.authorId.eq(userId)));
         }
 
-        return query.where(USER.id.eq(userId))
-                .fetch();
+        return query.fetch();
     }
 
 
@@ -86,10 +84,16 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
             User reviewer = tuple.get(REVIEWER);
 
             SubmissionDto dto = new SubmissionDto();
-            dto.setId(submission.getId());
-            dto.setTitle(submission.getThesisTitle());
-            dto.setAuthor(UserRepositoryImpl.mapToUserDto(author));
-            dto.setReviewer(UserRepositoryImpl.mapToUserDto(reviewer));
+            if (submission != null) {
+                dto.setId(submission.getId());
+                dto.setTitle(submission.getThesisTitle());
+                if (author != null) {
+                    dto.setAuthor(UserRepositoryImpl.mapToUserDto(author));
+                }
+                if (reviewer != null) {
+                    dto.setReviewer(UserRepositoryImpl.mapToUserDto(reviewer));
+                }
+            }
 
             return dto;
         }).collect(Collectors.toList());
