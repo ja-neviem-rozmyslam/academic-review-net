@@ -65,6 +65,7 @@ public class SubmissionRepositoryCustomImpl implements SubmissionRepositoryCusto
                 .where((forReview ? SUBMISSION.reviewerId.eq(userId) : SUBMISSION.authorId.eq(userId))
                         .and(CONFERENCE.closed.isFalse()))
                 .fetch();
+    }
 
     @Override
     public List<SubmissionDto> findSubmissionsForConference(Long conferenceId, Sort sort) {
