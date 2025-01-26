@@ -101,21 +101,14 @@ export class ConferenceStore extends ComponentStore<ConferenceState> {
   }
 
   private updateMyConferencesField(field: keyof ConferenceState['myConferences'], value$: Observable<any>) {
-    return this.select((state) => state.myConferences[field]).pipe(
-      switchMap((currentFieldData) => {
-        if (currentFieldData.length === 0) {
-          return value$.pipe(
-            tap((value) => {
-              this.patchState((state) => ({
-                myConferences: {
-                  ...state.myConferences,
-                  [field]: value,
-                },
-              }));
-            })
-          );
-        }
-        return [];
+    return value$.pipe(
+      tap((value) => {
+        this.patchState((state) => ({
+          myConferences: {
+            ...state.myConferences,
+            [field]: value,
+          },
+        }));
       })
     );
   }

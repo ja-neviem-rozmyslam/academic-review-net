@@ -48,7 +48,7 @@ export class ConferenceEditComponent implements OnInit {
       this.conferenceService.getConferenceById(+conferenceId).subscribe({
         next: (conference) => {
           this.conference = conference;
-          this.setPassword = this.conference.password != null;
+          this.setPassword = !!this.conference.password;
           if (this.conference.reviewForm) {
             const lastField = this.conference.reviewForm[this.conference.reviewForm.length - 1];
             this.reviewFieldId = parseInt(lastField?.id, 10) + 1 || 1;

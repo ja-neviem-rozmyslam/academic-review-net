@@ -158,7 +158,7 @@ public class SubmissionService {
         List<Map<String, Object>> submissionsWithStatus = new ArrayList<>();
         for (Tuple result : results) {
             Submission submission = result.get(SUBMISSION);
-            boolean isClosed = result.get(CONFERENCE.closed);
+            boolean isClosed = Boolean.TRUE.equals(result.get(CONFERENCE.closed));
             Long conferenceId = result.get(CONFERENCE.id);
 
             SubmissionDto submissionDto = new SubmissionDto();
