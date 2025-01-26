@@ -146,7 +146,7 @@ public class ConferenceService {
                 conference.isClosed(),
                 conference.getReviewForm(),
                 conference.isUserInConference(userId),
-                conference.getPassword() != null
+                conference.hasPassword()
         );
     }
 }
