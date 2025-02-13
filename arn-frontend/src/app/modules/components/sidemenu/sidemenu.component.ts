@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from './MenuItem';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-sidemenu',
@@ -11,8 +12,14 @@ import { Router } from '@angular/router';
 export class SidemenuComponent {
   @Input() menuItems: MenuItem[];
   dropdownState: Record<string, boolean> = {};
+  unreadNotificationsCount = this.notificationService.unreadNotificationsCount;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {
+  }
 
   hasSubItems(item: MenuItem) {
     return item.subItems && item.subItems.length > 0;

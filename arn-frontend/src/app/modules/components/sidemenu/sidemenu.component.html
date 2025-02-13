@@ -20,7 +20,7 @@
                  class="menu-item flex items-center p-2"
                  [ngClass]="{'active': isActive(item.path)}" (click)="closeDropdown()">
               @if (item.icon) {
-                <ng-container *ngComponentOutlet="item.icon; inputs: {stroke: 1.3, size: 25}" />
+                <ng-container *ngComponentOutlet="item.icon; inputs: {stroke: 1.3, size: 25}"/>
               }
               <span class="ms-3">{{ item.title }}</span>
             </div>
@@ -31,7 +31,7 @@
                     (click)="toggleDropdown(item.path)"
                     [ngClass]="{'active': isActive(item.path)}">
               @if (item.icon) {
-                <ng-container *ngComponentOutlet="item.icon; inputs: {stroke: 1.3, size: 25}" />
+                <ng-container *ngComponentOutlet="item.icon; inputs: {stroke: 1.3, size: 25}"/>
               }
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ item.title }}</span>
               <chevron-down-outline-icon></chevron-down-outline-icon>
@@ -51,9 +51,19 @@
           }
         </li>
       }
+      <div class="menu-item flex items-center p-2 relative">
+        <div class="relative flex items-center">
+          <bell-outline-icon size="24" stroke="1.3"></bell-outline-icon>
+          <span *ngIf="unreadNotificationsCount() > 0"
+                class="inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-expressive rounded-full absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2">
+      {{ unreadNotificationsCount() }}
+    </span>
+        </div>
+        <span class="ms-3">Oznámenia</span>
+      </div>
     </ul>
     <div class="menu-item flex items-center p-2" (click)="logout()">
-      <arrow-left-on-rectangle-outline-icon size="24"></arrow-left-on-rectangle-outline-icon>
+      <arrow-left-on-rectangle-outline-icon size="24" stroke="1.3"></arrow-left-on-rectangle-outline-icon>
       <span class="ms-3 font-medium">Odhlásiť sa</span>
     </div>
   </div>
