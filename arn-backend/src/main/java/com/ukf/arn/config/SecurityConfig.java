@@ -32,7 +32,7 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Value("${app.domain}")
-    private String appDomain;
+    private String frontendDomain;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/email-domains/**").anonymous()
                         .requestMatchers("/api/password-reset/**").anonymous()
                         .requestMatchers("/api/password-reset/**").authenticated()
-
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -63,7 +63,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(appDomain));
+        configuration.setAllowedOrigins(List.of(frontendDomain));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
