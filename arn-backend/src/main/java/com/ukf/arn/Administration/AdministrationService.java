@@ -10,6 +10,8 @@ import com.ukf.arn.ConstantsKatalog;
 import com.ukf.arn.EmailDomain.EmailDomainDto;
 import com.ukf.arn.EmailDomain.EmailDomainRepository;
 import com.ukf.arn.Entities.*;
+import com.ukf.arn.Notifications.NotificationRepository;
+import com.ukf.arn.Notifications.NotificationWebSocketHandler;
 import com.ukf.arn.Submissions.Objects.SubmissionDto;
 import com.ukf.arn.Submissions.Repository.SubmissionRepository;
 import com.ukf.arn.Universities.UniversityDto;
@@ -34,6 +36,8 @@ public class AdministrationService {
     private final UniversityRepository universityRepository;
     private final EmailDomainRepository emailDomainRepository;
     private final SubmissionRepository submissionRepository;
+    private final NotificationRepository notificationRepository;
+    private final NotificationWebSocketHandler notificationWebSocketHandler;
     private final PasswordEncoder passwordEncoder;
     private final FileDownloadService fileDownloadService;
 
@@ -43,6 +47,8 @@ public class AdministrationService {
                                  UniversityRepository universityRepository,
                                  EmailDomainRepository emailDomainRepository,
                                  SubmissionRepository submissionRepository,
+                                 NotificationRepository notificationRepository,
+                                 NotificationWebSocketHandler notificationWebSocketHandler,
                                  FileDownloadService fileDownloadService) {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
@@ -50,6 +56,8 @@ public class AdministrationService {
         this.passwordEncoder = passwordEncoder;
         this.emailDomainRepository = emailDomainRepository;
         this.submissionRepository = submissionRepository;
+        this.notificationRepository = notificationRepository;
+        this.notificationWebSocketHandler = notificationWebSocketHandler;
         this.fileDownloadService = fileDownloadService;
     }
 
@@ -196,6 +204,9 @@ public class AdministrationService {
         Submission submission = submissionRepository.findById(submissionId).orElseThrow();
         submission.setReviewerId(reviewerId);
         submissionRepository.save(submission);
+        notificationWebSocketHandler.sendUserNotification(reviewerId,
+                "Bola vám pridelená práca na posúdenie: " + submission.getThesisTitle(),
+                "REVIEW_ASSIGNMENT");
         return ResponseEntity.ok().build();
     }
 

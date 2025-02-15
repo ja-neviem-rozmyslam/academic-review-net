@@ -1,6 +1,8 @@
 package com.ukf.arn.Notifications;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.ukf.arn.Entities.Notifications;
 import com.ukf.arn.config.JwtUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -18,8 +20,11 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
 
     private final Map<UUID, WebSocketSession> userSessions = new ConcurrentHashMap<>();
     private final JwtUtil jwtUtil;
+    private final NotificationRepository notificationRepository;
 
-    public NotificationWebSocketHandler(JwtUtil jwtUtil) {
+    public NotificationWebSocketHandler(JwtUtil jwtUtil,
+                                        NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -49,12 +54,28 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
         userSessions.values().remove(session);
     }
 
-    public void sendUserNotification(UUID userId, NotificationDto notification) throws IOException {
-        WebSocketSession session = userSessions.get(userId);
-        if (session != null && session.isOpen()) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonNotification = objectMapper.writeValueAsString(notification);
-            session.sendMessage(new TextMessage(jsonNotification));
+    public void sendUserNotification(UUID userId, String message, String type) {
+        try {
+            Notifications notification = new Notifications(userId, message, type);
+            notificationRepository.save(notification);
+
+            NotificationDto notificationDto = new NotificationDto(
+                    notification.getId(),
+                    notification.getMessage(),
+                    notification.getType(),
+                    notification.isRead(),
+                    notification.getCreatedAt()
+            );
+
+            WebSocketSession session = userSessions.get(userId);
+            if (session != null && session.isOpen()) {
+                String jsonNotification = new ObjectMapper()
+                        .registerModule(new JavaTimeModule())
+                        .writeValueAsString(notificationDto);
+                session.sendMessage(new TextMessage(jsonNotification));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

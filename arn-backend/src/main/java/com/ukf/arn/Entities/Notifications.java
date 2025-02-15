@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -33,6 +32,16 @@ public class Notifications {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+
+    public Notifications() {
+    }
+
+    public Notifications(UUID userId, String message, String type) {
+        this.userId = userId;
+        this.message = message;
+        this.type = type;
+    }
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.ukf.arn.Notifications;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ public class NotificationDto {
     private String type;
     @JsonProperty("isRead")
     private boolean isRead;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     public NotificationDto(Long id, String message, String type, boolean isRead, LocalDateTime createdAt) {

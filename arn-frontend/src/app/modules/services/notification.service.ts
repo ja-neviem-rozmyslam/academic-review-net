@@ -43,26 +43,21 @@ export class NotificationService {
 
     const webSocketUrl = `ws://localhost:8080/ws/notification?token=${token}`;
     this.webSocket = new WebSocket(webSocketUrl);
-
-    this.webSocket.onopen = () => console.log('✅ Connected to WebSocket');
-
     this.webSocket.onmessage = (event) => {
       const newNotification = JSON.parse(event.data);
       this.notifications.push(newNotification);
       this.unreadNotificationsCount.update(count => count + 1);
     };
 
-    this.webSocket.onerror = (error) => console.error('❌ WebSocket Error:', error);
+    this.webSocket.onerror = (error) => console.error('WebSocket Error:', error);
 
     this.webSocket.onclose = () => {
-      console.log('⚠️ WebSocket closed.');
       this.webSocket = null;
     };
   }
 
   closeWebSocket(): void {
     if (this.webSocket) {
-      console.log('🛑 Closing WebSocket...');
       this.webSocket.close();
       this.webSocket = null;
     }
