@@ -54,6 +54,9 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
         userSessions.values().remove(session);
     }
 
+    //TODO: Include notifications for students after the review deadline ends.
+    //TODO: Include notifications for administrators after the upload deadline ends so that they can assign reviewers.
+    //TODO: MAYBE include notifications for students and reviewers if the deadline is close and they haven't made any actions.
     public void sendUserNotification(UUID userId, String message, String type) {
         try {
             Notifications notification = new Notifications(userId, message, type);
