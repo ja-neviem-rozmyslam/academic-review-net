@@ -13,20 +13,22 @@ export function getMenuItems(userRoles: string[]): MenuItem[] {
       title: 'Profil',
       icon: UserOutlineIconComponent,
     },
-    {
+  ];
+
+  if (userRoles.includes(UserRoles.STUDENT)) {
+    menuItems.push({
       path: 'conferences',
       title: 'Konferencie',
       icon: PresentationChartBarOutlineIconComponent,
-    },
-    {
-      path: 'theses',
-      title: 'Moje práce',
-      icon: ClipboardDocumentListOutlineIconComponent,
-      subItems: [],
-    },
-  ];
+    });
+  }
 
-  const thesesMenuItem = menuItems.find(item => item.path === 'theses');
+  const thesesMenuItem: MenuItem = {
+    path: 'theses',
+    title: 'Moje práce',
+    icon: ClipboardDocumentListOutlineIconComponent,
+    subItems: [],
+  };
 
   if (userRoles.includes(UserRoles.STUDENT)) {
     thesesMenuItem.subItems.push(
@@ -51,11 +53,13 @@ export function getMenuItems(userRoles: string[]): MenuItem[] {
       },
       {
         path: 'my-theses',
-        queryParams: {type: 'review' , closed: 'true'},
+        queryParams: {type: 'review', closed: 'true'},
         title: 'Moje Posúdené Práce',
       }
     );
   }
+
+  menuItems.push(thesesMenuItem);
 
   return menuItems;
 }

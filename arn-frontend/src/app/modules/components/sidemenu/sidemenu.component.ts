@@ -1,18 +1,35 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from './MenuItem';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-sidemenu',
   templateUrl: './sidemenu.component.html',
   styleUrl: './sidemenu.component.less'
 })
-export class SidemenuComponent {
+export class SidemenuComponent implements OnInit, OnDestroy {
   @Input() menuItems: MenuItem[];
   dropdownState: Record<string, boolean> = {};
+  unreadNotificationsCount = this.notificationService.unreadNotificationsCount;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {
+    this.notificationService.loadNotifications();
+    setTimeout(() => {
+      this.notificationService.connectToWebSocket();
+    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    this.notificationService.closeWebSocket();
+  }
 
   hasSubItems(item: MenuItem) {
     return item.subItems && item.subItems.length > 0;

@@ -32,7 +32,7 @@ import java.util.UUID;
 public class AuthService {
 
     @Value("${app.domain}")
-    private String appDomain;
+    private String frontendDomain;
 
     public final String VERIFICATION_TOKEN = "VERIFICATION";
     private static final int TOKEN_EXPIRATION_MINUTES = 1440;
@@ -90,7 +90,7 @@ public class AuthService {
 
         try {
             if (userToken == null || userToken.getExpirationTime().isBefore(LocalDateTime.now())) {
-                response.sendRedirect(appDomain + "/verification?status=failure");
+                response.sendRedirect(frontendDomain + "/verification?status=failure");
                 return;
             }
 
@@ -99,7 +99,7 @@ public class AuthService {
             userRepository.save(user);
             userTokenRepository.deleteByUserAndTokenType(user, VERIFICATION_TOKEN);
 
-            response.sendRedirect(appDomain + "/verification?status=success");
+            response.sendRedirect(frontendDomain + "/verification?status=success");
         } catch (IOException e) {
             throw new RuntimeException("Failed to redirect for verification", e);
         }
@@ -173,8 +173,8 @@ public class AuthService {
         mailService.sendVerificationEmail(email, link);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByEmail(username).orElse(null);
+    public User findById(UUID id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     private String getClientIP() {
